@@ -1,5 +1,5 @@
 # WarpTPS
-An interactive TPS visualization example.
+An interactive [TPS](http://en.wikipedia.org/wiki/Thin_plate_spline) visualization example.
 
 Videos:
 * [Grumpy to Hedgy](https://youtu.be/ggDMs3GozSU?t=2s)
