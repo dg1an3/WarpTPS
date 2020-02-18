@@ -150,7 +150,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Dib.cpp" />
     <ClCompile Include="DibView.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="ModelObject.cpp" />
@@ -162,7 +161,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">stdafx.h</PrecompiledHeaderFile>
     </ClCompile>
-    <ClCompile Include="TPSTransform.cpp" />
     <ClCompile Include="WarpTPS.cpp" />
     <ClCompile Include="WarpTPSDoc.cpp" />
     <ClCompile Include="WarpTPSView.cpp" />
@@ -171,15 +169,11 @@
     <ResourceCompile Include="WarpTPS.rc" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Dib.h" />
     <ClInclude Include="DibView.h" />
     <ClInclude Include="MainFrm.h" />
-    <ClInclude Include="ModelObject.h" />
     <ClInclude Include="MorphSlider.h" />
-    <ClInclude Include="Observer.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="StdAfx.h" />
-    <ClInclude Include="TPSTransform.h" />
     <ClInclude Include="WarpTPS.h" />
     <ClInclude Include="WarpTPSDoc.h" />
     <ClInclude Include="WarpTPSView.h" />

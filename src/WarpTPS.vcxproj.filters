@@ -33,13 +33,7 @@
     <ClCompile Include="DibView.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Dib.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ModelObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TPSTransform.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Observer.cpp">
@@ -74,18 +68,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DibView.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TPSTransform.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Dib.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ModelObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Observer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MorphSlider.h">
