@@ -22,6 +22,7 @@
 *.a
 *.lib
 obj\
+x64\
 
 # Executables
 *.exe
@@ -31,3 +32,4 @@ bin\
 
 # visual studio temp folders
 .vs\*
+.vs\
