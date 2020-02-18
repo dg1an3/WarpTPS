@@ -6,7 +6,7 @@
 //////////////////////////////////////////////////////////////////////
 
 // pre-compiled headers
-#include "stdafx.h"
+#include "pch.h"
 
 // utility macros
 #include "UtilMacros.h"
@@ -87,7 +87,7 @@ void CModelObject::SetName(const CString& strName)
 //////////////////////////////////////////////////////////////////////
 int CModelObject::GetChildCount() const
 {
-	return m_arrChildren.GetSize();
+	return (int) m_arrChildren.GetSize();
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -108,7 +108,7 @@ CModelObject *CModelObject::GetChildAt(int nIndex)
 int CModelObject::AddChild(CModelObject *pObject)
 {
 	// store the index
-	int nIndex = m_arrChildren.Add(pObject);
+	int nIndex = (int) m_arrChildren.Add(pObject);
 
 	// fire a change event
 	GetChangeEvent().Fire();

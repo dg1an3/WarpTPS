@@ -28,7 +28,7 @@ class CModelObject : public CObject,
 {
 public:
 	// constructors/destructors
-	CModelObject(const CString& strName = "");
+	CModelObject(const CString& strName = _T(""));
 	virtual ~CModelObject();
 
 	// makes the model object serializable

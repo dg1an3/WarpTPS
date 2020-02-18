@@ -5,10 +5,10 @@
 // $Id: TPSTransform.cpp,v 1.3 2003/04/26 20:52:46 default Exp $
 //////////////////////////////////////////////////////////////////////
 
-#include "stdafx.h"
+#include "pch.h"
 
-#include <MatrixNxM.h>
-#include <MatrixBase.inl>
+#include "MatrixNxM.h"
+#include "MatrixBase.inl"
 
 #include "TPSTransform.h"
 
@@ -72,7 +72,7 @@ CTPSTransform::~CTPSTransform()
 //////////////////////////////////////////////////////////////////////
 int CTPSTransform::GetLandmarkCount()
 {
-	return m_arrLandmarks[0].size();
+	return (int) m_arrLandmarks[0].size();
 }
 
 //////////////////////////////////////////////////////////////////////

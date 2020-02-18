@@ -6,7 +6,7 @@
 // CDib - Device Independent Bitmap.CDib is derived from CBitmap, so
 // you can use it with other MFC functions that use bitmaps.
 //
-#include "StdAfx.h"
+#include "pch.h"
 #include "Dib.h"
 
 #ifdef _DEBUG

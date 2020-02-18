@@ -6,7 +6,7 @@
 //////////////////////////////////////////////////////////////////////
 
 // pre-compiled headers
-#include "stdafx.h"
+#include "pch.h"
 
 // the main include for the class
 #include "Observer.h"

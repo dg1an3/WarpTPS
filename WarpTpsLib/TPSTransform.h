@@ -21,17 +21,17 @@
 using namespace std;
 
 // vector includes
-#include <VectorD.h>
-#include <VectorN.h>
+#include "VectorD.h"
+#include "VectorN.h"
 
 // matrix
-#include <MatrixNxM.h>
+#include "MatrixNxM.h"
 
 // model object base class
-#include <ModelObject.h>
+#include "ModelObject.h"
 
 // Dib for resampling
-#include <Dib.h>
+#include "Dib.h"
 
 //////////////////////////////////////////////////////////////////////
 // class CTPSTransform
