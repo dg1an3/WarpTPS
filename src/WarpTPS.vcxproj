@@ -196,6 +196,11 @@
   <ItemGroup>
     <None Include="ClassDiagram1.cd" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\WarpTpsLib\WarpTpsLib.vcxproj">
+      <Project>{05faf87b-7e6b-4ed7-9592-e2d7d91e4699}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

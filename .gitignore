@@ -21,11 +21,13 @@
 *.la
 *.a
 *.lib
+obj\
 
 # Executables
 *.exe
 *.out
 *.app
+bin\
 
 # visual studio temp folders
 .vs\*
