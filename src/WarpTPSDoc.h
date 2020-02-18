@@ -9,8 +9,7 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-#include "Dib.h"
-#include "TPSTransform.h"	// Added by ClassView
+#include "WarpTpsLib.h"
 
 // enum used to access images on the doc
 enum ImageRole

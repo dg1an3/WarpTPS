@@ -53,7 +53,7 @@ BOOL CWarpTPSDoc::OnNewDocument()
 
 	// load the images
 
-	if (!LoadImages(_T(".\\TestData\\001.bmp"), _T(".\\TestData\\002.bmp")))
+	if (!LoadImages(_T("..\\TestData\\001.bmp"), _T("..\\TestData\\002.bmp")))
 	{
 		return FALSE;
 	}

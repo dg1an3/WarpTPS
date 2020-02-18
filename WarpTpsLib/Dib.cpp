@@ -7,7 +7,7 @@
 // you can use it with other MFC functions that use bitmaps.
 //
 #include "pch.h"
-#include "Dib.h"
+#include "WarpTpsLib.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

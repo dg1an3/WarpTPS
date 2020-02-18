@@ -11,6 +11,9 @@
 // utility macros
 #include "UtilMacros.h"
 
+// API declaration
+#include "WarpTpsLib.h"
+
 // the main include for the class
 #include "ModelObject.h"
 

@@ -39,7 +39,7 @@ using namespace std;
 // represents a basic TPS transform.  holds a collection of position
 //		vector pairs and interpolates the field from those
 //////////////////////////////////////////////////////////////////////
-class CTPSTransform : public CModelObject
+class WARPTPSLIB_API CTPSTransform : public CModelObject
 #ifdef _FIELDCOM
 		, public IField  
 #endif

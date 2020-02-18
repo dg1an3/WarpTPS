@@ -29,7 +29,7 @@ typedef ListenerFunction ChangeFunction;
 // a CObservableObject fires change events that can be processed by 
 // an observer
 //////////////////////////////////////////////////////////////////////
-class CObservableEvent : public CObject
+class WARPTPSLIB_API CObservableEvent : public CObject
 {
 public:
 	// creates an event for the parent object

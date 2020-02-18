@@ -3,30 +3,21 @@
 // If this code works, it was written by Paul DiLascia.
 // If not, I don't know who wrote it.
 //
-#ifndef _DIB_H
-#define _DIB_H
-
-#ifndef _INC_VFW
-#include <vfw.h>
-#endif
-
-#define DLLFUNC
-#define DLLCLASS
-
-// tell linker to look in Video for Windows
+#pragma once
+#include <Vfw.h>
 #pragma comment(linker, "/defaultlib:vfw32.lib")
 
 // get dimensions of a bitmap
-extern DLLFUNC CSize PLGetBitmapSize(CBitmap* pBitmap);
+WARPTPSLIB_API CSize PLGetBitmapSize(CBitmap* pBitmap);
 
 // draw bitmap on dc -- BION, there's no function in Windows to do this!
-extern DLLFUNC BOOL  PLDrawBitmap(CDC& dc, CBitmap* pBitmap,
+WARPTPSLIB_API BOOL  PLDrawBitmap(CDC& dc, CBitmap* pBitmap,
 	const CRect* rcDst=NULL, const CRect* rcSrc=NULL, DWORD dwRop=SRCCOPY);
 
 ////////////////
 // CDib implements Device Independent Bitmaps as a form of CBitmap. 
 //
-class DLLCLASS CDib : public CBitmap {
+class WARPTPSLIB_API CDib : public CBitmap {
 protected:
 	BITMAP	m_bm;		// stored for speed
 	CPalette m_pal;	// palette
@@ -67,5 +58,3 @@ public:
 		return CSize(m_bm.bmWidth, m_bm.bmHeight);
 	}
 };
-
-#endif // _DIB_H

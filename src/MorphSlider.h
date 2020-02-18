@@ -1,7 +1,6 @@
 #pragma once
-#include <TPSTransform.h>
-#include <Dib.h>
-#include <DibView.h>
+#include "WarpTpsLib.h"
+#include "DibView.h"
 #include "afxcmn.h"
 #include "afxwin.h"
 

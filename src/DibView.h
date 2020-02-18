@@ -12,10 +12,7 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-#include <VectorD.h>
-#include <Dib.h>
-
-#include "TPSTransform.h"
+#include "WarpTpsLib.h"
 
 //////////////////////////////////////////////////////////////////////
 // class CDibView

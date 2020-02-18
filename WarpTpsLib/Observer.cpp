@@ -8,6 +8,9 @@
 // pre-compiled headers
 #include "pch.h"
 
+// API declaration
+#include "WarpTpsLib.h"
+
 // the main include for the class
 #include "Observer.h"
 
@@ -52,7 +55,7 @@ CObject *CObservableEvent::GetParent()
 void CObservableEvent::AddObserver(CObject *pObserver, ChangeFunction func) const
 {
 	// check to ensure the observer is not already in the list
-	for (int nAt = m_arrObservers.GetSize()-1; nAt >= 0; nAt--)
+	for (int nAt = (int) m_arrObservers.GetSize()-1; nAt >= 0; nAt--)
 	{
 		if (m_arrObservers[nAt] == pObserver && m_arrFunctions[nAt] == func)
 		{
@@ -72,7 +75,7 @@ void CObservableEvent::AddObserver(CObject *pObserver, ChangeFunction func) cons
 //////////////////////////////////////////////////////////////////////
 void CObservableEvent::RemoveObserver(CObject *pObserver, ChangeFunction func) const
 {
-	for (int nAt = m_arrObservers.GetSize()-1; nAt >= 0; nAt--)
+	for (int nAt = (int) m_arrObservers.GetSize()-1; nAt >= 0; nAt--)
 	{
 		if (m_arrObservers[nAt] == pObserver && m_arrFunctions[nAt] == func)
 		{

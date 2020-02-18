@@ -7,10 +7,10 @@
 
 #include "pch.h"
 
+#include "WarpTpsLib.h"
+
 #include "MatrixNxM.h"
 #include "MatrixBase.inl"
-
-#include "TPSTransform.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -221,7 +221,7 @@ void CTPSTransform::Presample(int width, int height)
 	}
 
 	CVectorD<3> vZero;
-	for (int nAt = 0; nAt < m_presampledOffsets.size(); nAt++)
+	for (int nAt = 0; nAt < (int) m_presampledOffsets.size(); nAt++)
 		m_presampledOffsets[nAt] = vZero;
 
 	if (m_bRecalcPresample)

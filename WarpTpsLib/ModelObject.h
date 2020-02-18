@@ -23,7 +23,7 @@
 //		3) possibly has children
 //		4) can be serialized
 //////////////////////////////////////////////////////////////////////
-class CModelObject : public CObject,
+class WARPTPSLIB_API CModelObject : public CObject,
 		public IUnknown
 {
 public:
