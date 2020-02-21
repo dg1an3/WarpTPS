@@ -14,6 +14,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestData", "TestData", "{FA
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UnitTest1", "UnitTest1\UnitTest1.vcxproj", "{0D15F36A-7B13-4DE4-8F29-A119EACD2B9F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{05FAF87B-7E6B-4ED7-9592-E2D7D91E4699} = {05FAF87B-7E6B-4ED7-9592-E2D7D91E4699}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WarpTpsLib", "WarpTpsLib\WarpTpsLib.vcxproj", "{05FAF87B-7E6B-4ED7-9592-E2D7D91E4699}"
 EndProject
