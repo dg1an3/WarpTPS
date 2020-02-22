@@ -27,9 +27,6 @@
     <ClCompile Include="ModelObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Observer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="TPSTransform.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -71,9 +68,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ModelObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Observer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TPSTransform.h">

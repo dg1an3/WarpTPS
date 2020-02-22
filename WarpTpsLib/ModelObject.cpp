@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////
 // ModelObject.cpp: implementation of the CModelObject class.
 //
-// Copyright (C) 1999-2001
+// Copyright (C) 1999-2020 Derek Lane
 // $Id: ModelObject.cpp,v 1.3 2003/04/26 20:51:50 default Exp $
 //////////////////////////////////////////////////////////////////////
 
@@ -36,10 +36,7 @@ CObArray CModelObject::m_arrDispose;
 // constructs a model object with the given name
 //////////////////////////////////////////////////////////////////////
 CModelObject::CModelObject(const CString& strName)
-#pragma warning(disable: 4355)
-	: m_eventChange(this),
-#pragma warning(default: 4355)
-		m_strName(strName),
+	: m_strName(strName),
 		m_dwRefCount(0)
 {
 }
@@ -78,9 +75,6 @@ void CModelObject::SetName(const CString& strName)
 {
 	// set the name
 	m_strName = strName;
-
-	// and fire the change
-	GetChangeEvent().Fire();
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -112,9 +106,6 @@ int CModelObject::AddChild(CModelObject *pObject)
 {
 	// store the index
 	int nIndex = (int) m_arrChildren.Add(pObject);
-
-	// fire a change event
-	GetChangeEvent().Fire();
 
 	// and return the index
 	return nIndex;

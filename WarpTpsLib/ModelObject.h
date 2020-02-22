@@ -1,18 +1,12 @@
 //////////////////////////////////////////////////////////////////////
 // ModelObject.h: interface for the CModelObject class.
 //
-// Copyright (C) 1999-2001
+// Copyright (C) 1999-2020 Derek Lane
 // $Id: ModelObject.h,v 1.3 2003/04/26 20:51:38 default Exp $
 //////////////////////////////////////////////////////////////////////
 
-#if !defined(AFX_MODELOBJECT_H__5BF91A87_C623_11D4_BE42_005004D16DAA__INCLUDED_)
-#define AFX_MODELOBJECT_H__5BF91A87_C623_11D4_BE42_005004D16DAA__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
-#include "Observer.h"
 
 //////////////////////////////////////////////////////////////////////
 // class CModelObject
@@ -42,9 +36,6 @@ public:
 	CModelObject *GetChildAt(int nIndex);
 	int AddChild(CModelObject *pObject);
 
-	// returns a reference to this object's change event
-	CObservableEvent& GetChangeEvent();
-
 	// serialization
 	virtual void Serialize( CArchive& ar );
 
@@ -58,24 +49,9 @@ protected:
 	// the model object's children
 	CObArray m_arrChildren;
 
-	// the change event for this object
-	CObservableEvent m_eventChange;
-
 	// reference count for the object
 	DWORD m_dwRefCount;
 
 	// static array of objects to be disposed of
 	static CObArray m_arrDispose;
 };
-
-//////////////////////////////////////////////////////////////////////
-// CModelObject::GetChangeEvent
-// 
-// returns a reference to this object's change event
-//////////////////////////////////////////////////////////////////////
-inline CObservableEvent& CModelObject::GetChangeEvent()
-{
-	return m_eventChange;
-}
-
-#endif // !defined(AFX_MODELOBJECT_H__5BF91A87_C623_11D4_BE42_005004D16DAA__INCLUDED_)

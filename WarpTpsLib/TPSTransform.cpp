@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////
 // TPSTransform.cpp: implementation of the CTPSTransform class.
 //
-// Copyright (C) 2002
+// Copyright (C) 2002-2020 Derek Lane
 // $Id: TPSTransform.cpp,v 1.3 2003/04/26 20:52:46 default Exp $
 //////////////////////////////////////////////////////////////////////
 
@@ -106,8 +106,6 @@ void CTPSTransform::SetLandmark(int nDataSet, int nIndex, const CVectorD<3>& vLa
 	m_bRecalc = TRUE;
 	m_bRecalcPresample = TRUE;
 
-	// fire a change
-	GetChangeEvent().Fire();
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -137,9 +135,6 @@ int CTPSTransform::AddLandmark(const CVectorD<3>& vLandmark1,
 	m_bRecalcMatrix = TRUE;
 	m_bRecalc = TRUE;
 	m_bRecalcPresample = TRUE;
-
-	// fire a change
-	GetChangeEvent().Fire();
 
 	// return the index of the new landmark
 	return GetLandmarkCount()-1;
