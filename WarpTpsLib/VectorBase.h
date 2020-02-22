@@ -2,12 +2,11 @@
 // VectorBase.h: declaration and definition of the CVectorBase 
 //		template class.
 //
-// Copyright (C) 1999-2003 Derek G Lane
+// Copyright (C) 1999-2020 Derek G Lane
 // $Id: VectorBase.h,v 1.10 2003/03/01 22:26:45 default Exp $
 //////////////////////////////////////////////////////////////////////
 
-#if !defined(VECTORBASE_H)
-#define VECTORBASE_H
+#pragma once
 
 // for iostream support for vectors
 #include <iostream>
@@ -541,6 +540,3 @@ void VectorValid(const CVectorBase<TYPE>& v)
 
 }	// VectorValid
 #endif
-
-
-#endif	// !defined(VECTORBASE_H)

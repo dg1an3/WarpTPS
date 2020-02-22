@@ -1,12 +1,11 @@
 //////////////////////////////////////////////////////////////////////
 // MatrixNxM.h: declaration and definition of the CMatrixNxM template class.
 //
-// Copyright (C) 1999-2001
+// Copyright (C) 1999-2020 Derek Lane
 // $Id: MatrixNxM.h,v 1.7 2003/11/01 01:39:40 default Exp $
 //////////////////////////////////////////////////////////////////////
 
-#if !defined(MATRIXNXM_H)
-#define MATRIXNXM_H
+#pragma once
 
 #include "MathUtil.h"
 
@@ -456,7 +455,5 @@ CArchive& operator>>(CArchive &ar, CMatrixNxM<TYPE>& m)
 	// return the archive object
 	return ar;
 }
-
-#endif
 
 #endif

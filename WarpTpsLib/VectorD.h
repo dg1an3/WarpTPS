@@ -1,12 +1,11 @@
 //////////////////////////////////////////////////////////////////////
 // Vector.h: declaration and definition of the CVectorD template class.
 //
-// Copyright (C) 1999-2003 Derek G Lane
+// Copyright (C) 1999-2020 Derek G Lane
 // $Id: VectorD.h,v 1.8 2003/04/26 20:38:19 default Exp $
 //////////////////////////////////////////////////////////////////////
 
-#if !defined(VECTOR_H)
-#define VECTOR_H
+#pragma once
 
 // math utilities
 #include "MathUtil.h"
@@ -593,5 +592,3 @@ CArchive& operator>>(CArchive &ar, CVectorD<DIM, TYPE>& v)
 
 }	// operator>>(CArchive &ar, CVectorD)
 #endif
-
-#endif	// !defined(VECTOR_H)

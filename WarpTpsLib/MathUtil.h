@@ -2,12 +2,11 @@
 // MathUtil.h: declarations of standard math types, macros and 
 //		functions
 //
-// Copyright (C) 1999-2003 Derek G Lane
+// Copyright (C) 1999-2020 Derek G Lane
 // $Id: MathUtil.h,v 1.4 2003/02/25 06:16:52 default Exp $
 //////////////////////////////////////////////////////////////////////
 
-#if !defined(MATHUTIL_H)
-#define MATHUTIL_H
+#pragma once
 
 // standard math library
 #include <math.h>
@@ -146,5 +145,3 @@ inline REAL conjg(const REAL& c)
 {
 	return c;
 }
-
-#endif // !defined(MATHUTIL_H)

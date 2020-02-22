@@ -1,13 +1,12 @@
 //////////////////////////////////////////////////////////////////////
 // MatrixBase.inl : implementation of the CMatrixBase class.
 //
-// Copyright (C) 2002-2003 Derek G Lane
+// Copyright (C) 2002-2020 Derek G Lane
 // $Id: MatrixBase.inl,v 1.5 2003/03/01 22:27:19 default Exp $
 // U.S. Patent Pending
 //////////////////////////////////////////////////////////////////////
 
-#ifndef _MATRIXBASE_INL_
-#define _MATRIXBASE_INL_
+#pragma once
 
 // valarray helper class
 #undef min
@@ -824,6 +823,3 @@ void CMatrixBase<TYPE>::AccumulateLH(CVectorBase<TYPE>& w)
 	}
 
 }	// CMatrixBase<TYPE>::AccumulateLH
-
-
-#endif // define _MATRIXBASE_INL_

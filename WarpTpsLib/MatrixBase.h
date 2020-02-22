@@ -2,12 +2,11 @@
 // MatrixBase.h: declaration and definition of the CMatrixBase 
 //		template class.
 //
-// Copyright (C) 1999-2003 Derek G Lane
+// Copyright (C) 1999-2020 Derek G Lane
 // $Id: MatrixBase.h,v 1.13 2003/03/01 22:27:19 default Exp $
 //////////////////////////////////////////////////////////////////////
 
-#if !defined(MATRIXBASE_H)
-#define MATRIXBASE_H
+#pragma once
 
 // vector base class
 #include "VectorBase.h"
@@ -574,4 +573,3 @@ void MatrixValid(const CMatrixBase<TYPE>& m)
 
 #endif
 
-#endif

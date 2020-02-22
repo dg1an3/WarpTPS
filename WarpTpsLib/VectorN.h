@@ -2,12 +2,11 @@
 // VectorN.h: declaration and definition of the CVectorN dynamic 
 //		vector template class.
 //
-// Copyright (C) 1999-2003 Derek G Lane
+// Copyright (C) 1999-2020 Derek G Lane
 // $Id: VectorN.h,v 1.6 2003/02/26 05:52:35 default Exp $
 //////////////////////////////////////////////////////////////////////
 
-#if !defined(VECTORN_H)
-#define VECTORN_H
+#pragma once
 
 // base class include
 #include "VectorBase.h"
@@ -344,5 +343,3 @@ CArchive& operator>>(CArchive &ar, CVectorN<TYPE>& v)
 }
 
 #endif	// __AFX_H__
-
-#endif	// !defined(VECTOR_H)
