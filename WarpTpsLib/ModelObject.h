@@ -23,8 +23,7 @@
 //		3) possibly has children
 //		4) can be serialized
 //////////////////////////////////////////////////////////////////////
-class WARPTPSLIB_API CModelObject : public CObject,
-		public IUnknown
+class WARPTPSLIB_API CModelObject : public CObject
 {
 public:
 	// constructors/destructors
@@ -48,11 +47,6 @@ public:
 
 	// serialization
 	virtual void Serialize( CArchive& ar );
-
-// IUnknown interface methods
-	STDMETHOD(QueryInterface)(REFIID, void **);   
-	STDMETHOD_(ULONG, AddRef)();
-	STDMETHOD_(ULONG, Release)();
 
 	// static class function to dispose of objects
 	static void DisposeObjects();

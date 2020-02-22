@@ -29,17 +29,11 @@ typedef ListenerFunction ChangeFunction;
 // a CObservableObject fires change events that can be processed by 
 // an observer
 //////////////////////////////////////////////////////////////////////
-class WARPTPSLIB_API CObservableEvent : public CObject
+class WARPTPSLIB_API CObservableEvent
 {
 public:
 	// creates an event for the parent object
 	CObservableEvent(CObject *pParent = NULL);
-
-	// includes dynamic type information
-	DECLARE_DYNAMIC(CObservableEvent)
-
-	// returns the parent of this event
-	CObject *GetParent();
 
 	// accessors for the observer list
 	void AddObserver(CObject *pObserver, ListenerFunction func) const;
@@ -49,9 +43,6 @@ public:
 	void Fire(void *pValue = NULL);
 
 private:
-	// the parent object of this event
-	CObject *m_pParent;
-
 	// the array of observers
 	mutable CArray<CObject *, CObject *> m_arrObservers;
 

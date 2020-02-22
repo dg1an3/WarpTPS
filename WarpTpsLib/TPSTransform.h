@@ -12,10 +12,6 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-#ifdef _FIELDCOM
-#include "FieldCOM.h"
-#endif
-
 // container vector for the landmarks
 #include <vector>
 using namespace std;
@@ -40,9 +36,6 @@ using namespace std;
 //		vector pairs and interpolates the field from those
 //////////////////////////////////////////////////////////////////////
 class WARPTPSLIB_API CTPSTransform : public CModelObject
-#ifdef _FIELDCOM
-		, public IField  
-#endif
 {
 public:
 	// construction/destruction

@@ -258,6 +258,8 @@ void CTPSTransform::Presample(int width, int height)
 //////////////////////////////////////////////////////////////////////
 void CTPSTransform::Resample(CDib *pImageSrc, CDib *pImageDst, float percent)
 {
+	// TODO: rewrite this to only pass bytes/pixel, stride, and two pixel array pointers
+
 	// get the number of bytes-per-pixel for each
 	BITMAP srcBitmap;
 	pImageSrc->GetBitmap(&srcBitmap);
