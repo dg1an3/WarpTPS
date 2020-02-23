@@ -1,16 +1,11 @@
 //////////////////////////////////////////////////////////////////////
 // TPSTransform.h: interface for the CTPSTransform class.
 //
-// Copyright (C) 2002
+// Copyright (C) 2002-2020 Derek Lane
 // $Id: TPSTransform.h,v 1.3 2003/04/26 20:52:39 default Exp $
 //////////////////////////////////////////////////////////////////////
 
-#if !defined(AFX_TPSTRANSFORM_H__AD843B49_3C65_4573_B2D5_9C258B29969B__INCLUDED_)
-#define AFX_TPSTRANSFORM_H__AD843B49_3C65_4573_B2D5_9C258B29969B__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
 // container vector for the landmarks
 #include <vector>
@@ -112,5 +107,3 @@ private:
 	BOOL m_bRecalc;
 	BOOL m_bRecalcPresample;
 };
-
-#endif // !defined(AFX_TPSTRANSFORM_H__AD843B49_3C65_4573_B2D5_9C258B29969B__INCLUDED_)

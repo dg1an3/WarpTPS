@@ -24,8 +24,6 @@ static char THIS_FILE[]=__FILE__;
 #define new DEBUG_NEW
 #endif
 
-CObArray CModelObject::m_arrDispose;
-
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -49,11 +47,6 @@ CModelObject::CModelObject(const CString& strName)
 CModelObject::~CModelObject()
 {
 }
-
-//////////////////////////////////////////////////////////////////////
-// declares CModelObject as a serializable class
-//////////////////////////////////////////////////////////////////////
-IMPLEMENT_SERIAL(CModelObject, CObject, 1)
 
 //////////////////////////////////////////////////////////////////////
 // CModelObject::GetName
@@ -109,21 +102,4 @@ int CModelObject::AddChild(CModelObject *pObject)
 
 	// and return the index
 	return nIndex;
-}
-
-//////////////////////////////////////////////////////////////////////
-// CModelObject::Serialize
-// 
-// serialization
-//////////////////////////////////////////////////////////////////////
-void CModelObject::Serialize( CArchive& ar )
-{
-	// serialize the base class
-	CObject::Serialize(ar);
-
-	// serialize the object's name
-	SERIALIZE_VALUE(ar, m_strName);
-
-	// serialize the children
-	m_arrChildren.Serialize(ar);
 }
