@@ -246,6 +246,120 @@ void CTPSTransform::Presample(int width, int height)
 	}
 }
 
+//
+void CTPSTransform::ResampleRaw(LPBYTE pSrcPixels, LPBYTE pDstPixels,
+	UINT bytesPerPixel,
+	UINT width,
+	UINT height,
+	UINT stride,
+	float percent)
+{
+	// position of the destination
+	CVectorD<3> vDstPos;
+
+	// position of the source
+	CVectorD<3> vOffset;
+	CVectorD<3> vSrcPos;
+
+	// for each pixel in the image
+	for (vDstPos[1] = 0.0; vDstPos[1] < height; vDstPos[1] += 1.0)
+	{
+		for (vDstPos[0] = 0.0; vDstPos[0] < width; vDstPos[0] += 1.0)
+		{
+			Eval(vDstPos, vOffset, percent);
+			vSrcPos = vDstPos + vOffset;
+
+			// compute the destination position
+			int nDstY = height - (int)vDstPos[1] - 1;
+			int nDstIndex = bytesPerPixel * (int)vDstPos[0]
+				+ nDstY * stride;
+
+			// bounds check source position
+			int nSrcY = height - (int)floor(vSrcPos[1] + 0.5) - 1;
+			if (vSrcPos[0] >= 0.0 && vSrcPos[0] < width
+				&& nSrcY >= 0 && nSrcY < height)
+			{
+				// compute the positions
+				int nSrcIndex = bytesPerPixel * (int)floor(vSrcPos[0] + 0.5)
+					+ nSrcY * stride;
+
+				// and resample
+				memcpy(&pDstPixels[nDstIndex], &pSrcPixels[nSrcIndex],
+					bytesPerPixel);
+			}
+			else
+			{
+				// set to zero
+				memset(&pDstPixels[nDstIndex], 0, bytesPerPixel);
+			}
+		}
+	}
+}
+
+//////////////////////////////////////////////////////////////////////
+// CTPSTransform::ResampleRawWithField
+//
+// resamples raw pixels using the presampled vector field
+//////////////////////////////////////////////////////////////////////
+void CTPSTransform::ResampleRawWithField(LPBYTE pSrcPixels, LPBYTE pDstPixels,
+	UINT bytesPerPixel, 
+	UINT width, 							
+	UINT height, 
+	UINT stride,
+	float percent)
+{
+	// see if a recalc is needed
+	if (m_bRecalc)
+	{
+		// recalculate the weight vectors
+		RecalcWeights();
+	}
+
+	// if there are no landmarks, then no presampled vector field
+	if (m_bRecalcPresample
+		|| m_presampledWidth != width
+		|| m_presampledHeight != height)
+	{
+		Presample(width, height);
+	}
+
+	CVectorD<3> vSrcPos;
+	for (int dstAtY = 0; dstAtY < height; dstAtY++)
+	{
+		for (int dstAtX = 0; dstAtX < width;dstAtX++)
+		{
+			// compute the destination position
+			int nDstY = height - dstAtY - 1;
+			int nDstIndex = bytesPerPixel * dstAtX
+				+ nDstY * stride;
+
+			vSrcPos[0] = dstAtX;
+			vSrcPos[1] = dstAtY;
+			vSrcPos += ((double)percent) * m_presampledOffsets[dstAtY * m_presampledWidth + dstAtX];
+
+			// bounds check source position
+			int nSrcY = height - (int)floor(vSrcPos[1] + 0.5) - 1;
+			if (vSrcPos[0] >= 0.0 && vSrcPos[0] < width
+				&& nSrcY >= 0 && nSrcY < height)
+			{
+				// compute the positions
+				int nSrcIndex = bytesPerPixel * (int)floor(vSrcPos[0] + 0.5)
+					+ nSrcY * stride;
+
+				// and resample
+				memcpy(&pDstPixels[nDstIndex], &pSrcPixels[nSrcIndex],
+					bytesPerPixel);
+			}
+			else
+			{
+				// set to zero
+				memset(&pDstPixels[nDstIndex], 0, bytesPerPixel);
+			}
+		}
+	}
+
+}
+
 //////////////////////////////////////////////////////////////////////
 // CTPSTransform::Resample
 // 
@@ -279,8 +393,8 @@ void CTPSTransform::Resample(CDib *pImageSrc, CDib *pImageDst, float percent)
 	CSize dstSize = pImageDst->GetSize();
 
 	// retrieve the source and destination pixels
-	UCHAR *pSrcPixels = (UCHAR *) pImageSrc->GetDIBits();
-	UCHAR *pDstPixels = (UCHAR *) pImageDst->GetDIBits();
+	LPBYTE pSrcPixels = (LPBYTE) pImageSrc->GetDIBits();
+	LPBYTE pDstPixels = (LPBYTE) pImageDst->GetDIBits();
 
 	TRACE("Resampling...\n");
 

@@ -69,6 +69,12 @@ public:
 	// returns the offset vector, so the mapped point can be derived by adding the position and offset
 	void Eval(const CVectorD<3>& vPos, CVectorD<3>& vOffset, float percent);
 
+	// resample pixels
+	void ResampleRaw(LPBYTE pSrcPixels, LPBYTE pDstPixels, UINT bytesPerPixel, UINT width, UINT height, UINT stride, float percent);
+
+	// resample pixels
+	void ResampleRawWithField(LPBYTE pSrcPixels, LPBYTE pDstPixels, UINT bytesPerPixel, UINT width, UINT height, UINT stride, float percent);
+
 	// resamples an image based on the field
 	void Resample(CDib *pImageSrc, CDib *pImageDst, float percent);
 

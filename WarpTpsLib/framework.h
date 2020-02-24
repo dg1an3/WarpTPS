@@ -9,4 +9,3 @@
 #define _ATL_CSTRING_EXPLICIT_CONSTRUCTORS      // some CString constructors will be explicit
 
 #include <afxwin.h>         // MFC core and standard components
-#include <afxext.h>         // MFC extensions
