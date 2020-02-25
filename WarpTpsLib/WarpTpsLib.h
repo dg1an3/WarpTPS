@@ -13,18 +13,3 @@
 
 #include "TPSTransform.h"
 
-// CWarpTpsLibApp
-// See WarpTpsLib.cpp for the implementation of this class
-//
-
-class CWarpTpsLibApp : public CWinApp
-{
-public:
-	CWarpTpsLibApp();
-
-// Overrides
-public:
-	virtual BOOL InitInstance();
-
-	DECLARE_MESSAGE_MAP()
-};
