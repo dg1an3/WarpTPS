@@ -8,6 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
+#include "targetver.h"
+
 #include "connection_manager.hpp"
 #include <algorithm>
 #include <boost/bind.hpp>

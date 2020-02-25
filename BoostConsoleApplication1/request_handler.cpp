@@ -8,6 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
+#include "targetver.h"
+
 #include "request_handler.hpp"
 #include <fstream>
 #include <sstream>
@@ -71,7 +73,7 @@ void request_handler::handle_request(const request& req, reply& rep)
   rep.status = reply::ok;
   char buf[512];
   while (is.read(buf, sizeof(buf)).gcount() > 0)
-    rep.content.append(buf, is.gcount());
+    rep.content.append(buf, (int) is.gcount());
   rep.headers.resize(2);
   rep.headers[0].name = "Content-Length";
   rep.headers[0].value = boost::lexical_cast<std::string>(rep.content.size());
