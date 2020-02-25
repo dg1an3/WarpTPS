@@ -20,7 +20,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UnitTest1", "UnitTest1\Unit
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WarpTpsLib", "WarpTpsLib\WarpTpsLib.vcxproj", "{05FAF87B-7E6B-4ED7-9592-E2D7D91E4699}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BoostConsoleApplication1", "BoostConsoleApplication1\BoostConsoleApplication1.vcxproj", "{413FB3EC-F263-4D1A-8985-6473744BCC22}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WarpWebServer", "WarpWebServer\WarpWebServer.vcxproj", "{413FB3EC-F263-4D1A-8985-6473744BCC22}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
