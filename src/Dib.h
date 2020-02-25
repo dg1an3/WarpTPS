@@ -8,16 +8,16 @@
 #pragma comment(linker, "/defaultlib:vfw32.lib")
 
 // get dimensions of a bitmap
-WARPTPSLIB_API CSize PLGetBitmapSize(CBitmap* pBitmap);
+CSize PLGetBitmapSize(CBitmap* pBitmap);
 
 // draw bitmap on dc -- BION, there's no function in Windows to do this!
-WARPTPSLIB_API BOOL  PLDrawBitmap(CDC& dc, CBitmap* pBitmap,
+BOOL  PLDrawBitmap(CDC& dc, CBitmap* pBitmap,
 	const CRect* rcDst=NULL, const CRect* rcSrc=NULL, DWORD dwRop=SRCCOPY);
 
 ////////////////
 // CDib implements Device Independent Bitmaps as a form of CBitmap. 
 //
-class WARPTPSLIB_API CDib : public CBitmap {
+class CDib : public CBitmap {
 protected:
 	BITMAP	m_bm;		// stored for speed
 	CPalette m_pal;	// palette

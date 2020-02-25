@@ -21,9 +21,6 @@
     <ClCompile Include="pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Dib.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ModelObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -56,9 +53,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="pch.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Dib.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MatrixBase.h">

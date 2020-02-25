@@ -21,9 +21,6 @@ using namespace std;
 // model object base class
 #include "ModelObject.h"
 
-// Dib for resampling
-#include "Dib.h"
-
 //////////////////////////////////////////////////////////////////////
 // class CTPSTransform
 // 
@@ -74,9 +71,6 @@ public:
 
 	// resample pixels
 	void ResampleRawWithField(LPBYTE pSrcPixels, LPBYTE pDstPixels, UINT bytesPerPixel, UINT width, UINT height, UINT stride, float percent);
-
-	// resamples an image based on the field
-	void Resample(CDib *pImageSrc, CDib *pImageDst, float percent);
 
 	// helper to check that another transform is set up as the inverse of this one
 	BOOL CheckInverse(CTPSTransform* pInverse);

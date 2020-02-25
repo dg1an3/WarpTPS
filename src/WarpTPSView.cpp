@@ -195,12 +195,9 @@ void CWarpTPSView::OnUpdate(CView* pSender, LPARAM lHint, CObject* pHint)
 
 		// now resample the center image
 		TRACE("OnUpdate/Resample");
-		m_pTransform->Resample(GetDocument()->GetImage(ImageRole::SourceImage), 
-			GetDocument()->GetImage(ImageRole::WarpedSourceImage), m_morphSlider.m_morphPercent);
 
-		// update the inverse transform to document image 3
-		m_pInverseTransform->Resample(GetDocument()->GetImage(ImageRole::DestinationImage), 
-			GetDocument()->GetImage(ImageRole::WarpedDestinationImage), 1.0);
+		// resample the images
+		GetDocument()->UpdateResampled(m_morphSlider.m_morphPercent);
 		
 		GetDocument()->GetImage(ImageRole::BlendedImage)->CopyPixels(
 			GetDocument()->GetImage(ImageRole::WarpedSourceImage));
@@ -222,17 +219,8 @@ void CWarpTPSView::OnUpdate(CView* pSender, LPARAM lHint, CObject* pHint)
 	m_arrViews[2].SetDib(GetDocument()->GetImage(ImageRole::SourceImage));
 	m_arrViews[2].SetTransform(m_pTransform, m_pInverseTransform, 1);
 
-	m_morphSlider.m_pTransform = m_pTransform;
-	m_morphSlider.m_pInverseTransform = m_pInverseTransform;
+	m_morphSlider.m_pDoc = GetDocument();
 	m_morphSlider.m_pWarpedView = &m_arrViews[1];
-
-	// set up the images
-	//   TODO: give these more meaningful access via an enum
-	m_morphSlider.m_pSourceImage = GetDocument()->GetImage(ImageRole::SourceImage);
-	m_morphSlider.m_pWarpedSourceImage = GetDocument()->GetImage(ImageRole::WarpedSourceImage);
-	m_morphSlider.m_pDestinationImage = GetDocument()->GetImage(ImageRole::DestinationImage);
-	m_morphSlider.m_pWarpedDestinationImage = GetDocument()->GetImage(ImageRole::WarpedDestinationImage);
-	m_morphSlider.m_pBlendedImage = GetDocument()->GetImage(ImageRole::BlendedImage);
 
 	Invalidate(FALSE);
 }

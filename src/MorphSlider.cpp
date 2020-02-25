@@ -13,12 +13,7 @@ IMPLEMENT_DYNAMIC(MorphSlider, CDialog)
 
 MorphSlider::MorphSlider(CWnd* pParent /*=NULL*/)
 	: CDialog(MorphSlider::IDD, pParent)
-	, m_pTransform(NULL)
-	, m_pSourceImage(NULL)
-	, m_pWarpedSourceImage(NULL)
-	, m_pDestinationImage(NULL)
-	, m_pWarpedDestinationImage(NULL)
-	, m_pBlendedImage(NULL)
+	, m_pDoc(NULL)
 	, m_pWarpedView(NULL)
 	, m_morphPercent(1.0f)
 	, m_blendPercent(1.0f)
@@ -47,7 +42,7 @@ END_MESSAGE_MAP()
 
 void MorphSlider::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
-	if (m_pTransform == NULL)
+	if (m_pDoc == NULL)
 		return;
 
 	SCROLLINFO si;
@@ -98,32 +93,28 @@ void MorphSlider::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 			pScrollBar->GetScrollRange(&minPos, &maxPos);
 			float r_exp = ((float)(nPos+1));
 
-			m_pTransform->SetK(r_exp);
-			m_pInverseTransform->SetK(r_exp);
+			m_pDoc->GetTransform()->SetK(r_exp);
+			m_pDoc->GetInverseTransform()->SetK(r_exp);
 		}
 
 		if (bMorphChanged)
 		{
 			TRACE("OnHScroll Resample nSBCode=%i pScrollBar=%x percent=%f\n", 
 				nSBCode, pScrollBar, m_morphPercent);
-
-			// now resample the center image
-			m_pTransform->Resample(m_pSourceImage, 
-				m_pWarpedSourceImage, m_morphPercent);
-
-			// now resample the inverse center image
-			m_pInverseTransform->Resample(m_pDestinationImage, 
-				m_pWarpedDestinationImage, 1.0f-m_morphPercent);				
+			
+			m_pDoc->UpdateResampled(m_morphPercent);
+			m_pDoc->UpdateAllViews((CView*)NULL);
 		}
 
 		if (bBlendChanged || bMorphChanged)
 		{
-			m_pBlendedImage->CopyPixels(m_pWarpedSourceImage);
-			m_pBlendedImage->BlendPixels(m_pWarpedDestinationImage, m_blendPercent);
+			auto pBlendedImage = m_pDoc->GetImage(ImageRole::BlendedImage);
+			pBlendedImage->CopyPixels(m_pDoc->GetImage(ImageRole::WarpedSourceImage));
+			pBlendedImage->BlendPixels(m_pDoc->GetImage(ImageRole::WarpedDestinationImage), m_blendPercent);
 
-			ASSERT(m_pWarpedView->GetDib() == m_pBlendedImage);
-			m_pWarpedView->SetDib(m_pBlendedImage);
-			m_pWarpedView->SetTransform(m_pTransform, m_pInverseTransform, 0);
+			ASSERT(m_pWarpedView->GetDib() == pBlendedImage);
+			m_pWarpedView->SetDib(pBlendedImage);
+			m_pWarpedView->SetTransform(m_pDoc->GetTransform(), m_pDoc->GetInverseTransform(), 0);
 			m_pWarpedView->RedrawWindow(NULL, NULL);
 		}
 	}

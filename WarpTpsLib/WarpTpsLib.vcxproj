@@ -191,7 +191,6 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Dib.cpp" />
     <ClCompile Include="ModelObject.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -208,7 +207,6 @@
     <None Include="WarpTpsLib.def" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Dib.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="MathUtil.h" />
     <ClInclude Include="MatrixBase.h" />

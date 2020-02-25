@@ -36,6 +36,9 @@
     <ClCompile Include="MorphSlider.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Dib.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="WarpTPS.rc">
@@ -65,6 +68,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MorphSlider.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dib.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

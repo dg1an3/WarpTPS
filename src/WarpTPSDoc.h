@@ -9,6 +9,7 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
+#include "Dib.h"
 #include "WarpTpsLib.h"
 
 // enum used to access images on the doc
@@ -42,11 +43,14 @@ public:
 	// get the transform object
 	CTPSTransform * GetInverseTransform();
 
+	// updates both resampled images
+	void UpdateResampled(float forwardPercent);
+
 // Operations
 public:
 	// loads the two specified images
 	BOOL LoadImages(LPCTSTR pszFilename1, LPCTSTR pszFilename2);
-	
+
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CWarpTPSDoc)

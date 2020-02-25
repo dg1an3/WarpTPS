@@ -1,5 +1,6 @@
 #pragma once
 #include "WarpTpsLib.h"
+#include "WarpTPSDoc.h"
 #include "DibView.h"
 #include "afxcmn.h"
 #include "afxwin.h"
@@ -14,16 +15,7 @@ public:
 	MorphSlider(CWnd* pParent = NULL);   // standard constructor
 	virtual ~MorphSlider();
 
-	CTPSTransform *m_pTransform;
-	CTPSTransform *m_pInverseTransform;
-
-	// various and sundry images
-	CDib *m_pSourceImage;
-	CDib *m_pDestinationImage;
-	CDib *m_pWarpedSourceImage;
-	CDib *m_pWarpedDestinationImage;
-	CDib *m_pBlendedImage;
-
+	CWarpTPSDoc *m_pDoc;
 	CDibView *m_pWarpedView;
 
 	float m_morphPercent;

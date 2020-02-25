@@ -11,7 +11,6 @@
 #define WARPTPSLIB_API __declspec(dllimport)
 #endif
 
-#include "Dib.h"
 #include "TPSTransform.h"
 
 // CWarpTpsLibApp

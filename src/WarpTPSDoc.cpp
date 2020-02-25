@@ -207,6 +207,45 @@ CTPSTransform * CWarpTPSDoc::GetInverseTransform()
 	return &m_inversetransform;
 }
 
+void Resample(CTPSTransform* xform, CDib*pImageSrc, CDib*pImageDst, float percentage)
+{
+	// get the number of bytes-per-pixel for each
+	BITMAP srcBitmap;
+	pImageSrc->GetBitmap(&srcBitmap);
+	int nSrcBytesPerPixel = (srcBitmap.bmBitsPixel + 7) / 8;
+
+	// ensure the scan line width is on a LONG boundary
+	int nSrcWidthBytes = 4 * ((srcBitmap.bmWidth * nSrcBytesPerPixel + 3) / 4);
+
+	BITMAP dstBitmap;
+	pImageDst->GetBitmap(&dstBitmap);
+	int nDstBytesPerPixel = (dstBitmap.bmBitsPixel + 7) / 8;
+
+	// ensure the scan line width is on a LONG boundary
+	int nDstWidthBytes = 4 * ((dstBitmap.bmWidth * nDstBytesPerPixel + 3) / 4);
+
+	// should have same pixel format
+	ASSERT(nDstBytesPerPixel == nSrcBytesPerPixel);
+	ASSERT(nDstWidthBytes == nSrcWidthBytes);
+
+	// get the size of the source image
+	CSize srcSize = pImageSrc->GetSize();
+	CSize dstSize = pImageDst->GetSize();
+
+	// retrieve the source and destination pixels
+	LPBYTE pSrcPixels = (LPBYTE)pImageSrc->GetDIBits();
+	LPBYTE pDstPixels = (LPBYTE)pImageDst->GetDIBits();
+
+	TRACE("Resampling...\n");
+	xform->ResampleRawWithField(pSrcPixels, pDstPixels, nSrcBytesPerPixel, srcSize.cx, srcSize.cy, nSrcWidthBytes, percentage);
+}
+
+void CWarpTPSDoc::UpdateResampled(float forwardPercent)
+{
+	Resample(GetTransform(), m_pImage[ImageRole::SourceImage], m_pImage[ImageRole::WarpedSourceImage], forwardPercent);
+	Resample(GetInverseTransform(), m_pImage[ImageRole::DestinationImage], m_pImage[ImageRole::WarpedDestinationImage], 1.0 - forwardPercent);
+}
+
 void CWarpTPSDoc::InitCornerLandmarks()
 {
 	// remove all landmarks from the transform
@@ -237,10 +276,7 @@ void CWarpTPSDoc::InitCornerLandmarks()
 		CVectorD<3>(size1.cx, 0.0));
 
 	// resample the images
-	GetTransform()->Resample(m_pImage[ImageRole::SourceImage], 
-		m_pImage[ImageRole::WarpedSourceImage], 1.0);
-	GetInverseTransform()->Resample(m_pImage[ImageRole::DestinationImage], 
-		m_pImage[ImageRole::WarpedDestinationImage], 0.5);
+	UpdateResampled(1.0);
 }
 
 void CWarpTPSDoc::DeleteContents() 

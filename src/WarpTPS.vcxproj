@@ -150,6 +150,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Dib.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">stdafx.h</PrecompiledHeaderFile>
+    </ClCompile>
     <ClCompile Include="DibView.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="MorphSlider.cpp" />
@@ -167,6 +170,7 @@
     <ResourceCompile Include="WarpTPS.rc" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Dib.h" />
     <ClInclude Include="DibView.h" />
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="MorphSlider.h" />
