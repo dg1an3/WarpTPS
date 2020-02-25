@@ -17,12 +17,5 @@
 // the main include for the class
 #include "ModelObject.h"
 
-// debug new statement
-#ifdef _DEBUG
-#undef THIS_FILE
-static char THIS_FILE[]=__FILE__;
-#define new DEBUG_NEW
-#endif
-
 // model object to compile
 static CModelObject* generate = new CModelObject("test");

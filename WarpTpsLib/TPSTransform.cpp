@@ -12,10 +12,5 @@
 #include "MatrixNxM.h"
 #include "MatrixBase.inl"
 
-#ifdef _DEBUG
-#undef THIS_FILE
-static char THIS_FILE[]=__FILE__;
-#define new DEBUG_NEW
-#endif
-
+// test create instance
 CTPSTransform* pGenerateTransform = new CTPSTransform();
