@@ -7,7 +7,6 @@
 
 #pragma once
 
-
 //////////////////////////////////////////////////////////////////////
 // class CModelObject
 // 
@@ -17,31 +16,59 @@
 //		3) possibly has children
 //		4) can be serialized
 //////////////////////////////////////////////////////////////////////
-class WARPTPSLIB_API CModelObject // : public CObject
+class CModelObject
 {
 public:
 	// constructors/destructors
-	CModelObject(const CString& strName = _T(""));
+	CModelObject(const char *strName = "");
 	virtual ~CModelObject();
 
 	// the given name for this model object
-	const CString& GetName() const;
-	void SetName(const CString& strName);
+	const char * GetName() const;
+	void SetName(const char * strName);
 
-	// collection of the children of this model object
-	int GetChildCount() const;
-	CModelObject *GetChildAt(int nIndex);
-	int AddChild(CModelObject *pObject);
-
-
-
-protected:
+private:
 	// the name of the object
-	CString m_strName;
-
-	// the model object's children
-	CArray<CModelObject*> m_arrChildren;
-
-	// reference count for the object
-	DWORD m_dwRefCount;
+	const char * m_strName;
 };
+
+//////////////////////////////////////////////////////////////////////
+// CModelObject::CModelObject
+// 
+// constructs a model object with the given name
+//////////////////////////////////////////////////////////////////////
+inline CModelObject::CModelObject(const char* strName)
+	: m_strName(strName)
+{
+}
+
+//////////////////////////////////////////////////////////////////////
+// CModelObject::~CModelObject
+// 
+// destroys the model objects
+//////////////////////////////////////////////////////////////////////
+inline CModelObject::~CModelObject()
+{
+}
+
+//////////////////////////////////////////////////////////////////////
+// CModelObject::GetName
+// 
+// returns the given name for this model object
+//////////////////////////////////////////////////////////////////////
+inline const char* CModelObject::GetName() const
+{
+	return m_strName;
+}
+
+//////////////////////////////////////////////////////////////////////
+// CModelObject::SetName
+// 
+// sets the given name for this model object, firing a change in
+//		the process
+//////////////////////////////////////////////////////////////////////
+inline void CModelObject::SetName(const char* strName)
+{
+	// set the name
+	m_strName = strName;
+}
