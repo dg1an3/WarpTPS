@@ -90,7 +90,6 @@ protected:
 
 private:
 	// the array of landmarks
-	vector< CVectorD<3> > m_arrLandmarks[2];
 	vector<tuple<CVectorD<3>, CVectorD<3>>> m_arrLandmarkTuples;
 
 	bg::model::point<double, 3, bg::cs::cartesian> test_point;
@@ -173,7 +172,7 @@ inline CTPSTransform::~CTPSTransform()
 //////////////////////////////////////////////////////////////////////
 inline int CTPSTransform::GetLandmarkCount()
 {
-	return (int)m_arrLandmarks[0].size();
+	return (int)m_arrLandmarkTuples.size();
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -195,7 +194,6 @@ inline const CVectorD<3>& CTPSTransform::GetLandmark(int nDataSet, int nIndex)
 	default:
 		throw new std::exception();
 	}
-	return m_arrLandmarks[nDataSet].at(nIndex);
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -206,7 +204,6 @@ inline const CVectorD<3>& CTPSTransform::GetLandmark(int nDataSet, int nIndex)
 inline void CTPSTransform::SetLandmark(int nDataSet, int nIndex, const CVectorD<3>& vLandmark)
 {
 	// assign the landmark
-	m_arrLandmarks[nDataSet].at(nIndex) = vLandmark;
 	switch (nDataSet)
 	{
 	case 0:
@@ -250,11 +247,8 @@ inline int CTPSTransform::AddLandmark(const CVectorD<3>& vLandmark)
 inline int CTPSTransform::AddLandmark(const CVectorD<3>& vLandmark1,
 	const CVectorD<3>& vLandmark2)
 {
+	// add the landmark as a tuple
 	m_arrLandmarkTuples.push_back(std::make_tuple(vLandmark1, vLandmark2));
-
-	// add the landmark to both data sets
-	m_arrLandmarks[0].push_back(vLandmark1);
-	m_arrLandmarks[1].push_back(vLandmark2);
 
 	// set the flag to indicate recalculation is needed
 	m_bRecalcMatrix = TRUE;
@@ -273,8 +267,6 @@ inline int CTPSTransform::AddLandmark(const CVectorD<3>& vLandmark1,
 inline void CTPSTransform::RemoveAllLandmarks()
 {
 	m_arrLandmarkTuples.clear();
-	m_arrLandmarks[0].clear();
-	m_arrLandmarks[1].clear();
 
 	m_bRecalcMatrix = TRUE;
 	m_bRecalc = TRUE;
