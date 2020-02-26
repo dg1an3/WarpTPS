@@ -9,6 +9,7 @@
 
 // container vector for the landmarks
 #include <vector>
+#include <tuple>
 using namespace std;
 
 // inclue the boost geometry header
@@ -90,6 +91,8 @@ protected:
 private:
 	// the array of landmarks
 	vector< CVectorD<3> > m_arrLandmarks[2];
+	vector<tuple<CVectorD<3>, CVectorD<3>>> m_arrLandmarkTuples;
+
 	bg::model::point<double, 3, bg::cs::cartesian> test_point;
 
 	// represents the pre-sampled array
@@ -181,6 +184,17 @@ inline int CTPSTransform::GetLandmarkCount()
 inline const CVectorD<3>& CTPSTransform::GetLandmark(int nDataSet, int nIndex)
 {
 	// return the landmark at the given index
+	switch (nDataSet)
+	{
+	case 0:
+		return std::get<0>(m_arrLandmarkTuples[nIndex]);
+		break;
+	case 1:
+		return std::get<1>(m_arrLandmarkTuples[nIndex]);
+		break;
+	default:
+		throw new std::exception();
+	}
 	return m_arrLandmarks[nDataSet].at(nIndex);
 }
 
@@ -193,6 +207,17 @@ inline void CTPSTransform::SetLandmark(int nDataSet, int nIndex, const CVectorD<
 {
 	// assign the landmark
 	m_arrLandmarks[nDataSet].at(nIndex) = vLandmark;
+	switch (nDataSet)
+	{
+	case 0:
+		std::get<0>(m_arrLandmarkTuples[nIndex]) = vLandmark;
+		break;
+	case 1:
+		std::get<1>(m_arrLandmarkTuples[nIndex]) = vLandmark;
+		break;
+	default:
+		throw new std::exception();
+	}
 
 	// only recalc matrix if it is dataset 0
 	if (nDataSet == 0)
@@ -225,6 +250,8 @@ inline int CTPSTransform::AddLandmark(const CVectorD<3>& vLandmark)
 inline int CTPSTransform::AddLandmark(const CVectorD<3>& vLandmark1,
 	const CVectorD<3>& vLandmark2)
 {
+	m_arrLandmarkTuples.push_back(std::make_tuple(vLandmark1, vLandmark2));
+
 	// add the landmark to both data sets
 	m_arrLandmarks[0].push_back(vLandmark1);
 	m_arrLandmarks[1].push_back(vLandmark2);
@@ -245,6 +272,7 @@ inline int CTPSTransform::AddLandmark(const CVectorD<3>& vLandmark1,
 //////////////////////////////////////////////////////////////////////
 inline void CTPSTransform::RemoveAllLandmarks()
 {
+	m_arrLandmarkTuples.clear();
 	m_arrLandmarks[0].clear();
 	m_arrLandmarks[1].clear();
 
