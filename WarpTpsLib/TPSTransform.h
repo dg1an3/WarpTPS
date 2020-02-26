@@ -11,6 +11,10 @@
 #include <vector>
 using namespace std;
 
+// inclue the boost geometry header
+#include <boost/geometry.hpp>
+namespace bg = boost::geometry;
+
 // vector includes
 #include "VectorD.h"
 #include "VectorN.h"
@@ -86,6 +90,7 @@ protected:
 private:
 	// the array of landmarks
 	vector< CVectorD<3> > m_arrLandmarks[2];
+	bg::model::point<double, 3, bg::cs::cartesian> test_point;
 
 	// represents the pre-sampled array
 	vector< CVectorD<3> > m_presampledOffsets;
