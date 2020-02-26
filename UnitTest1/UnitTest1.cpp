@@ -4,72 +4,71 @@
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
-namespace UnitTest1
+namespace WarpTpsLib
 {
-	TEST_CLASS(UnitTest1)
+	namespace UnitTest
 	{
-	public:
-		
-		TEST_METHOD(TestMethod1)
+		TEST_CLASS(TPSTransformUnitTest)
 		{
-		}
+		public:
+			TEST_METHOD(TestAddLandmark)
+			{
+				Logger::WriteMessage("TestAddLandmark");
 
-		TEST_METHOD(TestAddLandmark)
-		{
-			Logger::WriteMessage("TestAddLandmark");
+				auto tpsTransform = new CTPSTransform();
+				tpsTransform->AddLandmark(CVectorD<3>(0.0, 0.0, 0.0));
+				tpsTransform->AddLandmark(CVectorD<3>(1.0, 0.0, 0.0));
+				tpsTransform->AddLandmark(CVectorD<3>(0.0, 1.0, 0.0));
+				tpsTransform->AddLandmark(CVectorD<3>(0.25, 0.5, 0.0));
 
-			auto tpsTransform = new CTPSTransform();			
-			tpsTransform->AddLandmark(CVectorD<3>(0.0, 0.0, 0.0));
-			tpsTransform->AddLandmark(CVectorD<3>(1.0, 0.0, 0.0));
-			tpsTransform->AddLandmark(CVectorD<3>(0.0, 1.0, 0.0));
-			tpsTransform->AddLandmark(CVectorD<3>(0.0, 0.0, 1.0));
+				Assert::IsTrue(tpsTransform->GetLandmark(0, 0).IsApproxEqual(CVectorD<3>(0.0, 0.0, 0.0)));
+				Assert::IsTrue(tpsTransform->GetLandmark(1, 0).IsApproxEqual(CVectorD<3>(0.0, 0.0, 0.0)));
 
-			Assert::IsTrue(tpsTransform->GetLandmark(0, 0).IsApproxEqual(CVectorD<3>(0.0, 0.0, 0.0)));
-			Assert::IsTrue(tpsTransform->GetLandmark(0, 1).IsApproxEqual(CVectorD<3>(1.0, 0.0, 0.0)));
-			Assert::IsTrue(tpsTransform->GetLandmark(0, 2).IsApproxEqual(CVectorD<3>(0.0, 1.0, 0.0)));
-			Assert::IsTrue(tpsTransform->GetLandmark(0, 3).IsApproxEqual(CVectorD<3>(0.0, 0.0, 1.0)));
+				Assert::IsTrue(tpsTransform->GetLandmark(0, 1).IsApproxEqual(CVectorD<3>(1.0, 0.0, 0.0)));
+				Assert::IsTrue(tpsTransform->GetLandmark(1, 1).IsApproxEqual(CVectorD<3>(1.0, 0.0, 0.0)));
 
-			Assert::IsTrue(tpsTransform->GetLandmark(1, 0).IsApproxEqual(CVectorD<3>(0.0, 0.0, 0.0)));
-			Assert::IsTrue(tpsTransform->GetLandmark(1, 1).IsApproxEqual(CVectorD<3>(1.0, 0.0, 0.0)));
-			Assert::IsTrue(tpsTransform->GetLandmark(1, 2).IsApproxEqual(CVectorD<3>(0.0, 1.0, 0.0)));
-			Assert::IsTrue(tpsTransform->GetLandmark(1, 3).IsApproxEqual(CVectorD<3>(0.0, 0.0, 1.0)));
+				Assert::IsTrue(tpsTransform->GetLandmark(0, 2).IsApproxEqual(CVectorD<3>(0.0, 1.0, 0.0)));
+				Assert::IsTrue(tpsTransform->GetLandmark(1, 2).IsApproxEqual(CVectorD<3>(0.0, 1.0, 0.0)));
 
-			Logger::WriteMessage("Done TestAddLandmark");
-		}
+				Assert::IsTrue(tpsTransform->GetLandmark(0, 3).IsApproxEqual(CVectorD<3>(0.25, 0.5, 0.0)));
+				Assert::IsTrue(tpsTransform->GetLandmark(1, 3).IsApproxEqual(CVectorD<3>(0.25, 0.5, 0.0)));
 
-		TEST_METHOD(TestCalculateWarp)
-		{
-			Logger::WriteMessage("TestAddLandmark");
+				Logger::WriteMessage("Done TestAddLandmark");
+			}
 
-			auto tpsTransform = new CTPSTransform();
-			tpsTransform->AddLandmark(CVectorD<3>(0.0, 0.0, 0.0));
-			tpsTransform->AddLandmark(CVectorD<3>(1.0, 0.0, 0.0));
-			tpsTransform->AddLandmark(CVectorD<3>(0.0, 1.0, 0.0));
-			tpsTransform->AddLandmark(CVectorD<3>(0.0, 0.0, 1.0));
+			TEST_METHOD(TestCalculateWarp)
+			{
+				Logger::WriteMessage("TestAddLandmark");
 
-			CVectorD<3> vOriginal(0.0, 0.0, 0.0);
-			CVectorD<3> vTransformed;
-			tpsTransform->Eval(vOriginal, vTransformed, 0.0);
-			// Assert::IsTrue(vOriginal.IsApproxEqual(vTransformed));
+				auto tpsTransform = new CTPSTransform();
+				tpsTransform->AddLandmark(CVectorD<3>(0.0, 0.0, 0.0));
+				tpsTransform->AddLandmark(CVectorD<3>(1.0, 0.0, 0.0));
+				tpsTransform->AddLandmark(CVectorD<3>(0.0, 1.0, 0.0));
+				tpsTransform->AddLandmark(CVectorD<3>(0.5, 0.5, 0.0));
 
-			Logger::WriteMessage("Done TestAddLandmark");
-		}
+				CVectorD<3> vOriginal(0.0, 0.0, 0.0);
+				CVectorD<3> vTransformed;
+				tpsTransform->Eval(vOriginal, vTransformed, 0.0);
+				Assert::IsTrue(vOriginal.IsApproxEqual(vTransformed));
 
-		TEST_METHOD(TestApplyWarpAtLandmark)
-		{
-		}
+				Logger::WriteMessage("Done TestAddLandmark");
+			}
 
-		TEST_METHOD(TestApplyInverseWarpAtLandmark)
-		{
-		}
+			TEST_METHOD(TestApplyWarpAtLandmark)
+			{
+			}
 
-		TEST_METHOD(TestResampleUniformImage)
-		{
-		}
+			TEST_METHOD(TestApplyInverseWarpAtLandmark)
+			{
+			}
 
-		TEST_METHOD(TestResampleImageHistogram)
-		{
-		}
+			TEST_METHOD(TestResampleUniformImage)
+			{
+			}
 
-	};
+			TEST_METHOD(TestResampleImageHistogram)
+			{
+			}
+		};
+	}
 }
