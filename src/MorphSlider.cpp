@@ -61,7 +61,7 @@ void MorphSlider::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 
 			int minPos = 0, maxPos = 100;
 			pScrollBar->GetScrollRange(&minPos, &maxPos);
-			m_morphPercent = 1.0 - (float) nPos / (float) (maxPos - minPos);
+			m_morphPercent = 1.0f - (float) nPos / (float) (maxPos - minPos);
 
 			if (m_checkLock.GetCheck() == 1)
 			{
@@ -76,7 +76,7 @@ void MorphSlider::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 
 			int minPos = 0, maxPos = 100;
 			pScrollBar->GetScrollRange(&minPos, &maxPos);
-			m_blendPercent = 1.0 - (float) nPos / (float) (maxPos - minPos);
+			m_blendPercent = 1.0f - (float) nPos / (float) (maxPos - minPos);
 
 			if (m_checkLock.GetCheck() == 1)
 			{

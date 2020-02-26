@@ -243,7 +243,7 @@ void Resample(CTPSTransform* xform, CDib*pImageSrc, CDib*pImageDst, float percen
 void CWarpTPSDoc::UpdateResampled(float forwardPercent)
 {
 	Resample(GetTransform(), m_pImage[ImageRole::SourceImage], m_pImage[ImageRole::WarpedSourceImage], forwardPercent);
-	Resample(GetInverseTransform(), m_pImage[ImageRole::DestinationImage], m_pImage[ImageRole::WarpedDestinationImage], 1.0 - forwardPercent);
+	Resample(GetInverseTransform(), m_pImage[ImageRole::DestinationImage], m_pImage[ImageRole::WarpedDestinationImage], 1.0f - forwardPercent);
 }
 
 void CWarpTPSDoc::InitCornerLandmarks()

@@ -1,5 +1,5 @@
 #pragma once
-#include "WarpTpsLib.h"
+
 #include "WarpTPSDoc.h"
 #include "DibView.h"
 #include "afxcmn.h"

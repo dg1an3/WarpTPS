@@ -22,7 +22,6 @@
 
 #include <afxtempl.h>
 
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
+#include "TPSTransform.h"
 
 #endif // !defined(AFX_STDAFX_H__32DE1DBB_9CEB_4906_A9E0_676D3E3055DB__INCLUDED_)

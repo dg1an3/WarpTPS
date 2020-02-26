@@ -219,7 +219,6 @@
     <ClInclude Include="VectorBase.h" />
     <ClInclude Include="VectorD.h" />
     <ClInclude Include="VectorN.h" />
-    <ClInclude Include="WarpTpsLib.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="WarpTpsLib.rc" />

@@ -370,7 +370,7 @@ inline void CTPSTransform::ResampleRaw(LPBYTE pSrcPixels, LPBYTE pDstPixels,
 			// bounds check source position
 			int nSrcY = height - (int)floor(vSrcPos[1] + 0.5) - 1;
 			if (vSrcPos[0] >= 0.0 && vSrcPos[0] < width
-				&& nSrcY >= 0 && nSrcY < height)
+				&& nSrcY >= 0 && nSrcY < (int) height)
 			{
 				// compute the positions
 				int nSrcIndex = bytesPerPixel * (int)floor(vSrcPos[0] + 0.5)
@@ -417,9 +417,9 @@ inline void CTPSTransform::ResampleRawWithField(LPBYTE pSrcPixels, LPBYTE pDstPi
 	}
 
 	CVectorD<3> vSrcPos;
-	for (int dstAtY = 0; dstAtY < height; dstAtY++)
+	for (int dstAtY = 0; dstAtY < (int)height; dstAtY++)
 	{
-		for (int dstAtX = 0; dstAtX < width; dstAtX++)
+		for (int dstAtX = 0; dstAtX < (int)width; dstAtX++)
 		{
 			// compute the destination position
 			int nDstY = height - dstAtY - 1;
@@ -433,7 +433,7 @@ inline void CTPSTransform::ResampleRawWithField(LPBYTE pSrcPixels, LPBYTE pDstPi
 			// bounds check source position
 			int nSrcY = height - (int)floor(vSrcPos[1] + 0.5) - 1;
 			if (vSrcPos[0] >= 0.0 && vSrcPos[0] < width
-				&& nSrcY >= 0 && nSrcY < height)
+				&& nSrcY >= 0 && nSrcY < (int) height)
 			{
 				// compute the positions
 				int nSrcIndex = bytesPerPixel * (int)floor(vSrcPos[0] + 0.5)

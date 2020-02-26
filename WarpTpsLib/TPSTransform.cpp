@@ -7,10 +7,9 @@
 
 #include "pch.h"
 
-#include "WarpTpsLib.h"
-
 #include "MatrixNxM.h"
 #include "MatrixBase.inl"
+#include "TPSTransform.h"
 
 // test create instance
 CTPSTransform* pGenerateTransform = new CTPSTransform();
