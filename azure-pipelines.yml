@@ -10,6 +10,6 @@ pool:
   vmImage: 'windows-2019'
 
 steps:
-- script: |
-        build_all.bat
-  displayName: 'make'
+- task: MSBuild@1
+  inputs:
+    solution: **/*.sln
