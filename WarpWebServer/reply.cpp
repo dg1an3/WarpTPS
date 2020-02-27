@@ -8,11 +8,9 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#include "targetver.h"
+#include "pch.h"
 
 #include "reply.hpp"
-#include <string>
-#include <boost/lexical_cast.hpp>
 
 namespace http {
 	namespace server {

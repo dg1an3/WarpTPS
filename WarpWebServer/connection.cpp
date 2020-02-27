@@ -8,11 +8,9 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#include "targetver.h"
+#include "pch.h"
 
 #include "connection.hpp"
-#include <vector>
-#include <boost/bind.hpp>
 #include "connection_manager.hpp"
 #include "request_handler.hpp"
 
