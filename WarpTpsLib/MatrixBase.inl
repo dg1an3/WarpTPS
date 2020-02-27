@@ -482,7 +482,8 @@ BOOL CMatrixBase<TYPE>::SVD(CVectorBase<TYPE>& w, CMatrixBase<TYPE>& v)
 	{
 		for (int nIter = 1; nIter < MAX_ITER; nIter++)
 		{
-			for (int nL = nK; nL >= 0; nL--)
+			int nL = nK;
+			for (; nL >= 0; nL--)
 			{
 				if (((TYPE) fabs(rv1[nL]) + anorm) == anorm)
 				{
@@ -657,13 +658,13 @@ TYPE CMatrixBase<TYPE>::Householder(CVectorBase<TYPE>& w,
 						s += (*this)[nI][nK] * (*this)[nJ][nK];
 					}
 					TYPE f = s / h;
-					for (nK = nI; nK < GetRows(); nK++)
+					for (int nK = nI; nK < GetRows(); nK++)
 					{
 						(*this)[nJ][nK] += f * (*this)[nI][nK];
 					}
 				}	// for
 
-				for (nK = nI; nK < GetRows(); nK++)
+				for (int nK = nI; nK < GetRows(); nK++)
 				{
 					(*this)[nI][nK] *= scale;
 				}

@@ -1,7 +1,8 @@
 #ifndef PCH_H
 #define PCH_H
 
-#include "targetver.h"
+#include <assert.h>
+#include <signal.h>
 
 #include <string>
 #include <vector>
@@ -11,7 +12,7 @@
 #include <fstream>
 #include <sstream>
 
-#include <signal.h>
+#include "framework.h"
 
 #include <boost/lexical_cast.hpp>
 #include <boost/array.hpp>
@@ -21,5 +22,7 @@
 #include <boost/bind.hpp>
 
 #include <boost/asio.hpp>
+
+#include "TPSTransform.h"
 
 #endif //PCH_H

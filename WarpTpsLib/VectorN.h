@@ -11,6 +11,9 @@
 // base class include
 #include "VectorBase.h"
 
+// inclue the boost geometry header
+#include <boost/numeric/ublas/vector.hpp>
+namespace ublas = boost::numeric::ublas;
 
 //////////////////////////////////////////////////////////////////////
 // class CVectorN<TYPE>
@@ -34,6 +37,9 @@ public:
 
 	// sets the dimensionality of this vector
 	void SetDim(int nDim);
+
+private:
+	ublas::vector<TYPE> m_v;
 };
 
 //////////////////////////////////////////////////////////////////
@@ -107,13 +113,13 @@ CVectorN<TYPE>& CVectorN<TYPE>::operator=(const CVectorN<TYPE>& vFrom)
 	SetDim(vFrom.GetDim());
 
 	// copy the elements
-	memcpy((*this), vFrom, __min(GetDim(), vFrom.GetDim()) * sizeof(TYPE));
+	memcpy((*this), vFrom, __min(this->GetDim(), vFrom.GetDim()) * sizeof(TYPE));
 
 	// set remainder of elements to 0
-	if (GetDim() > vFrom.GetDim())
+	if (this->GetDim() > vFrom.GetDim())
 	{
 		memset(&(*this)[vFrom.GetDim()], 0, 
-			(GetDim() - vFrom.GetDim()) * sizeof(TYPE));
+			(this->GetDim() - vFrom.GetDim()) * sizeof(TYPE));
 	}
 
 	// return a reference to this
@@ -134,13 +140,13 @@ CVectorN<TYPE>& CVectorN<TYPE>::operator=(const CVectorBase<TYPE>& vFrom)
 	SetDim(vFrom.GetDim());
 
 	// copy the elements
-	memcpy((*this), vFrom, __min(GetDim(), vFrom.GetDim()) * sizeof(TYPE));
+	memcpy((*this), vFrom, __min(this->GetDim(), vFrom.GetDim()) * sizeof(TYPE));
 
 	// set remainder of elements to 0
-	if (GetDim() > vFrom.GetDim())
+	if (this->GetDim() > vFrom.GetDim())
 	{
 		memset(&(*this)[vFrom.GetDim()], 0, 
-			(GetDim() - vFrom.GetDim()) * sizeof(TYPE));
+			(this->GetDim() - vFrom.GetDim()) * sizeof(TYPE));
 	}
 
 	// return a reference to this
@@ -160,38 +166,10 @@ void CVectorN<TYPE>::SetDim(int nDim)
 	// do nothing if the dim is already correct
 	if (m_nDim != nDim)
 	{
-		// store pointer to old elements
-		TYPE *pOldElements = m_pElements;
-		m_pElements = NULL;
-
-		// set the new dimensionality
-		int nOldDim = m_nDim;
+		m_v.resize(nDim);
+		m_pElements = &m_v.data()[0];
 		m_nDim = nDim;
-
-		// allocate new elements, if needed
-		if (m_nDim > 0)
-		{
-			m_pElements = new TYPE[m_nDim];
-
-			if (pOldElements)
-			{
-				// copy the elements
-				memcpy((*this), pOldElements, __min(GetDim(), nOldDim) * sizeof(TYPE));
-			}
-
-			// set remainder of elements to 0
-			if (GetDim() > nOldDim)
-			{
-				memset(&(*this)[nOldDim], 0, 
-					(GetDim() - nOldDim) * sizeof(TYPE));
-			}
-		}
-
-		// free the elements, if needed
-		if (pOldElements != NULL)
-		{
-			delete [] pOldElements;
-		}
+		m_bFreeElements = false;
 	}
 
 }	// CVectorN<TYPE>::SetDim

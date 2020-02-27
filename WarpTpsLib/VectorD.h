@@ -217,13 +217,13 @@ CVectorD<DIM, TYPE>::CVectorD(const CVectorBase<TYPE>& vFrom)
 	SetElements(DIM, const_cast<TYPE*>(&this->point().get<0>()), FALSE);
 
 	// copy the elements
-	memcpy((*this), vFrom, __min(GetDim(), vFrom.GetDim()) * sizeof(TYPE));
+	memcpy((*this), vFrom, __min(this->GetDim(), vFrom.GetDim()) * sizeof(TYPE));
 
 	// set remainder of elements to 0
-	if (GetDim() > vFrom.GetDim())
+	if (this->GetDim() > vFrom.GetDim())
 	{
 		memset(&(*this)[vFrom.GetDim()], 0, 
-			(GetDim() - vFrom.GetDim()) * sizeof(TYPE));
+			(this->GetDim() - vFrom.GetDim()) * sizeof(TYPE));
 	}
 
 }	// CVectorD<DIM, TYPE>::CVectorD<DIM, TYPE>(const CVectorBase<TYPE>& vFrom) 
@@ -265,10 +265,10 @@ template<int DIM, class TYPE>
 CVectorD<DIM, TYPE>::~CVectorD()
 {
 	// ensure no monkey business has occurred
-	ASSERT(m_pElements == const_cast<TYPE*>(&this->point().get<0>()));
+	ASSERT(this->m_pElements == const_cast<TYPE*>(&this->point().get<0>()));
 
 	// ensure we don't delete anything
-	m_pElements = NULL;
+	this->m_pElements = NULL;
 
 }	// CVectorD<DIM, TYPE>::~CVectorD<DIM, TYPE>()
 
@@ -301,7 +301,7 @@ CVectorD<DIM, TYPE>& CVectorD<DIM, TYPE>::operator=(const CVectorD<DIM, TYPE>& v
 	// ASSERT(m_pElements == &m_arrElements[0]);
 
 	// copy the elements
-	memcpy((*this), vFrom, GetDim() * sizeof(TYPE));
+	memcpy((*this), vFrom, this->GetDim() * sizeof(TYPE));
 
 	// return a reference to this
 	return (*this);
