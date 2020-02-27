@@ -12,6 +12,10 @@
 #include "MatrixBase.h"
 #include "VectorN.h"
 
+// inclue the boost geometry header
+#include <boost/numeric/ublas/matrix.hpp>
+namespace ublas = boost::numeric::ublas;
+
 //////////////////////////////////////////////////////////////////////
 // class CMatrixNxM<TYPE>
 //
@@ -41,6 +45,9 @@ public:
 	// Pseudoinvert -- in-place Moore-Penrose pseudoinversion
 	//////////////////////////////////////////////////////////////////
 	BOOL Pseudoinvert();
+
+private:
+	ublas::matrix<TYPE> m_matrix;
 };
 
 
@@ -141,19 +148,21 @@ void CMatrixNxM<TYPE>::Reshape(int nCols, int nRows)
 		return;
 	}
 
+	m_matrix.resize(nCols, nRows);
+
 	// preserve existing elements
 	int nOldRows = GetRows();
 	int nOldCols = GetCols();
 	TYPE *pOldElements = m_pElements;
 
 	// allocate and set the new elements, but do not free the old
-	TYPE *pNewElements = new TYPE[nCols * nRows];
+	TYPE *pNewElements = &m_matrix.data()[0];
 
 	// don't free the existing elements, as they will be copied
 	m_bFreeElements = FALSE;
 
 	// set the new elements
-	SetElements(nCols, nRows, pNewElements, TRUE);
+	SetElements(nCols, nRows, pNewElements, FALSE);
 
 	// if there were old elements, 
 	if (pOldElements)
@@ -163,7 +172,7 @@ void CMatrixNxM<TYPE>::Reshape(int nCols, int nRows)
 
 		// create a temporary matrix to hold the old elements
 		CMatrixNxM<> mTemp;
-		mTemp.SetElements(nOldCols, nOldRows, pOldElements, TRUE);
+		mTemp.SetElements(nOldCols, nOldRows, pOldElements, FALSE);
 
 		// and assign
 		for (int nAtCol = 0; nAtCol < __min(GetCols(), mTemp.GetCols()); nAtCol++)
