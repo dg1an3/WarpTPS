@@ -526,8 +526,9 @@ inline void CTPSTransform::RecalcWeights()
 
 		// form the inverse of L
 		m_mL_inv.Reshape(mL.GetCols(), mL.GetRows());
-		m_mL_inv = mL;
-		m_mL_inv.Invert();
+		invert(mL.as_matrix(), m_mL_inv.as_matrix());
+		//m_mL_inv = mL;
+		//m_mL_inv.Invert();
 
 		m_bRecalcMatrix = FALSE;
 	}
