@@ -284,37 +284,65 @@ inline void CTPSTransform::Eval(const CVectorD<3>& vPos, CVectorD<3>& vOffset, f
 	// vPosTrans = vPos;
 
 	// don't compute without at least three landmarks
-	if (GetLandmarkCount() >= 3)
+	auto n = GetLandmarkCount();
+	if (n < 3)
 	{
-		// see if a recalc is needed
-		if (m_bRecalc)
-		{
-			// recalculate the weight vectors
-			RecalcWeights();
-		}
-
-		// add the weight vector displacements
-		for (int nAt = 0; nAt < GetLandmarkCount(); nAt++)
-		{
-			// distance to the first landmark
-			double d = distance_function(vPos, GetLandmark(0, nAt), m_k, m_r_exp);
-
-			// add weight vector displacements
-			vOffset[0] += d * m_vWx[nAt] * percent;
-			vOffset[1] += d * m_vWy[nAt] * percent;
-		}
-
-		// add the affine displacements
-		vOffset[0] +=
-			(m_vWx[GetLandmarkCount() + 0]
-				+ m_vWx[GetLandmarkCount() + 1] * vPos[0]
-				+ m_vWx[GetLandmarkCount() + 2] * vPos[1]) * percent;
-
-		vOffset[1] +=
-			(m_vWy[GetLandmarkCount() + 0]
-				+ m_vWy[GetLandmarkCount() + 1] * vPos[0]
-				+ m_vWy[GetLandmarkCount() + 2] * vPos[1]) * percent;
+		throw new invalid_argument("must have at least 3 landmarks");
 	}
+
+#ifdef USE_BOOST_GEOMETRY
+	// add the weight vector displacements
+	for (int nAt = 0; nAt < n; nAt++)
+	{
+		// distance to the first landmark
+		double d = distance_function(vPos, GetLandmark(0, nAt), m_k, m_r_exp);
+
+		// add weight vector displacements
+		Point3d_t displacement(m_vWx[nAt], m_vWy[nAt]);
+		bg::multiply_value(displacement, d * percent);
+		bg::add_point(vOffset, displacement);
+	}
+
+	// add the affine displacements
+	bg::add_point(vOffset, Point3d_t(m_vWx[n + 0], m_vWy[n + 0]));
+
+	Point3d_t weightx(m_vWx[n + 1], m_vWy[n + 1]);
+	bg::multiply_value(weightx, vPos.get<0>());
+	bg::add_point(vOffset, weightx);
+
+	Point3d_t weighty(m_vWx[n + 2], m_vWy[n + 2]);
+	bg::multiply_value(weighty, vPos.get<1>());
+	bg::add_point(vOffset, weighty);
+#else
+	// see if a recalc is needed
+	if (m_bRecalc)
+	{
+		// recalculate the weight vectors
+		RecalcWeights();
+	}
+
+	// add the weight vector displacements
+	for (int nAt = 0; nAt < n; nAt++)
+	{
+		// distance to the first landmark
+		double d = distance_function(vPos, GetLandmark(0, nAt), m_k, m_r_exp);
+
+		// add weight vector displacements
+		vOffset[0] += d * m_vWx[nAt] * percent;
+		vOffset[1] += d * m_vWy[nAt] * percent;
+	}
+
+	// add the affine displacements
+	vOffset[0] +=
+		(m_vWx[n + 0]
+			+ m_vWx[n + 1] * vPos[0]
+			+ m_vWx[n + 2] * vPos[1]) * percent;
+
+	vOffset[1] +=
+		(m_vWy[n + 0]
+			+ m_vWy[n + 1] * vPos[0]
+			+ m_vWy[n + 2] * vPos[1]) * percent;
+#endif
 }
 
 //////////////////////////////////////////////////////////////////////
