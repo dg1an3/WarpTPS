@@ -38,19 +38,6 @@ protected:
 	CVectorBase();
 	CVectorBase(const CVectorBase& vFrom);
 
-	//// CMatrixBase can construct CVectorBases
-	//friend CMatrixBase<TYPE>;
-
-	//// CMatrixD can construct CVectorBases
-	//friend CMatrixD<1, TYPE>;
-	//friend CMatrixD<2, TYPE>;
-	//friend CMatrixD<3, TYPE>;
-	//friend CMatrixD<4, TYPE>;
-
-	//// global operator* can construct
-	//friend CVectorBase<TYPE> operator*(const CMatrixNxM<TYPE>& mat,
-	//	const CVectorBase<TYPE>& v);
-
 public:
 	// destructor
 	~CVectorBase();

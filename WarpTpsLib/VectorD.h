@@ -13,6 +13,10 @@
 // base class include
 #include "VectorBase.h"
 
+// inclue the boost geometry header
+#include <boost/geometry.hpp>
+namespace bg = boost::geometry;
+typedef bg::model::point<double, 3, bg::cs::cartesian> Point3d_t;
 
 //////////////////////////////////////////////////////////////////////
 // class CVectorD<DIM, TYPE>
@@ -53,9 +57,12 @@ public:
 	CVectorD& operator+=(const CVectorD& vRight);
 	CVectorD& operator-=(const CVectorD& vRight);
 
+	typedef bg::model::point<TYPE, DIM, bg::cs::cartesian> Point_t;
+	Point_t& point() { return m_point;  }
+
 private:
 	// the vector's elements
-	TYPE m_arrElements[DIM];
+	Point_t m_point;
 };
 
 
@@ -69,7 +76,7 @@ CVectorD<DIM, TYPE>::CVectorD()
 {
 	// set the elements pointer to the static array 
 	//		and initialize the dimension
-	SetElements(DIM, &m_arrElements[0], FALSE);
+	SetElements(DIM, const_cast<TYPE*>(&this->point().get<0>()), FALSE);
 
 	// clear to all zeros
 	memset((*this), 0, DIM * sizeof(TYPE));
@@ -87,7 +94,7 @@ CVectorD<DIM, TYPE>::CVectorD(TYPE x)
 {
 	// set the elements pointer to the static array 
 	//		and initialize the dimension
-	SetElements(DIM, &m_arrElements[0], FALSE);
+	SetElements(DIM, const_cast<TYPE*>(&this->point().get<0>()), FALSE);
 
 	// set the given elements
 	(*this)[0] = x;
@@ -111,7 +118,7 @@ CVectorD<DIM, TYPE>::CVectorD(TYPE x, TYPE y)
 {
 	// set the elements pointer to the static array 
 	//		and initialize the dimension
-	SetElements(DIM, &m_arrElements[0], FALSE);
+	SetElements(DIM, const_cast<TYPE*>(&this->point().get<0>()), FALSE);
 
 	// set the given elements
 	(*this)[0] = x;
@@ -136,7 +143,7 @@ CVectorD<DIM, TYPE>::CVectorD(TYPE x, TYPE y, TYPE z)
 {
 	// set the elements pointer to the static array 
 	//		and initialize the dimension
-	SetElements(DIM, &m_arrElements[0], FALSE);
+	SetElements(DIM, const_cast<TYPE*>(&this->point().get<0>()), FALSE);
 
 	// set the given elements
 	(*this)[0] = x;
@@ -162,7 +169,7 @@ CVectorD<DIM, TYPE>::CVectorD(TYPE x, TYPE y, TYPE z, TYPE w)
 { 
 	// set the elements pointer to the static array 
 	//		and initialize the dimension
-	SetElements(DIM, &m_arrElements[0], FALSE);
+	SetElements(DIM, const_cast<TYPE*>(&this->point().get<0>()), FALSE);
 
 	// set the given elements
 	(*this)[0] = x;
@@ -189,7 +196,7 @@ CVectorD<DIM, TYPE>::CVectorD(const CVectorD<DIM, TYPE>& vFrom)
 {
 	// set the elements pointer to the static array 
 	//		and initialize the dimension
-	SetElements(DIM, &m_arrElements[0], FALSE);
+	SetElements(DIM, const_cast<TYPE*>(&this->point().get<0>()), FALSE);
 
 	// assign to copy 
 	(*this) = vFrom;
@@ -207,7 +214,7 @@ CVectorD<DIM, TYPE>::CVectorD(const CVectorBase<TYPE>& vFrom)
 {
 	// set the elements pointer to the static array 
 	//		and initialize the dimension
-	SetElements(DIM, &m_arrElements[0], FALSE);
+	SetElements(DIM, const_cast<TYPE*>(&this->point().get<0>()), FALSE);
 
 	// copy the elements
 	memcpy((*this), vFrom, __min(GetDim(), vFrom.GetDim()) * sizeof(TYPE));
@@ -233,7 +240,7 @@ CVectorD<DIM, TYPE>::CVectorD(const CPoint& pt)
 {
 	// set the elements pointer to the static array 
 	//		and initialize the dimension
-	SetElements(DIM, &m_arrElements[0], FALSE);
+	SetElements(DIM, const_cast<TYPE*>(&this->point().get<0>()), FALSE);
 
 	// set the given elements
 	(*this)[0] = pt.x;
@@ -242,7 +249,7 @@ CVectorD<DIM, TYPE>::CVectorD(const CPoint& pt)
 	// clear to all zeros
 	if (DIM > 2)
 	{
-		memset(&(*this)[2], 0, (DIM-2) * sizeof(TYPE));
+		memset(&(*this)[2], 0, (DIM - 2) * sizeof(TYPE));
 	}
 
 }	// CVectorD<DIM, TYPE>::CVectorD<DIM, TYPE>(const CPoint& pt)
@@ -258,7 +265,7 @@ template<int DIM, class TYPE>
 CVectorD<DIM, TYPE>::~CVectorD()
 {
 	// ensure no monkey business has occurred
-	ASSERT(m_pElements == &m_arrElements[0]);
+	ASSERT(m_pElements == const_cast<TYPE*>(&this->point().get<0>()));
 
 	// ensure we don't delete anything
 	m_pElements = NULL;

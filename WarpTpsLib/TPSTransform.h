@@ -12,10 +12,6 @@
 #include <tuple>
 using namespace std;
 
-// inclue the boost geometry header
-#include <boost/geometry.hpp>
-namespace bg = boost::geometry;
-
 // vector includes
 #include "VectorD.h"
 #include "VectorN.h"
@@ -280,6 +276,7 @@ inline void CTPSTransform::RemoveAllLandmarks()
 //////////////////////////////////////////////////////////////////////
 inline void CTPSTransform::Eval(const CVectorD<3>& vPos, CVectorD<3>& vOffset, float percent)
 {
+	// TODO: should vOffset be initialized to zero?
 	// start with transformed equal to input
 	// vPosTrans = vPos;
 
@@ -287,33 +284,9 @@ inline void CTPSTransform::Eval(const CVectorD<3>& vPos, CVectorD<3>& vOffset, f
 	auto n = GetLandmarkCount();
 	if (n < 3)
 	{
-		throw new invalid_argument("must have at least 3 landmarks");
+		return;
 	}
 
-#ifdef USE_BOOST_GEOMETRY
-	// add the weight vector displacements
-	for (int nAt = 0; nAt < n; nAt++)
-	{
-		// distance to the first landmark
-		double d = distance_function(vPos, GetLandmark(0, nAt), m_k, m_r_exp);
-
-		// add weight vector displacements
-		Point3d_t displacement(m_vWx[nAt], m_vWy[nAt]);
-		bg::multiply_value(displacement, d * percent);
-		bg::add_point(vOffset, displacement);
-	}
-
-	// add the affine displacements
-	bg::add_point(vOffset, Point3d_t(m_vWx[n + 0], m_vWy[n + 0]));
-
-	Point3d_t weightx(m_vWx[n + 1], m_vWy[n + 1]);
-	bg::multiply_value(weightx, vPos.get<0>());
-	bg::add_point(vOffset, weightx);
-
-	Point3d_t weighty(m_vWx[n + 2], m_vWy[n + 2]);
-	bg::multiply_value(weighty, vPos.get<1>());
-	bg::add_point(vOffset, weighty);
-#else
 	// see if a recalc is needed
 	if (m_bRecalc)
 	{
@@ -328,22 +301,23 @@ inline void CTPSTransform::Eval(const CVectorD<3>& vPos, CVectorD<3>& vOffset, f
 		double d = distance_function(vPos, GetLandmark(0, nAt), m_k, m_r_exp);
 
 		// add weight vector displacements
-		vOffset[0] += d * m_vWx[nAt] * percent;
-		vOffset[1] += d * m_vWy[nAt] * percent;
+		Point3d_t displacement(m_vWx[nAt], m_vWy[nAt]);
+		bg::multiply_value(displacement, d * percent);
+		bg::add_point(vOffset.point(), displacement);
 	}
 
 	// add the affine displacements
-	vOffset[0] +=
-		(m_vWx[n + 0]
-			+ m_vWx[n + 1] * vPos[0]
-			+ m_vWx[n + 2] * vPos[1]) * percent;
+	bg::add_point(vOffset.point(), Point3d_t(m_vWx[n + 0], m_vWy[n + 0]));
 
-	vOffset[1] +=
-		(m_vWy[n + 0]
-			+ m_vWy[n + 1] * vPos[0]
-			+ m_vWy[n + 2] * vPos[1]) * percent;
-#endif
+	Point3d_t weightx(m_vWx[n + 1], m_vWy[n + 1]);
+	bg::multiply_value(weightx, vPos[0]);
+	bg::add_point(vOffset.point(), weightx);
+
+	Point3d_t weighty(m_vWx[n + 2], m_vWy[n + 2]);
+	bg::multiply_value(weighty, vPos[1]);
+	bg::add_point(vOffset.point(), weighty);
 }
+
 
 //////////////////////////////////////////////////////////////////////
 // CTPSTransform::Resample
