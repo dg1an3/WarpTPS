@@ -470,74 +470,58 @@ inline void CTPSTransform::ResampleRawWithField(LPBYTE pSrcPixels, LPBYTE pDstPi
 //////////////////////////////////////////////////////////////////////
 inline void CTPSTransform::RecalcWeights()
 {
+	auto n = GetLandmarkCount();
 	// don't compute without at least three landmarks
-	if (GetLandmarkCount() < 3)
-	{
+	if (n < 3) {
 		return;
 	}
 
-	if (m_bRecalcMatrix)
-	{
+	if (m_bRecalcMatrix) {
 		// stores the L matrix
-		CMatrixNxM<> mL;
-		mL.Reshape(GetLandmarkCount() + 3, GetLandmarkCount() + 3);
+		ublas::matrix<REAL> mL(n + 3, n + 3);
 
 		// iterate over the rows and columns of the L matrix
-		int nAtRow;
-		int nAtCol;
-		for (nAtRow = 0; nAtRow < GetLandmarkCount(); nAtRow++)
-		{
-			for (nAtCol = 0; nAtCol < GetLandmarkCount(); nAtCol++)
-			{
-				// are we off-diagonal?
-				if (nAtRow != nAtCol)
-				{
+		for (int nAtRow = 0; nAtRow < n; nAtRow++) {
+			for (int nAtCol = 0; nAtCol < n; nAtCol++) {				
+				if (nAtRow != nAtCol) {	// are we off-diagonal?
 					// populate the K part of the matrix
-					mL[nAtCol][nAtRow] =
+					mL(nAtCol,nAtRow) =
 						distance_function(GetLandmark<0>(nAtRow),
 							GetLandmark<0>(nAtCol), m_k, m_r_exp);
-				}
-				else
-				{
-					// zeros on the diagonal
-					mL[nAtCol][nAtRow] = 0.0;
+				} else {				// zeros on the diagonal
+					mL(nAtCol, nAtRow) = 0.0;
 				}
 
 				// populate the Q^T part of the matrix
-				mL[nAtCol][GetLandmarkCount() + 0] = 1.0;
-				mL[nAtCol][GetLandmarkCount() + 1] = GetLandmark<0>(nAtCol)[0];
-				mL[nAtCol][GetLandmarkCount() + 2] = GetLandmark<0>(nAtCol)[1];
+				mL(nAtCol, n + 0) = 1.0;
+				mL(nAtCol, n + 1) = GetLandmark<0>(nAtCol)[0];
+				mL(nAtCol, n + 2) = GetLandmark<0>(nAtCol)[1];
 			}
 
 			// populate the Q part of the matrix
-			mL[GetLandmarkCount() + 0][nAtRow] = 1.0;
-			mL[GetLandmarkCount() + 1][nAtRow] = GetLandmark<0>(nAtRow)[0];
-			mL[GetLandmarkCount() + 2][nAtRow] = GetLandmark<0>(nAtRow)[1];
+			mL(n + 0, nAtRow) = 1.0;
+			mL(n + 1, nAtRow) = GetLandmark<0>(nAtRow)[0];
+			mL(n + 2, nAtRow) = GetLandmark<0>(nAtRow)[1];
 		}
 
 		// fill the lower-right 3x3 with zeros
-		for (nAtRow = GetLandmarkCount(); nAtRow < GetLandmarkCount() + 3; nAtRow++)
-		{
-			for (nAtCol = GetLandmarkCount(); nAtCol < GetLandmarkCount() + 3; nAtCol++)
-			{
-				mL[nAtCol][nAtRow] = 0.0;
+		for (int nAtRow = n; nAtRow < n + 3; nAtRow++) {
+			for (int nAtCol = n; nAtCol < n + 3; nAtCol++) {
+				mL(nAtCol, nAtRow) = 0.0;
 			}
 		}
 
 		// form the inverse of L
-		m_mL_inv.Reshape(mL.GetCols(), mL.GetRows());
-		invert(mL.as_matrix(), m_mL_inv.as_matrix());
-		//m_mL_inv = mL;
-		//m_mL_inv.Invert();
+		m_mL_inv.Reshape(n + 3, n + 3);
+		invert(mL, m_mL_inv.as_matrix());
 
 		m_bRecalcMatrix = FALSE;
 	}
 
 	// compute the x- and y-direction "heights"
-	CVectorN<> vHx(GetLandmarkCount() + 3);
-	CVectorN<> vHy(GetLandmarkCount() + 3);
-	for (int nAtLandmark = 0; nAtLandmark < GetLandmarkCount(); nAtLandmark++)
-	{
+	CVectorN<> vHx(n + 3);
+	CVectorN<> vHy(n + 3);
+	for (int nAtLandmark = 0; nAtLandmark < n; nAtLandmark++) {
 		vHx[nAtLandmark] = GetLandmark<1>(nAtLandmark)[0]
 			- GetLandmark<0>(nAtLandmark)[0];
 
@@ -554,8 +538,7 @@ inline void CTPSTransform::RecalcWeights()
 
 #ifdef _DEBUG
 	// now check to ensure the offsets at each landmark is correct
-	for (int nAtLandmark = 0; nAtLandmark < GetLandmarkCount(); nAtLandmark++)
-	{
+	for (int nAtLandmark = 0; nAtLandmark < n; nAtLandmark++) {
 		const CVectorD<3>& vL0 = GetLandmark<0>(nAtLandmark);
 		const CVectorD<3>& vL1 = GetLandmark<1>(nAtLandmark);
 
