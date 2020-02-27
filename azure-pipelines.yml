@@ -11,5 +11,5 @@ pool:
 
 steps:
 - script: |
-    make
+        build_all.bat
   displayName: 'make'
