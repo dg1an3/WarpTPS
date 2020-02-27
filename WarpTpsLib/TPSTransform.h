@@ -10,7 +10,7 @@
 // container vector for the landmarks
 #include <vector>
 #include <tuple>
-using namespace std;
+
 
 // vector includes
 #include "VectorD.h"
@@ -38,8 +38,12 @@ public:
 
 	// landmark accessors
 	int GetLandmarkCount();
-	const CVectorD<3>& GetLandmark(int nDataSet, int nIndex);
-	void SetLandmark(int nDataSet, int nIndex, const CVectorD<3>& vLandmark);
+
+	template<int DATASET>
+	const CVectorD<3>& GetLandmark(int nIndex);
+
+	template<int DATASET>
+	void SetLandmark(int nIndex, const CVectorD<3>& vLandmark);
 
 	// functions to add landmark points
 	int AddLandmark(const CVectorD<3>& vLandmark);
@@ -87,8 +91,6 @@ protected:
 private:
 	// the array of landmarks
 	vector<tuple<CVectorD<3>, CVectorD<3>>> m_arrLandmarkTuples;
-
-	bg::model::point<double, 3, bg::cs::cartesian> test_point;
 
 	// represents the pre-sampled array
 	vector< CVectorD<3> > m_presampledOffsets;
@@ -176,20 +178,10 @@ inline int CTPSTransform::GetLandmarkCount()
 // 
 // returns a landmark
 //////////////////////////////////////////////////////////////////////
-inline const CVectorD<3>& CTPSTransform::GetLandmark(int nDataSet, int nIndex)
+template<int DATASET>
+inline const CVectorD<3>& CTPSTransform::GetLandmark(int nIndex)
 {
-	// return the landmark at the given index
-	switch (nDataSet)
-	{
-	case 0:
-		return std::get<0>(m_arrLandmarkTuples[nIndex]);
-		break;
-	case 1:
-		return std::get<1>(m_arrLandmarkTuples[nIndex]);
-		break;
-	default:
-		throw new std::exception();
-	}
+	return std::get<DATASET>(m_arrLandmarkTuples[nIndex]);
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -197,23 +189,13 @@ inline const CVectorD<3>& CTPSTransform::GetLandmark(int nDataSet, int nIndex)
 // 
 // constructs a CTPSTransform object with the given name
 //////////////////////////////////////////////////////////////////////
-inline void CTPSTransform::SetLandmark(int nDataSet, int nIndex, const CVectorD<3>& vLandmark)
+template<int DATASET>
+inline void CTPSTransform::SetLandmark(int nIndex, const CVectorD<3>& vLandmark)
 {
-	// assign the landmark
-	switch (nDataSet)
-	{
-	case 0:
-		std::get<0>(m_arrLandmarkTuples[nIndex]) = vLandmark;
-		break;
-	case 1:
-		std::get<1>(m_arrLandmarkTuples[nIndex]) = vLandmark;
-		break;
-	default:
-		throw new std::exception();
-	}
+	std::get<DATASET>(m_arrLandmarkTuples[nIndex]) = vLandmark;
 
 	// only recalc matrix if it is dataset 0
-	if (nDataSet == 0)
+	if (DATASET == 0)
 	{
 		m_bRecalcMatrix = TRUE;
 	}
@@ -298,7 +280,7 @@ inline void CTPSTransform::Eval(const CVectorD<3>& vPos, CVectorD<3>& vOffset, f
 	for (int nAt = 0; nAt < n; nAt++)
 	{
 		// distance to the first landmark
-		double d = distance_function(vPos, GetLandmark(0, nAt), m_k, m_r_exp);
+		double d = distance_function(vPos, GetLandmark<0>(nAt), m_k, m_r_exp);
 
 		// add weight vector displacements
 		Point3d_t displacement(m_vWx[nAt], m_vWy[nAt]);
@@ -512,8 +494,8 @@ inline void CTPSTransform::RecalcWeights()
 				{
 					// populate the K part of the matrix
 					mL[nAtCol][nAtRow] =
-						distance_function(GetLandmark(0, nAtRow),
-							GetLandmark(0, nAtCol), m_k, m_r_exp);
+						distance_function(GetLandmark<0>(nAtRow),
+							GetLandmark<0>(nAtCol), m_k, m_r_exp);
 				}
 				else
 				{
@@ -523,14 +505,14 @@ inline void CTPSTransform::RecalcWeights()
 
 				// populate the Q^T part of the matrix
 				mL[nAtCol][GetLandmarkCount() + 0] = 1.0;
-				mL[nAtCol][GetLandmarkCount() + 1] = GetLandmark(0, nAtCol)[0];
-				mL[nAtCol][GetLandmarkCount() + 2] = GetLandmark(0, nAtCol)[1];
+				mL[nAtCol][GetLandmarkCount() + 1] = GetLandmark<0>(nAtCol)[0];
+				mL[nAtCol][GetLandmarkCount() + 2] = GetLandmark<0>(nAtCol)[1];
 			}
 
 			// populate the Q part of the matrix
 			mL[GetLandmarkCount() + 0][nAtRow] = 1.0;
-			mL[GetLandmarkCount() + 1][nAtRow] = GetLandmark(0, nAtRow)[0];
-			mL[GetLandmarkCount() + 2][nAtRow] = GetLandmark(0, nAtRow)[1];
+			mL[GetLandmarkCount() + 1][nAtRow] = GetLandmark<0>(nAtRow)[0];
+			mL[GetLandmarkCount() + 2][nAtRow] = GetLandmark<0>(nAtRow)[1];
 		}
 
 		// fill the lower-right 3x3 with zeros
@@ -555,11 +537,11 @@ inline void CTPSTransform::RecalcWeights()
 	CVectorN<> vHy(GetLandmarkCount() + 3);
 	for (int nAtLandmark = 0; nAtLandmark < GetLandmarkCount(); nAtLandmark++)
 	{
-		vHx[nAtLandmark] = GetLandmark(1, nAtLandmark)[0]
-			- GetLandmark(0, nAtLandmark)[0];
+		vHx[nAtLandmark] = GetLandmark<1>(nAtLandmark)[0]
+			- GetLandmark<0>(nAtLandmark)[0];
 
-		vHy[nAtLandmark] = GetLandmark(1, nAtLandmark)[1]
-			- GetLandmark(0, nAtLandmark)[1];
+		vHy[nAtLandmark] = GetLandmark<1>(nAtLandmark)[1]
+			- GetLandmark<0>(nAtLandmark)[1];
 	}
 
 	// compute the weight vectors
@@ -596,13 +578,13 @@ inline CTPSTransform::CheckInverse(CTPSTransform* pInverse)
 	// now check to ensure the offsets at each landmark is correct
 	for (int nAtLandmark = 0; nAtLandmark < GetLandmarkCount(); nAtLandmark++)
 	{
-		const CVectorD<3>& vL0 = GetLandmark(0, nAtLandmark);
-		const CVectorD<3>& vL0_other = pInverse->GetLandmark(1, nAtLandmark);
+		const CVectorD<3>& vL0 = GetLandmark<0>(nAtLandmark);
+		const CVectorD<3>& vL0_other = pInverse->GetLandmark<1>(nAtLandmark);
 		if (!vL0.IsApproxEqual(vL0_other))
 			return FALSE;
 
-		const CVectorD<3>& vL1 = GetLandmark(1, nAtLandmark);
-		const CVectorD<3>& vL1_other = pInverse->GetLandmark(0, nAtLandmark);
+		const CVectorD<3>& vL1 = GetLandmark<1>(nAtLandmark);
+		const CVectorD<3>& vL1_other = pInverse->GetLandmark<0>(nAtLandmark);
 		if (!vL1.IsApproxEqual(vL1_other))
 			return FALSE;
 	}

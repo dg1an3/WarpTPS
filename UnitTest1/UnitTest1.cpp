@@ -20,17 +20,17 @@ namespace WarpTpsLib
 				tpsTransform->AddLandmark(CVectorD<3>(0.0, 1.0, 0.0));
 				tpsTransform->AddLandmark(CVectorD<3>(0.25, 0.5, 0.0));
 
-				Assert::IsTrue(tpsTransform->GetLandmark(0, 0).IsApproxEqual(CVectorD<3>(0.0, 0.0, 0.0)));
-				Assert::IsTrue(tpsTransform->GetLandmark(1, 0).IsApproxEqual(CVectorD<3>(0.0, 0.0, 0.0)));
+				Assert::IsTrue(tpsTransform->GetLandmark<0>(0).IsApproxEqual(CVectorD<3>(0.0, 0.0, 0.0)));
+				Assert::IsTrue(tpsTransform->GetLandmark<1>(0).IsApproxEqual(CVectorD<3>(0.0, 0.0, 0.0)));
 
-				Assert::IsTrue(tpsTransform->GetLandmark(0, 1).IsApproxEqual(CVectorD<3>(1.0, 0.0, 0.0)));
-				Assert::IsTrue(tpsTransform->GetLandmark(1, 1).IsApproxEqual(CVectorD<3>(1.0, 0.0, 0.0)));
+				Assert::IsTrue(tpsTransform->GetLandmark<0>(1).IsApproxEqual(CVectorD<3>(1.0, 0.0, 0.0)));
+				Assert::IsTrue(tpsTransform->GetLandmark<1>(1).IsApproxEqual(CVectorD<3>(1.0, 0.0, 0.0)));
 
-				Assert::IsTrue(tpsTransform->GetLandmark(0, 2).IsApproxEqual(CVectorD<3>(0.0, 1.0, 0.0)));
-				Assert::IsTrue(tpsTransform->GetLandmark(1, 2).IsApproxEqual(CVectorD<3>(0.0, 1.0, 0.0)));
+				Assert::IsTrue(tpsTransform->GetLandmark<0>(2).IsApproxEqual(CVectorD<3>(0.0, 1.0, 0.0)));
+				Assert::IsTrue(tpsTransform->GetLandmark<1>(2).IsApproxEqual(CVectorD<3>(0.0, 1.0, 0.0)));
 
-				Assert::IsTrue(tpsTransform->GetLandmark(0, 3).IsApproxEqual(CVectorD<3>(0.25, 0.5, 0.0)));
-				Assert::IsTrue(tpsTransform->GetLandmark(1, 3).IsApproxEqual(CVectorD<3>(0.25, 0.5, 0.0)));
+				Assert::IsTrue(tpsTransform->GetLandmark<0>(3).IsApproxEqual(CVectorD<3>(0.25, 0.5, 0.0)));
+				Assert::IsTrue(tpsTransform->GetLandmark<1>(3).IsApproxEqual(CVectorD<3>(0.25, 0.5, 0.0)));
 
 				Logger::WriteMessage("Done TestAddLandmark");
 			}

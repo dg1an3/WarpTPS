@@ -100,8 +100,18 @@ void CDibView::OnPaint()
 				CPen pen(PS_SOLID, 1, g_arrColors[nAt % nColorCount]);
 				CPen *pOldPen = (CPen *) dc.SelectObject(&pen);
 
-				CPoint pt = 
-					Image2Client(m_pTransform->GetLandmark(m_nDataSet, nAt));
+				CPoint pt;
+				switch (m_nDataSet)
+				{
+				case 0:
+					pt = Image2Client(m_pTransform->GetLandmark<0>(nAt));
+					break;
+				case 1:
+					pt = Image2Client(m_pTransform->GetLandmark<1>(nAt));
+					break;
+				default:
+					throw invalid_argument("data set must be 0 or 1");
+				}					
 
 				// dc.Ellipse(pt.x - 5, pt.y - 5, pt.x + 6, pt.y + 6);
 
@@ -128,8 +138,20 @@ void CDibView::OnLButtonDown(UINT nFlags, CPoint point)
 		// find the landmark that we are dragging
 		for (int nAt = 0; nAt < m_pTransform->GetLandmarkCount(); nAt++)
 		{
-			CSize size = point 
-				- Image2Client(m_pTransform->GetLandmark(m_nDataSet, nAt));
+			CPoint ptLandmark;
+			switch (m_nDataSet)
+			{
+			case 0:
+				ptLandmark = Image2Client(m_pTransform->GetLandmark<0>(nAt));
+				break;
+			case 1:
+				ptLandmark = Image2Client(m_pTransform->GetLandmark<1>(nAt));
+				break;
+			default:
+				throw invalid_argument("data set must be 0 or 1");
+			}
+
+			CSize size = point - ptLandmark;
 
 			if (-5 < size.cx && size.cx < 5
 				&& -5 < size.cy && size.cy < 5)
@@ -167,14 +189,27 @@ void CDibView::OnMouseMove(UINT nFlags, CPoint point)
 {
 	if (-1 != m_nDraggingLandmark)
 	{
-		m_pTransform->SetLandmark(m_nDataSet, m_nDraggingLandmark, 
-			m_pTransform->GetLandmark(m_nDataSet, m_nDraggingLandmark) 
-				+ Client2Image(point) - Client2Image(m_ptPrev));
+		switch (m_nDataSet)
+		{
+		case 0:
+			m_pTransform->SetLandmark<0>(m_nDraggingLandmark,
+				m_pTransform->GetLandmark<0>(m_nDraggingLandmark) + Client2Image(point) - Client2Image(m_ptPrev));
 
-		// TODO: shouldn't this be reversed
-		m_pInverseTransform->SetLandmark(1-m_nDataSet, m_nDraggingLandmark, 
-			m_pInverseTransform->GetLandmark(1-m_nDataSet, m_nDraggingLandmark) 
-				+ Client2Image(point) - Client2Image(m_ptPrev));
+			// TODO: shouldn't this be reversed
+			m_pInverseTransform->SetLandmark<1>(m_nDraggingLandmark,
+				m_pInverseTransform->GetLandmark<1>(m_nDraggingLandmark) + Client2Image(point) - Client2Image(m_ptPrev));
+			break;
+		case 1:
+			m_pTransform->SetLandmark<1>(m_nDraggingLandmark,
+				m_pTransform->GetLandmark<1>(m_nDraggingLandmark) + Client2Image(point) - Client2Image(m_ptPrev));
+
+			// TODO: shouldn't this be reversed
+			m_pInverseTransform->SetLandmark<0>(m_nDraggingLandmark,
+				m_pInverseTransform->GetLandmark<0>(m_nDraggingLandmark) + Client2Image(point) - Client2Image(m_ptPrev));
+			break;
+		default:
+			throw new invalid_argument("dataset must be 0 or 1");
+		}
 
 		Invalidate(FALSE);
 

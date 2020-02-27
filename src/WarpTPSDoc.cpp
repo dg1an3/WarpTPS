@@ -76,8 +76,8 @@ void CWarpTPSDoc::Serialize(CArchive& ar)
 		ar << m_transform.GetLandmarkCount();
 		for (int nAt = 0; nAt < m_transform.GetLandmarkCount(); nAt++)
 		{
-			ar << m_transform.GetLandmark(0, nAt);
-			ar << m_transform.GetLandmark(1, nAt);
+			ar << m_transform.GetLandmark<0>(nAt);
+			ar << m_transform.GetLandmark<1>(nAt);
 		}
 	}
 	else
