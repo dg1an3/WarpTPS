@@ -12,6 +12,21 @@
 // add headers that you want to pre-compile here
 #include "framework.h"
 
+
+// inclue the boost geometry header
+#include <boost/geometry.hpp>
+namespace bg = boost::geometry;
+
+// inclue the boost geometry header
+#include <boost/numeric/ublas/matrix.hpp>
+#include <boost/numeric/ublas/vector.hpp>
+#include <boost/numeric/ublas/vector_proxy.hpp>
+#include <boost/numeric/ublas/matrix.hpp>
+#include <boost/numeric/ublas/triangular.hpp>
+#include <boost/numeric/ublas/lu.hpp>
+#include <boost/numeric/ublas/io.hpp>
+namespace ublas = boost::numeric::ublas;
+
 // TRACE for unit tests
 #define TRACE Logger::WriteMessage
 

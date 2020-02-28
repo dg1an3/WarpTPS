@@ -462,7 +462,6 @@ inline void CTPSTransform::ResampleRawWithField(LPBYTE pSrcPixels, LPBYTE pDstPi
 
 }
 
-
 //////////////////////////////////////////////////////////////////////
 // CTPSTransform::RecalcWeights
 // 

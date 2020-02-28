@@ -23,6 +23,21 @@
 
 #include <boost/asio.hpp>
 
+
+// inclue the boost geometry header
+#include <boost/geometry.hpp>
+namespace bg = boost::geometry;
+
+// inclue the boost geometry header
+#include <boost/numeric/ublas/matrix.hpp>
+#include <boost/numeric/ublas/vector.hpp>
+#include <boost/numeric/ublas/vector_proxy.hpp>
+#include <boost/numeric/ublas/matrix.hpp>
+#include <boost/numeric/ublas/triangular.hpp>
+#include <boost/numeric/ublas/lu.hpp>
+#include <boost/numeric/ublas/io.hpp>
+namespace ublas = boost::numeric::ublas;
+
 #include "TPSTransform.h"
 
 #endif //PCH_H

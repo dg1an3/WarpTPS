@@ -145,3 +145,32 @@ inline REAL conjg(const REAL& c)
 {
 	return c;
 }
+
+
+//////////////////////////////////////////////////////////////////////
+// invert
+// inverts a ublas matrix
+//////////////////////////////////////////////////////////////////////
+template<class TYPE>
+bool invert(const ublas::matrix<TYPE>& input, ublas::matrix<TYPE>& inverse) {
+	typedef ublas::permutation_matrix<std::size_t> pmatrix;
+	// create a working copy of the input
+	ublas::matrix<TYPE> A(input);
+	// create a permutation matrix for the LU-factorization
+	pmatrix pm(A.size1());
+
+	// perform LU-factorization
+	int res = ublas::lu_factorize(A, pm);
+	if (res != 0) {
+		return false;
+	}
+
+	// create identity matrix of "inverse"
+	inverse.assign(ublas::identity_matrix<TYPE>(A.size1()));
+
+	// backsubstitute to get the inverse
+	ublas::lu_substitute(A, pm, inverse);
+
+	return true;
+}
+

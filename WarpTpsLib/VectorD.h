@@ -13,9 +13,6 @@
 // base class include
 #include "VectorBase.h"
 
-// inclue the boost geometry header
-#include <boost/geometry.hpp>
-namespace bg = boost::geometry;
 typedef bg::model::point<double, 3, bg::cs::cartesian> Point3d_t;
 
 //////////////////////////////////////////////////////////////////////
