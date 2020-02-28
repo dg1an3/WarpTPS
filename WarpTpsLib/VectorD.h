@@ -13,8 +13,6 @@
 // base class include
 #include "VectorBase.h"
 
-typedef bg::model::point<double, 3, bg::cs::cartesian> Point3d_t;
-
 //////////////////////////////////////////////////////////////////////
 // class CVectorD<DIM, TYPE>
 //
@@ -55,7 +53,7 @@ public:
 	CVectorD& operator-=(const CVectorD& vRight);
 
 	typedef bg::model::point<TYPE, DIM, bg::cs::cartesian> Point_t;
-	Point_t& point() { return m_point;  }
+	Point_t& point() const { return const_cast<Point_t&>(m_point);  }
 
 private:
 	// the vector's elements

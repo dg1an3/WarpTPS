@@ -111,10 +111,10 @@ private:
 // 
 // returns the log-distance squared betweeen two landmarks
 //////////////////////////////////////////////////////////////////////
-inline double distance_function(const CVectorD<3>& vL1, const CVectorD<3>& vL2, const REAL k = 1.0, REAL r_exp = 2.0)
+inline double distance_function(const CVectorD<3>::Point_t& vL1, const CVectorD<3>::Point_t& vL2, const REAL k = 1.0, REAL r_exp = 2.0)
 {
 	// compute the euclidean distance
-	double r = (vL1 - vL2).GetLength();
+	auto r = bg::distance(vL1, vL2);
 
 #ifdef SQUARE_ONLY
 	// pass through the log-squared
@@ -270,22 +270,22 @@ inline void CTPSTransform::Eval(const CVectorD<3>& vPos, CVectorD<3>& vOffset, f
 	for (int nAt = 0; nAt < n; nAt++)
 	{
 		// distance to the first landmark
-		double d = distance_function(vPos, GetLandmark<0>(nAt), m_k, m_r_exp);
+		double d = distance_function(vPos.point(), GetLandmark<0>(nAt).point(), m_k, m_r_exp);
 
 		// add weight vector displacements
-		Point3d_t displacement(m_vWx(nAt), m_vWy(nAt));
+		CVectorD<3,REAL>::Point_t displacement(m_vWx(nAt), m_vWy(nAt));
 		bg::multiply_value(displacement, d * percent);
 		bg::add_point(vOffset.point(), displacement);
 	}
 
 	// add the affine displacements
-	bg::add_point(vOffset.point(), Point3d_t(m_vWx(n + 0), m_vWy(n + 0)));
+	bg::add_point(vOffset.point(), CVectorD<3, REAL>::Point_t(m_vWx(n + 0), m_vWy(n + 0)));
 
-	Point3d_t weightx(m_vWx(n + 1), m_vWy(n + 1));
+	CVectorD<3, REAL>::Point_t weightx(m_vWx(n + 1), m_vWy(n + 1));
 	bg::multiply_value(weightx, vPos[0]);
 	bg::add_point(vOffset.point(), weightx);
 
-	Point3d_t weighty(m_vWx(n + 2), m_vWy(n + 2));
+	CVectorD<3, REAL>::Point_t weighty(m_vWx(n + 2), m_vWy(n + 2));
 	bg::multiply_value(weighty, vPos[1]);
 	bg::add_point(vOffset.point(), weighty);
 }
@@ -475,8 +475,8 @@ inline void CTPSTransform::RecalcWeights()
 				if (nAtRow != nAtCol) {	// are we off-diagonal?
 					// populate the K part of the matrix
 					mL(nAtCol,nAtRow) =
-						distance_function(GetLandmark<0>(nAtRow),
-							GetLandmark<0>(nAtCol), m_k, m_r_exp);
+						distance_function(GetLandmark<0>(nAtRow).point(),
+							GetLandmark<0>(nAtCol).point(), m_k, m_r_exp);
 				} else {				// zeros on the diagonal
 					mL(nAtCol, nAtRow) = 0.0;
 				}
@@ -524,14 +524,8 @@ inline void CTPSTransform::RecalcWeights()
 		vHy(nAtLandmark) = 0.0;
 	}
 
-	auto vWx = ublas::prod(m_mL_inv, vHx);
-	auto vWy = ublas::prod(m_mL_inv, vHy);
-
-	// compute the weight vectors
-	m_vWx.resize(vWx.size());
-	m_vWy.resize(vWy.size());
-	std::copy(vWx.begin(), vWx.end(), m_vWx.begin());
-	std::copy(vWy.begin(), vWy.end(), m_vWy.begin());
+	m_vWx = ublas::prod(m_mL_inv, vHx);
+	m_vWy = ublas::prod(m_mL_inv, vHy);
 
 	// unset flag
 	m_bRecalc = FALSE;
