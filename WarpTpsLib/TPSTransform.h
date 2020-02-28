@@ -307,28 +307,34 @@ inline void CTPSTransform::Presample(int width, int height)
 		m_bRecalcPresample = TRUE;
 	}
 
-	CVectorD<3> vZero;
-	for (int nAt = 0; nAt < (int)m_presampledOffsets.size(); nAt++)
-		m_presampledOffsets[nAt] = vZero;
-
 	if (m_bRecalcPresample)
 	{
 		// position of the destination
-		CVectorD<3>::Point_t vDstPos;
+		CVectorD<3>::Point_t vDstPos(0.0, 0.0, 0.0);
 
-		// for each pixel in the image
-		int dstAtY = 0;
-		for (dstAtY = 0, bg::set<1>(vDstPos, 0.0); vDstPos.get<1>() < height; dstAtY++, bg::set<1>(vDstPos, vDstPos.get<1>() + 1.0))
+		// for each pixel in the image		
+		bg::set<1>(vDstPos, 0.0);
+		for (int dstAtY = 0; vDstPos.get<1>() < height; dstAtY++)
 		{
-			int dstAtX = 0;
-			for (dstAtX = 0, bg::set<0>(vDstPos, 0.0); vDstPos.get<0>() < width; dstAtX++, bg::set<0>(vDstPos, vDstPos.get<0>() + 1.0))
+			bg::set<0>(vDstPos, 0.0);
+			for (int dstAtX = 0; vDstPos.get<0>() < width; dstAtX++)
 			{
+				CVectorD<3>::Point_t offset;
+				bg::set<0>(offset, 0.0);
+				bg::set<1>(offset, 0.0);
+				bg::set<2>(offset, 0.0);
+
+				Eval(vDstPos, offset, 1.0);
 				CVectorD<3>& vOffset = m_presampledOffsets[dstAtY * m_presampledWidth + dstAtX];
-				Eval(vDstPos, vOffset.point(), 1.0);
+				vOffset[0] = offset.get<0>();
+				vOffset[1] = offset.get<1>();
+				vOffset[2] = offset.get<2>();
 
 				// remove initial position to leave true offset
 				// vSrcPos -= vDstPos;
+				bg::set<0>(vDstPos, vDstPos.get<0>() + 1.0);
 			}
+			bg::set<1>(vDstPos, vDstPos.get<1>() + 1.0);
 		}
 
 		m_bRecalcPresample = FALSE;
