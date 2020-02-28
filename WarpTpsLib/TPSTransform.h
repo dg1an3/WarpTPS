@@ -98,7 +98,7 @@ private:
 	int m_presampledHeight;
 
 	// stores the inverse of the distance matrix
-	CMatrixNxM<> m_mL_inv;
+	ublas::matrix<REAL> m_mL_inv;
 
 	// the final weight vectors
 	CVectorN<> m_vWx;
@@ -512,8 +512,8 @@ inline void CTPSTransform::RecalcWeights()
 		}
 
 		// form the inverse of L
-		m_mL_inv.Reshape(n + 3, n + 3);
-		invert(mL, m_mL_inv.as_matrix());
+		m_mL_inv.resize(n + 3, n + 3);
+		invert(mL, m_mL_inv);
 
 		m_bRecalcMatrix = FALSE;
 	}
@@ -529,8 +529,8 @@ inline void CTPSTransform::RecalcWeights()
 			- GetLandmark<0>(nAtLandmark)[1];
 	}
 
-	auto vWx = ublas::prod(m_mL_inv.as_matrix(), vHx.as_vector());
-	auto vWy = ublas::prod(m_mL_inv.as_matrix(), vHy.as_vector());
+	auto vWx = ublas::prod(m_mL_inv, vHx.as_vector());
+	auto vWy = ublas::prod(m_mL_inv, vHy.as_vector());
 
 	// compute the weight vectors
 	m_vWx.SetDim(vHx.GetDim());
