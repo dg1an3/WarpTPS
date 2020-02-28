@@ -203,7 +203,6 @@
     <ClCompile Include="TPSTransform.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="MatrixBase.inl" />
     <None Include="packages.config" />
     <None Include="res\WarpTpsLib.rc2" />
     <None Include="WarpTpsLib.def" />
@@ -211,8 +210,6 @@
   <ItemGroup>
     <ClInclude Include="framework.h" />
     <ClInclude Include="MathUtil.h" />
-    <ClInclude Include="MatrixBase.h" />
-    <ClInclude Include="MatrixNxM.h" />
     <ClInclude Include="ModelObject.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Resource.h" />

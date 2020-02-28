@@ -7,8 +7,6 @@
 
 #include "pch.h"
 
-#include "MatrixNxM.h"
-#include "MatrixBase.inl"
 #include "TPSTransform.h"
 
 // test create instance

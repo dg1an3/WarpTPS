@@ -7,18 +7,9 @@
 
 #pragma once
 
-// container vector for the landmarks
-#include <vector>
-#include <tuple>
-
-
 // vector includes
 #include "VectorD.h"
 #include "VectorN.h"
-
-// matrix
-#include "MatrixNxM.h"
-#include "MatrixBase.inl"
 
 // model object base class
 #include "ModelObject.h"

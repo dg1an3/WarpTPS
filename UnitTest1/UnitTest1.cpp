@@ -71,37 +71,33 @@ namespace WarpTpsLib
 
 			TEST_METHOD(TestMatrixProduct)
 			{
+				std::stringstream ss;
+
 				// test that ublas initialization is all zeros
 				ublas::vector<REAL> vZero(10 + 3);
 				Assert::IsTrue(std::all_of(vZero.begin(), vZero.end(), [](double f) {return f == 0.0 || f != 0.0;}));
 
-				CMatrixNxM<REAL> m(3, 3);
-				m.SetIdentity();
 				auto scaleBy = 2.0;
-				m[1][1] = -scaleBy;
-				TRACE("m");
-				TraceMatrix("m", m);
+				ublas::matrix<REAL> m(3, 3);
+				m(0, 0) = 1.0; m(0, 1) = 0.0; m(0, 2) = 0.0;
+				m(1, 0) = 0.0; m(1, 1) = -scaleBy; m(1, 2) = 0.0;
+				m(2, 0) = 0.0; m(2, 1) = 0.0; m(2, 2) = 1.0;
+				ss << "m" << m << std::endl;
 
 				CVectorN<REAL> v(3);
 				v[0] = 1.0;
 				v[1] = -2.0;
 				v[2] = 3.0;
-				TRACE("original v");
-				TraceVector(v);
+				ss << "original v" << v.as_vector() << std::endl;
 
-				auto m_times_v = m * v;
-				TRACE("m x v");
-				TraceVector(m_times_v);
-
-				auto m_times_v_ublas = ublas::prod(m.as_matrix(), v.as_vector());
-				std::stringstream ss;
+				auto m_times_v_ublas = ublas::prod(m, v.as_vector());
 				ss << "m x v (ublas)" << m_times_v_ublas << std::endl;
+
 				TRACE(ss.str().c_str());
 
-				Assert::IsTrue(m_times_v[0] == m_times_v_ublas(0), L"m_times_v[0] == m_times_v_ublas(0)");
-				Assert::IsTrue(m_times_v[1] == m_times_v_ublas(1), L"m_times_v[1] == m_times_v_ublas(1)");
-				Assert::IsTrue(m_times_v[1] == -scaleBy * v[1], L"m_times_v[1] == -scaleBy * v[1]");
-				Assert::IsTrue(m_times_v[2] == m_times_v_ublas(2), L"m_times_v[2] == m_times_v_ublas(2)");
+				Assert::IsTrue(v[0] == m_times_v_ublas(0), L"v[0] == m_times_v_ublas(0)");
+				Assert::IsTrue(m_times_v_ublas(1) == -scaleBy * v[1], L"m_times_v_ublas(1) == -scaleBy * v[1]");
+				Assert::IsTrue(m_times_v_ublas(2) == v[2], L"m_times_v_ublas(2) == v[2]");
 			}
 		};
 	}

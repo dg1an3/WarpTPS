@@ -32,9 +32,6 @@
     <None Include="res\WarpTpsLib.rc2">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="MatrixBase.inl">
-      <Filter>Header Files</Filter>
-    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -48,12 +45,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="pch.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MatrixBase.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MatrixNxM.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ModelObject.h">
