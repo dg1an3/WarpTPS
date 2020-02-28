@@ -12,6 +12,9 @@
 // add headers that you want to pre-compile here
 #include "framework.h"
 
+// TRACE for unit tests
+#define TRACE Logger::WriteMessage
+
 #include "TPSTransform.h"
 
 #endif //PCH_H

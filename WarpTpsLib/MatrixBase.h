@@ -491,8 +491,6 @@ inline bool operator!=(const CMatrixBase<TYPE>& mLeft,
 template<class TYPE>
 ostream& operator<<(ostream& os, const CMatrixBase<TYPE>& m)
 {
-	cout << strMessage << " = \n";
-
 	for (int nAtRow = 0; nAtRow < m.GetRows(); nAtRow++)
 	{
 		cout << "\t<";
@@ -516,7 +514,9 @@ ostream& operator<<(ostream& os, const CMatrixBase<TYPE>& m)
 template<class TYPE>
 void TraceMatrix(const char *pszMessage, const CMatrixBase<TYPE>& m)
 {
-	TRACE("%s = \n", pszMessage);
+	char msg[100];
+	sprintf_s(msg, "%s = \n", pszMessage);
+	TRACE(msg);
 
 	// MATLAB output
 	TRACE("\t[");
@@ -525,7 +525,8 @@ void TraceMatrix(const char *pszMessage, const CMatrixBase<TYPE>& m)
 	{
 		for (int nAtCol = 0; nAtCol < m.GetCols(); nAtCol++)
 		{
-			TRACE("%10.4lf\t", (double) m[nAtCol][nAtRow]);
+			sprintf_s(msg, "%10.4lf\t", (double)m[nAtCol][nAtRow]);
+			TRACE(msg);
 		}
 
 		if (nAtRow < m.GetRows()-1)

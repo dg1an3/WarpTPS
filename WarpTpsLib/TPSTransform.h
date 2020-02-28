@@ -529,9 +529,25 @@ inline void CTPSTransform::RecalcWeights()
 			- GetLandmark<0>(nAtLandmark)[1];
 	}
 
+	auto vWx = ublas::prod(m_mL_inv.as_matrix(), vHx.as_vector());
+	auto vWy = ublas::prod(m_mL_inv.as_matrix(), vHy.as_vector());
+
 	// compute the weight vectors
+	m_vWx.SetDim(vHx.GetDim());
+	m_vWy.SetDim(vHy.GetDim());
+#if COMPARE_UBLAS
 	m_vWx = m_mL_inv * vHx;
 	m_vWy = m_mL_inv * vHy;
+
+	// std::stringstream ss; ss << vWx << " == " << m_vWx << endl; auto vWx_str = ss.str();
+	for (int at = 0; at < n + 3; at++) {
+		ASSERT(vWx(at) == m_vWx[at]);
+		ASSERT(vWy(at) == m_vWy[at]);
+	}
+#else
+	std::copy(vWx.begin(), vWx.end(), m_vWx.as_vector().begin());
+	std::copy(vWy.begin(), vWy.end(), m_vWy.as_vector().begin());
+#endif
 
 	// unset flag
 	m_bRecalc = FALSE;

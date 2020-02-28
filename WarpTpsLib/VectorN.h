@@ -38,6 +38,12 @@ public:
 	// sets the dimensionality of this vector
 	void SetDim(int nDim);
 
+	// returns the boost::ublas matrix
+	ublas::vector<TYPE>& as_vector()
+	{
+		return m_v;
+	}
+
 private:
 	ublas::vector<TYPE> m_v;
 };

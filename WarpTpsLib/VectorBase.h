@@ -485,10 +485,12 @@ template<class TYPE>
 void TraceVector(const CVectorBase<TYPE>& vTrace)
 {
 #ifdef _DEBUG
+	char msg[100];
 	TRACE("<");
 	for (int nAt = 0; nAt < vTrace.GetDim(); nAt++)
 	{
-		TRACE("%lf\t", vTrace[nAt]);
+		sprintf_s(msg, "%lf\t", vTrace[nAt]);
+		TRACE(msg);
 	}
 	TRACE(">\n");
 #endif
