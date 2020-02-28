@@ -83,7 +83,7 @@ private:
 	vector<tuple<CVectorD<3>, CVectorD<3>>> m_arrLandmarkTuples;
 
 	// represents the pre-sampled array
-	vector< CVectorD<3> > m_presampledOffsets;
+	vector<CVectorD<3>::Point_t> m_presampledOffsets;
 	int m_presampledWidth;
 	int m_presampledHeight;
 
@@ -299,39 +299,22 @@ inline void CTPSTransform::Eval(const CVectorD<3>::Point_t& vPos, CVectorD<3>::P
 inline void CTPSTransform::Presample(int width, int height)
 {
 	if (width != m_presampledWidth
-		|| height != m_presampledHeight)
-	{
+		|| height != m_presampledHeight) {
 		m_presampledWidth = width;
 		m_presampledHeight = height;
 		m_presampledOffsets.resize(width * height);
 		m_bRecalcPresample = TRUE;
 	}
 
-	if (m_bRecalcPresample)
-	{
+	if (m_bRecalcPresample) {
 		// position of the destination
 		CVectorD<3>::Point_t vDstPos(0.0, 0.0, 0.0);
 
-		// for each pixel in the image		
-		bg::set<1>(vDstPos, 0.0);
-		for (int dstAtY = 0; vDstPos.get<1>() < height; dstAtY++)
-		{
+		// for each pixel in the image
+		for (int dstAtY = 0; vDstPos.get<1>() < height; dstAtY++) {
 			bg::set<0>(vDstPos, 0.0);
-			for (int dstAtX = 0; vDstPos.get<0>() < width; dstAtX++)
-			{
-				CVectorD<3>::Point_t offset;
-				bg::set<0>(offset, 0.0);
-				bg::set<1>(offset, 0.0);
-				bg::set<2>(offset, 0.0);
-
-				Eval(vDstPos, offset, 1.0);
-				CVectorD<3>& vOffset = m_presampledOffsets[dstAtY * m_presampledWidth + dstAtX];
-				vOffset[0] = offset.get<0>();
-				vOffset[1] = offset.get<1>();
-				vOffset[2] = offset.get<2>();
-
-				// remove initial position to leave true offset
-				// vSrcPos -= vDstPos;
+			for (int dstAtX = 0; vDstPos.get<0>() < width; dstAtX++) {
+				Eval(vDstPos, m_presampledOffsets[dstAtY * m_presampledWidth + dstAtX], 1.0);
 				bg::set<0>(vDstPos, vDstPos.get<0>() + 1.0);
 			}
 			bg::set<1>(vDstPos, vDstPos.get<1>() + 1.0);
@@ -404,8 +387,8 @@ inline void CTPSTransform::ResampleRawWithField(LPBYTE pSrcPixels, LPBYTE pDstPi
 	float percent)
 {
 	// see if a recalc is needed
-	if (m_bRecalc)
-	{
+	if (m_bRecalc) {
+
 		// recalculate the weight vectors
 		RecalcWeights();
 	}
@@ -413,40 +396,35 @@ inline void CTPSTransform::ResampleRawWithField(LPBYTE pSrcPixels, LPBYTE pDstPi
 	// if there are no landmarks, then no presampled vector field
 	if (m_bRecalcPresample
 		|| m_presampledWidth != width
-		|| m_presampledHeight != height)
-	{
+		|| m_presampledHeight != height) {
+
 		Presample(width, height);
 	}
 
-	CVectorD<3> vSrcPos;
-	for (int dstAtY = 0; dstAtY < (int)height; dstAtY++)
-	{
-		for (int dstAtX = 0; dstAtX < (int)width; dstAtX++)
-		{
+	CVectorD<3>::Point_t vSrcPos(0.0, 0.0, 0.0);
+	for (int dstAtY = 0; dstAtY < (int)height; dstAtY++) {
+		for (int dstAtX = 0; dstAtX < (int)width; dstAtX++) {
 			// compute the destination position
 			int nDstY = height - dstAtY - 1;
 			int nDstIndex = bytesPerPixel * dstAtX
 				+ nDstY * stride;
 
-			vSrcPos[0] = dstAtX;
-			vSrcPos[1] = dstAtY;
-			vSrcPos += ((double)percent) * m_presampledOffsets[dstAtY * m_presampledWidth + dstAtX];
+			const CVectorD<3>::Point_t& offset = m_presampledOffsets[dstAtY * m_presampledWidth + dstAtX];
+			bg::set<0>(vSrcPos, dstAtX + ((double)percent) * offset.get<0>());
+			bg::set<1>(vSrcPos, dstAtY + ((double)percent) * offset.get<1>());
 
 			// bounds check source position
-			int nSrcY = height - (int)floor(vSrcPos[1] + 0.5) - 1;
-			if (vSrcPos[0] >= 0.0 && vSrcPos[0] < width
-				&& nSrcY >= 0 && nSrcY < (int) height)
-			{
+			int nSrcY = height - (int)floor(vSrcPos.get<1>() + 0.5) - 1;
+			if (vSrcPos.get<0>() >= 0.0 && vSrcPos.get<0>() < width
+				&& nSrcY >= 0 && nSrcY < (int) height) {
 				// compute the positions
-				int nSrcIndex = bytesPerPixel * (int)floor(vSrcPos[0] + 0.5)
+				int nSrcIndex = bytesPerPixel * (int)floor(vSrcPos.get<0>() + 0.5)
 					+ nSrcY * stride;
 
 				// and resample
 				memcpy(&pDstPixels[nDstIndex], &pSrcPixels[nSrcIndex],
 					bytesPerPixel);
-			}
-			else
-			{
+			} else {
 				// set to zero
 				memset(&pDstPixels[nDstIndex], 0, bytesPerPixel);
 			}
