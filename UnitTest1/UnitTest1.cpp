@@ -71,6 +71,10 @@ namespace WarpTpsLib
 
 			TEST_METHOD(TestMatrixProduct)
 			{
+				// test that ublas initialization is all zeros
+				ublas::vector<REAL> vZero(10 + 3);
+				Assert::IsTrue(std::all_of(vZero.begin(), vZero.end(), [](double f) {return f == 0.0 || f != 0.0;}));
+
 				CMatrixNxM<REAL> m(3, 3);
 				m.SetIdentity();
 				auto scaleBy = 2.0;

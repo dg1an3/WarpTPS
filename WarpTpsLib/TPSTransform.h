@@ -101,8 +101,8 @@ private:
 	ublas::matrix<REAL> m_mL_inv;
 
 	// the final weight vectors
-	CVectorN<> m_vWx;
-	CVectorN<> m_vWy;
+	ublas::vector<REAL> m_vWx;
+	ublas::vector<REAL> m_vWy;
 
 	// the radial basis exponent
 	float m_r_exp;
@@ -283,19 +283,19 @@ inline void CTPSTransform::Eval(const CVectorD<3>& vPos, CVectorD<3>& vOffset, f
 		double d = distance_function(vPos, GetLandmark<0>(nAt), m_k, m_r_exp);
 
 		// add weight vector displacements
-		Point3d_t displacement(m_vWx[nAt], m_vWy[nAt]);
+		Point3d_t displacement(m_vWx(nAt), m_vWy(nAt));
 		bg::multiply_value(displacement, d * percent);
 		bg::add_point(vOffset.point(), displacement);
 	}
 
 	// add the affine displacements
-	bg::add_point(vOffset.point(), Point3d_t(m_vWx[n + 0], m_vWy[n + 0]));
+	bg::add_point(vOffset.point(), Point3d_t(m_vWx(n + 0), m_vWy(n + 0)));
 
-	Point3d_t weightx(m_vWx[n + 1], m_vWy[n + 1]);
+	Point3d_t weightx(m_vWx(n + 1), m_vWy(n + 1));
 	bg::multiply_value(weightx, vPos[0]);
 	bg::add_point(vOffset.point(), weightx);
 
-	Point3d_t weighty(m_vWx[n + 2], m_vWy[n + 2]);
+	Point3d_t weighty(m_vWx(n + 2), m_vWy(n + 2));
 	bg::multiply_value(weighty, vPos[1]);
 	bg::add_point(vOffset.point(), weighty);
 }
@@ -519,22 +519,28 @@ inline void CTPSTransform::RecalcWeights()
 	}
 
 	// compute the x- and y-direction "heights"
-	CVectorN<> vHx(n + 3);
-	CVectorN<> vHy(n + 3);
-	for (int nAtLandmark = 0; nAtLandmark < n; nAtLandmark++) {
-		vHx[nAtLandmark] = GetLandmark<1>(nAtLandmark)[0]
+	ublas::vector<REAL> vHx(n + 3);
+	ublas::vector<REAL> vHy(n + 3);
+
+	int nAtLandmark = 0;
+	for (; nAtLandmark < n; nAtLandmark++) {
+		vHx(nAtLandmark) = GetLandmark<1>(nAtLandmark)[0]
 			- GetLandmark<0>(nAtLandmark)[0];
 
-		vHy[nAtLandmark] = GetLandmark<1>(nAtLandmark)[1]
+		vHy(nAtLandmark) = GetLandmark<1>(nAtLandmark)[1]
 			- GetLandmark<0>(nAtLandmark)[1];
 	}
+	for (; nAtLandmark < n + 3; nAtLandmark++) {
+		vHx(nAtLandmark) = 0.0;
+		vHy(nAtLandmark) = 0.0;
+	}
 
-	auto vWx = ublas::prod(m_mL_inv, vHx.as_vector());
-	auto vWy = ublas::prod(m_mL_inv, vHy.as_vector());
+	auto vWx = ublas::prod(m_mL_inv, vHx);
+	auto vWy = ublas::prod(m_mL_inv, vHy);
 
 	// compute the weight vectors
-	m_vWx.SetDim(vHx.GetDim());
-	m_vWy.SetDim(vHy.GetDim());
+	m_vWx.resize(vWx.size());
+	m_vWy.resize(vWy.size());
 #if COMPARE_UBLAS
 	m_vWx = m_mL_inv * vHx;
 	m_vWy = m_mL_inv * vHy;
@@ -545,8 +551,8 @@ inline void CTPSTransform::RecalcWeights()
 		ASSERT(vWy(at) == m_vWy[at]);
 	}
 #else
-	std::copy(vWx.begin(), vWx.end(), m_vWx.as_vector().begin());
-	std::copy(vWy.begin(), vWy.end(), m_vWy.as_vector().begin());
+	std::copy(vWx.begin(), vWx.end(), m_vWx.begin());
+	std::copy(vWy.begin(), vWy.end(), m_vWy.begin());
 #endif
 
 	// unset flag
