@@ -9,7 +9,6 @@
 
 // vector includes
 #include "VectorD.h"
-#include "VectorN.h"
 
 // model object base class
 #include "ModelObject.h"
@@ -531,19 +530,8 @@ inline void CTPSTransform::RecalcWeights()
 	// compute the weight vectors
 	m_vWx.resize(vWx.size());
 	m_vWy.resize(vWy.size());
-#if COMPARE_UBLAS
-	m_vWx = m_mL_inv * vHx;
-	m_vWy = m_mL_inv * vHy;
-
-	// std::stringstream ss; ss << vWx << " == " << m_vWx << endl; auto vWx_str = ss.str();
-	for (int at = 0; at < n + 3; at++) {
-		ASSERT(vWx(at) == m_vWx[at]);
-		ASSERT(vWy(at) == m_vWy[at]);
-	}
-#else
 	std::copy(vWx.begin(), vWx.end(), m_vWx.begin());
 	std::copy(vWy.begin(), vWy.end(), m_vWy.begin());
-#endif
 
 	// unset flag
 	m_bRecalc = FALSE;

@@ -59,9 +59,6 @@
     <ClInclude Include="VectorD.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="VectorN.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="UtilMacros.h">
       <Filter>Header Files</Filter>
     </ClInclude>

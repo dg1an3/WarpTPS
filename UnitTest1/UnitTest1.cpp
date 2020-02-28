@@ -84,20 +84,20 @@ namespace WarpTpsLib
 				m(2, 0) = 0.0; m(2, 1) = 0.0; m(2, 2) = 1.0;
 				ss << "m" << m << std::endl;
 
-				CVectorN<REAL> v(3);
-				v[0] = 1.0;
-				v[1] = -2.0;
-				v[2] = 3.0;
-				ss << "original v" << v.as_vector() << std::endl;
+				ublas::vector<REAL> v(3);
+				v(0) = 1.0;
+				v(1) = -2.0;
+				v(2) = 3.0;
+				ss << "original v" << v << std::endl;
 
-				auto m_times_v_ublas = ublas::prod(m, v.as_vector());
+				auto m_times_v_ublas = ublas::prod(m, v);
 				ss << "m x v (ublas)" << m_times_v_ublas << std::endl;
 
 				TRACE(ss.str().c_str());
 
-				Assert::IsTrue(v[0] == m_times_v_ublas(0), L"v[0] == m_times_v_ublas(0)");
-				Assert::IsTrue(m_times_v_ublas(1) == -scaleBy * v[1], L"m_times_v_ublas(1) == -scaleBy * v[1]");
-				Assert::IsTrue(m_times_v_ublas(2) == v[2], L"m_times_v_ublas(2) == v[2]");
+				Assert::IsTrue(v(0) == m_times_v_ublas(0), L"v[0] == m_times_v_ublas(0)");
+				Assert::IsTrue(m_times_v_ublas(1) == -scaleBy * v(1), L"m_times_v_ublas(1) == -scaleBy * v[1]");
+				Assert::IsTrue(m_times_v_ublas(2) == v(2), L"m_times_v_ublas(2) == v[2]");
 			}
 		};
 	}

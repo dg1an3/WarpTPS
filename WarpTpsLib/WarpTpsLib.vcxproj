@@ -218,7 +218,6 @@
     <ClInclude Include="UtilMacros.h" />
     <ClInclude Include="VectorBase.h" />
     <ClInclude Include="VectorD.h" />
-    <ClInclude Include="VectorN.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="WarpTpsLib.rc" />
