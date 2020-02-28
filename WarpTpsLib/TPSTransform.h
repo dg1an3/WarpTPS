@@ -314,20 +314,17 @@ inline void CTPSTransform::Presample(int width, int height)
 	if (m_bRecalcPresample)
 	{
 		// position of the destination
-		CVectorD<3> vDstPos;
-
-		// position of the source
-		CVectorD<3> vSrcPos;
+		CVectorD<3>::Point_t vDstPos;
 
 		// for each pixel in the image
 		int dstAtY = 0;
-		for (dstAtY = 0, vDstPos[1] = 0.0; vDstPos[1] < height; dstAtY++, vDstPos[1] += 1.0)
+		for (dstAtY = 0, bg::set<1>(vDstPos, 0.0); vDstPos.get<1>() < height; dstAtY++, bg::set<1>(vDstPos, vDstPos.get<1>() + 1.0))
 		{
 			int dstAtX = 0;
-			for (dstAtX = 0, vDstPos[0] = 0.0; vDstPos[0] < width; dstAtX++, vDstPos[0] += 1.0)
+			for (dstAtX = 0, bg::set<0>(vDstPos, 0.0); vDstPos.get<0>() < width; dstAtX++, bg::set<0>(vDstPos, vDstPos.get<0>() + 1.0))
 			{
 				CVectorD<3>& vOffset = m_presampledOffsets[dstAtY * m_presampledWidth + dstAtX];
-				Eval(vDstPos.point(), vOffset.point(), 1.0);
+				Eval(vDstPos, vOffset.point(), 1.0);
 
 				// remove initial position to leave true offset
 				// vSrcPos -= vDstPos;
@@ -537,7 +534,7 @@ inline void CTPSTransform::RecalcWeights()
 		const CVectorD<3>& vL1 = GetLandmark<1>(nAtLandmark);
 
 		CVectorD<3> vOffset;
-		Eval(vL0, vOffset, 1.0);
+		Eval(vL0.point(), vOffset.point(), 1.0);
 		CVectorD<3> vL0_xform = vL0 + vOffset;
 
 		ASSERT(vL0_xform.IsApproxEqual(vL1));
