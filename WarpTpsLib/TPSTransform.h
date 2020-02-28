@@ -60,7 +60,7 @@ public:
 
 	// evaluates the field at a point
 	// returns the offset vector, so the mapped point can be derived by adding the position and offset
-	void Eval(const CVectorD<3>& vPos, CVectorD<3>& vOffset, float percent);
+	void Eval(const CVectorD<3>::Point_t& vPos, CVectorD<3>::Point_t& vOffset, float percent);
 
 	// resample pixels
 	void ResampleRaw(LPBYTE pSrcPixels, LPBYTE pDstPixels, UINT bytesPerPixel, UINT width, UINT height, UINT stride, float percent);
@@ -246,7 +246,7 @@ inline void CTPSTransform::RemoveAllLandmarks()
 // 
 // evaluates the vector field at a point
 //////////////////////////////////////////////////////////////////////
-inline void CTPSTransform::Eval(const CVectorD<3>& vPos, CVectorD<3>& vOffset, float percent)
+inline void CTPSTransform::Eval(const CVectorD<3>::Point_t& vPos, CVectorD<3>::Point_t& vOffset, float percent)
 {
 	// TODO: should vOffset be initialized to zero?
 	// start with transformed equal to input
@@ -270,24 +270,24 @@ inline void CTPSTransform::Eval(const CVectorD<3>& vPos, CVectorD<3>& vOffset, f
 	for (int nAt = 0; nAt < n; nAt++)
 	{
 		// distance to the first landmark
-		double d = distance_function(vPos.point(), GetLandmark<0>(nAt).point(), m_k, m_r_exp);
+		double d = distance_function(vPos, GetLandmark<0>(nAt).point(), m_k, m_r_exp);
 
 		// add weight vector displacements
 		CVectorD<3,REAL>::Point_t displacement(m_vWx(nAt), m_vWy(nAt));
 		bg::multiply_value(displacement, d * percent);
-		bg::add_point(vOffset.point(), displacement);
+		bg::add_point(vOffset, displacement);
 	}
 
 	// add the affine displacements
-	bg::add_point(vOffset.point(), CVectorD<3, REAL>::Point_t(m_vWx(n + 0), m_vWy(n + 0)));
+	bg::add_point(vOffset, CVectorD<3, REAL>::Point_t(m_vWx(n + 0), m_vWy(n + 0)));
 
 	CVectorD<3, REAL>::Point_t weightx(m_vWx(n + 1), m_vWy(n + 1));
-	bg::multiply_value(weightx, vPos[0]);
-	bg::add_point(vOffset.point(), weightx);
+	bg::multiply_value(weightx, vPos.get<0>());
+	bg::add_point(vOffset, weightx);
 
 	CVectorD<3, REAL>::Point_t weighty(m_vWx(n + 2), m_vWy(n + 2));
-	bg::multiply_value(weighty, vPos[1]);
-	bg::add_point(vOffset.point(), weighty);
+	bg::multiply_value(weighty, vPos.get<1>());
+	bg::add_point(vOffset, weighty);
 }
 
 
@@ -327,7 +327,7 @@ inline void CTPSTransform::Presample(int width, int height)
 			for (dstAtX = 0, vDstPos[0] = 0.0; vDstPos[0] < width; dstAtX++, vDstPos[0] += 1.0)
 			{
 				CVectorD<3>& vOffset = m_presampledOffsets[dstAtY * m_presampledWidth + dstAtX];
-				Eval(vDstPos, vOffset, 1.0);
+				Eval(vDstPos.point(), vOffset.point(), 1.0);
 
 				// remove initial position to leave true offset
 				// vSrcPos -= vDstPos;
@@ -358,7 +358,7 @@ inline void CTPSTransform::ResampleRaw(LPBYTE pSrcPixels, LPBYTE pDstPixels,
 	{
 		for (vDstPos[0] = 0.0; vDstPos[0] < width; vDstPos[0] += 1.0)
 		{
-			Eval(vDstPos, vOffset, percent);
+			Eval(vDstPos.point(), vOffset.point(), percent);
 			vSrcPos = vDstPos + vOffset;
 
 			// compute the destination position
