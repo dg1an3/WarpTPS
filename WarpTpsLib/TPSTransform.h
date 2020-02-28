@@ -114,7 +114,7 @@ private:
 inline double distance_function(const CVectorD<3>::Point_t& vL1, const CVectorD<3>::Point_t& vL2, const REAL k = 1.0, REAL r_exp = 2.0)
 {
 	// compute the euclidean distance
-	auto r = bg::distance(vL1, vL2);
+	double r = sqrt((vL1.get<0>() - vL2.get<0>()) * (vL1.get<0>() - vL2.get<0>()) + (vL1.get<1>() - vL2.get<1>()) * (vL1.get<1>() - vL2.get<1>()));
 
 #ifdef SQUARE_ONLY
 	// pass through the log-squared
@@ -248,7 +248,11 @@ inline void CTPSTransform::RemoveAllLandmarks()
 //////////////////////////////////////////////////////////////////////
 inline void CTPSTransform::Eval(const CVectorD<3>::Point_t& vPos, CVectorD<3>::Point_t& vOffset, float percent)
 {
-	// TODO: should vOffset be initialized to zero?
+	// ensure vOffset is initialized to zero
+	bg::set<0>(vOffset, 0.0);
+	bg::set<1>(vOffset, 0.0);
+	bg::set<2>(vOffset, 0.0);
+
 	// start with transformed equal to input
 	// vPosTrans = vPos;
 
@@ -332,6 +336,13 @@ inline void CTPSTransform::ResampleRaw(LPBYTE pSrcPixels, LPBYTE pDstPixels,
 	UINT stride,
 	float percent)
 {
+	// see if a recalc is needed
+	if (m_bRecalc) {
+
+		// recalculate the weight vectors
+		RecalcWeights();
+	}
+
 	// position of the destination
 	CVectorD<3> vDstPos;
 
