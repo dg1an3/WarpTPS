@@ -189,27 +189,31 @@ void CDibView::OnMouseMove(UINT nFlags, CPoint point)
 {
 	if (-1 != m_nDraggingLandmark)
 	{
+		Point_t forwardl0, forwardl1;
+		std:tie(forwardl0, forwardl1) = m_pTransform->GetLandmarkTuple(m_nDraggingLandmark);
+		Point_t reversel0, reversel1;
+		std:tie(reversel0, reversel1) = m_pInverseTransform->GetLandmarkTuple(m_nDraggingLandmark);
 		switch (m_nDataSet)
 		{
 		case 0:
-			m_pTransform->SetLandmark<0>(m_nDraggingLandmark,
-				m_pTransform->GetLandmark<0>(m_nDraggingLandmark) + Client2Image(point) - Client2Image(m_ptPrev));
+			bg::add_point(reversel0, Client2Image(point).point());
+			bg::subtract_point(reversel0, Client2Image(m_ptPrev));
 
-			// TODO: shouldn't this be reversed
-			m_pInverseTransform->SetLandmark<1>(m_nDraggingLandmark,
-				m_pInverseTransform->GetLandmark<1>(m_nDraggingLandmark) + Client2Image(point) - Client2Image(m_ptPrev));
+			bg::add_point(forwardl1, Client2Image(point).point());
+			bg::subtract_point(forwardl1, Client2Image(m_ptPrev).point());
 			break;
 		case 1:
-			m_pTransform->SetLandmark<1>(m_nDraggingLandmark,
-				m_pTransform->GetLandmark<1>(m_nDraggingLandmark) + Client2Image(point) - Client2Image(m_ptPrev));
+			bg::add_point(forwardl0, Client2Image(point).point());
+			bg::subtract_point(forwardl0, Client2Image(m_ptPrev));
 
-			// TODO: shouldn't this be reversed
-			m_pInverseTransform->SetLandmark<0>(m_nDraggingLandmark,
-				m_pInverseTransform->GetLandmark<0>(m_nDraggingLandmark) + Client2Image(point) - Client2Image(m_ptPrev));
+			bg::add_point(reversel1, Client2Image(point).point());
+			bg::subtract_point(reversel1, Client2Image(m_ptPrev).point());
 			break;
 		default:
 			throw new invalid_argument("dataset must be 0 or 1");
 		}
+		m_pTransform->SetLandmarkTuple(m_nDraggingLandmark, std::make_tuple(forwardl0, forwardl1));
+		m_pInverseTransform->SetLandmarkTuple(m_nDraggingLandmark, std::make_tuple(reversel0, reversel1));
 
 		Invalidate(FALSE);
 

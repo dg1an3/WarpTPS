@@ -38,6 +38,8 @@ public:
 	template<int DATASET>
 	void SetLandmark(int nIndex, const CVectorD<3>& vLandmark);
 
+	void SetLandmarkTuple(int nIndex, CTPSTransform::LandmarkTuple_t);
+
 	// functions to add landmark points
 	int AddLandmark(const CVectorD<3>& vLandmark);
 	int AddLandmark(const CVectorD<3>& vLandmark1, 
@@ -210,6 +212,16 @@ inline void CTPSTransform::SetLandmark(int nIndex, const CVectorD<3>& vLandmark)
 	m_bRecalc = TRUE;
 	m_bRecalcPresample = TRUE;
 
+}
+
+inline void CTPSTransform::SetLandmarkTuple(int nIndex, CTPSTransform::LandmarkTuple_t toTuple)
+{
+	Point_t pt0, pt1;
+	std::tie(pt0, pt1) = toTuple;
+	CVectorD<3, REAL> v0(pt0.get<X>(), pt0.get<Y>(), pt0.get<Z>());
+	SetLandmark<0>(nIndex, v0);
+	CVectorD<3, REAL> v1(pt1.get<X>(), pt1.get<Y>(), pt1.get<Z>());
+	SetLandmark<1>(nIndex, v1);
 }
 
 //////////////////////////////////////////////////////////////////////
