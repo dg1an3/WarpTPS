@@ -61,6 +61,13 @@ private:
 };
 
 
+// use with Point_t
+const int X = 0;
+const int Y = 1;
+const int Z = 2;
+typedef CVectorD<3, REAL>::Point_t Point_t;
+
+
 //////////////////////////////////////////////////////////////////
 // CVectorD<DIM, TYPE>::CVectorD<DIM, TYPE>() 
 //
@@ -310,8 +317,8 @@ CVectorD<DIM, TYPE>& CVectorD<DIM, TYPE>::operator=(const CVectorD<DIM, TYPE>& v
 // tests for approximate equality using the given epsilon
 //////////////////////////////////////////////////////////////////
 template<int DIM, class TYPE>
-BOOL CVectorD<DIM, TYPE>::IsApproxEqual(const CVectorD<DIM, TYPE>& v, 
-										TYPE epsilon) const
+BOOL CVectorD<DIM, TYPE>::IsApproxEqual(const CVectorD<DIM, TYPE>& v,
+	TYPE epsilon) const
 {
 	// form the difference vector
 	CVectorD<DIM, TYPE> vDiff(*this);
@@ -405,7 +412,7 @@ inline CVectorD<DIM, TYPE> operator+(const CVectorD<DIM, TYPE>& vLeft,
 
 }	// operator+(const CVectorD, const CVectorD)
 
-
+	
 //////////////////////////////////////////////////////////////////////
 // operator-(const CVectorD, const CVectorD)
 //
@@ -422,141 +429,6 @@ inline CVectorD<DIM, TYPE> operator-(const CVectorD<DIM, TYPE>& vLeft,
 	return vSum;
 
 }	// operator-(const CVectorD, const CVectorD)
-
-
-//////////////////////////////////////////////////////////////////////
-// operator*(const CVectorD, const CVectorD)
-//
-// friend function for vector inner product
-//////////////////////////////////////////////////////////////////////
-template<int DIM, class TYPE>
-inline TYPE operator*(const CVectorD<DIM, TYPE>& vLeft, 
-							  const CVectorD<DIM, TYPE>& vRight)
-{
-	return operator*((const CVectorBase<TYPE>&) vLeft,
-		(const CVectorBase<TYPE>&) vRight);
-
-}	// operator*(const CVectorD, const CVectorD)
-
-
-//////////////////////////////////////////////////////////////////////
-// operator*(TYPE scalar, const CVectorD)
-//
-// friend function for scalar multiplication of a vector
-//////////////////////////////////////////////////////////////////////
-template<int DIM, class TYPE>
-inline CVectorD<DIM, TYPE> operator*(TYPE scalar, 
-							  const CVectorD<DIM, TYPE>& vRight)
-{
-	CVectorD<DIM, TYPE> vProd = vRight;
-	vProd *= scalar;
-
-	return vProd;
-
-}	// operator*(TYPE scalar, const CVectorD)
-
-
-//////////////////////////////////////////////////////////////////////
-// operator*(const CVectorD, TYPE scalar)
-//
-// friend function for scalar multiplication of a vector
-//////////////////////////////////////////////////////////////////////
-template<int DIM, class TYPE>
-inline CVectorD<DIM, TYPE> operator*(const CVectorD<DIM, TYPE>& vLeft, 
-							  TYPE scalar)
-{
-	CVectorD<DIM, TYPE> vProd = vLeft;
-	vProd *= scalar;
-
-	return vProd;
-
-}	// operator*(const CVectorD, TYPE scalar)
-
-
-//////////////////////////////////////////////////////////////////////
-// Cross(const CVectorD<2>&, const CVectorD<2>&)
-//
-// friend function for vector cross product of 2-d vectors
-//////////////////////////////////////////////////////////////////////
-template<class TYPE>
-inline TYPE Cross(const CVectorD<2, TYPE>& vLeft, 
-					const CVectorD<2, TYPE>& vRight)
-{
-	return vLeft[0] * vRight[1] - vLeft[1] * vRight[0];
-
-}	// Cross(const CVectorD<2>&, const CVectorD<2>&)
-
-
-//////////////////////////////////////////////////////////////////////
-// Cross(const CVectorD<3>&, const CVectorD<3>&)
-//
-// friend function for vector cross product of 3-d vectors
-//////////////////////////////////////////////////////////////////////
-template<class TYPE>
-inline CVectorD<3, TYPE> Cross(const CVectorD<3, TYPE>& vLeft, 
-						      const CVectorD<3, TYPE>& vRight)
-{
-	CVectorD<3, TYPE> vProd;
-
-	vProd[0] =   vLeft[1] * vRight[2] - vLeft[2] * vRight[1];
-	vProd[1] = -(vLeft[0] * vRight[2] - vLeft[2] * vRight[0]);
-	vProd[2] =   vLeft[0] * vRight[1] - vLeft[1] * vRight[0];
-
-	return vProd;
-
-}	// Cross(const CVectorD<3>&, const CVectorD<3>&)
-
-
-//////////////////////////////////////////////////////////////////////
-// ToHomogeneous(const CVectorD&)
-//
-// converts an N-dimensional vector to an N+1-dimensional homogeneous
-//		vector
-//////////////////////////////////////////////////////////////////////
-template<int DIM, class TYPE>
-inline CVectorD<DIM + 1, TYPE> ToHG(const CVectorD<DIM, TYPE>& v) 
-{
-	// create the homogeneous vector
-	CVectorD<DIM + 1, TYPE> vh;
-
-	// fill with the given vector's elements
-	for (int nAt = 0; nAt < DIM; nAt++)
-	{
-		vh[nAt] = v[nAt];
-	}
-
-	// set last element to 1.0
-	vh[DIM] = (TYPE) 1.0;
-
-	return vh;
-
-}	// ToHomogeneous(const CVectorD&)
-
-#define ToHomogeneous ToHG
-
-//////////////////////////////////////////////////////////////////////
-// FromHomogeneous(const CVectorD&)
-//
-// converts an N+1-dimensional homogeneous vector to an N-dimensional 
-//		vector
-//////////////////////////////////////////////////////////////////////
-template<int DIM, class TYPE>
-inline CVectorD<DIM, TYPE> FromHG(const CVectorD<DIM + 1, TYPE>& vh) 
-{
-	// create the non-homogeneous vector
-	CVectorD<DIM, TYPE> v;
-
-	// normalize the first DIM-1 elements by the last element
-	for (int nAt = 0; nAt < DIM; nAt++)
-	{
-		v[nAt] = vh[nAt] / vh[DIM];
-	}
-
-	return v;
-
-}	// FromHomogeneous(const CVectorD&)
-
-#define FromHomogeneous FromHG
 
 #ifdef __AFX_H__
 //////////////////////////////////////////////////////////////////////

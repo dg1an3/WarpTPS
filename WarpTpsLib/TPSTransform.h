@@ -32,6 +32,9 @@ public:
 	template<int DATASET>
 	const CVectorD<3>& GetLandmark(int nIndex);
 
+	typedef std::tuple<CVectorD<3>::Point_t, CVectorD<3>::Point_t> LandmarkTuple_t;
+	const LandmarkTuple_t CTPSTransform::GetLandmarkTuple(int nIndex);
+
 	template<int DATASET>
 	void SetLandmark(int nIndex, const CVectorD<3>& vLandmark);
 
@@ -67,9 +70,6 @@ public:
 
 	// resample pixels
 	void ResampleRawWithField(LPBYTE pSrcPixels, LPBYTE pDstPixels, UINT bytesPerPixel, UINT width, UINT height, UINT stride, float percent);
-
-	// helper to check that another transform is set up as the inverse of this one
-	BOOL CheckInverse(CTPSTransform* pInverse);
 
 protected:
 	// recalculates the TPS from the landmarks
@@ -114,7 +114,9 @@ private:
 inline double distance_function(const CVectorD<3>::Point_t& vL1, const CVectorD<3>::Point_t& vL2, const REAL k = 1.0, REAL r_exp = 2.0)
 {
 	// compute the euclidean distance
-	double r = sqrt((vL1.get<0>() - vL2.get<0>()) * (vL1.get<0>() - vL2.get<0>()) + (vL1.get<1>() - vL2.get<1>()) * (vL1.get<1>() - vL2.get<1>()));
+	auto diff = vL1;
+	bg::subtract_point(diff, vL2);
+	double r = sqrt(diff.get<X>()*diff.get<X>() + diff.get<Y>()*diff.get<Y>());
 
 #ifdef SQUARE_ONLY
 	// pass through the log-squared
@@ -173,6 +175,20 @@ inline const CVectorD<3>& CTPSTransform::GetLandmark(int nIndex)
 {
 	return std::get<DATASET>(m_arrLandmarkTuples[nIndex]);
 }
+
+
+//////////////////////////////////////////////////////////////////////
+// CTPSTransform::GetLandmarkTuple
+// returns a landmark tuple
+//////////////////////////////////////////////////////////////////////
+inline const CTPSTransform::LandmarkTuple_t
+	CTPSTransform::GetLandmarkTuple(int nIndex)
+{
+	CVectorD<3, REAL> vL0, vL1;
+	std::tie(vL0, vL1) = m_arrLandmarkTuples[nIndex];
+	return std::make_tuple(vL0.point(), vL1.point());
+}
+
 
 //////////////////////////////////////////////////////////////////////
 // CTPSTransform::SetLandmark
@@ -249,9 +265,7 @@ inline void CTPSTransform::RemoveAllLandmarks()
 inline void CTPSTransform::Eval(const CVectorD<3>::Point_t& vPos, CVectorD<3>::Point_t& vOffset, float percent)
 {
 	// ensure vOffset is initialized to zero
-	bg::set<0>(vOffset, 0.0);
-	bg::set<1>(vOffset, 0.0);
-	bg::set<2>(vOffset, 0.0);
+	bg::assign_zero(vOffset);
 
 	// start with transformed equal to input
 	// vPosTrans = vPos;
@@ -273,8 +287,11 @@ inline void CTPSTransform::Eval(const CVectorD<3>::Point_t& vPos, CVectorD<3>::P
 	// add the weight vector displacements
 	for (int nAt = 0; nAt < n; nAt++)
 	{
+		CVectorD<3, REAL>::Point_t vL0;
+		std::tie(vL0, ignore) = GetLandmarkTuple(nAt);
+
 		// distance to the first landmark
-		double d = distance_function(vPos, GetLandmark<0>(nAt).point(), m_k, m_r_exp);
+		double d = distance_function(vPos, vL0, m_k, m_r_exp);
 
 		// add weight vector displacements
 		CVectorD<3,REAL>::Point_t displacement(m_vWx(nAt), m_vWy(nAt));
@@ -286,11 +303,11 @@ inline void CTPSTransform::Eval(const CVectorD<3>::Point_t& vPos, CVectorD<3>::P
 	bg::add_point(vOffset, CVectorD<3, REAL>::Point_t(m_vWx(n + 0), m_vWy(n + 0)));
 
 	CVectorD<3, REAL>::Point_t weightx(m_vWx(n + 1), m_vWy(n + 1));
-	bg::multiply_value(weightx, vPos.get<0>());
+	bg::multiply_value(weightx, vPos.get<X>());
 	bg::add_point(vOffset, weightx);
 
 	CVectorD<3, REAL>::Point_t weighty(m_vWx(n + 2), m_vWy(n + 2));
-	bg::multiply_value(weighty, vPos.get<1>());
+	bg::multiply_value(weighty, vPos.get<Y>());
 	bg::add_point(vOffset, weighty);
 }
 
@@ -315,13 +332,13 @@ inline void CTPSTransform::Presample(int width, int height)
 		CVectorD<3>::Point_t vDstPos(0.0, 0.0, 0.0);
 
 		// for each pixel in the image
-		for (int dstAtY = 0; vDstPos.get<1>() < height; dstAtY++) {
-			bg::set<0>(vDstPos, 0.0);
-			for (int dstAtX = 0; vDstPos.get<0>() < width; dstAtX++) {
+		for (int dstAtY = 0; vDstPos.get<Y>() < height; dstAtY++) {
+			bg::set<X>(vDstPos, 0.0);
+			for (int dstAtX = 0; vDstPos.get<X>() < width; dstAtX++) {
 				Eval(vDstPos, m_presampledOffsets[dstAtY * m_presampledWidth + dstAtX], 1.0);
-				bg::set<0>(vDstPos, vDstPos.get<0>() + 1.0);
+				bg::set<X>(vDstPos, vDstPos.get<X>() + 1.0);
 			}
-			bg::set<1>(vDstPos, vDstPos.get<1>() + 1.0);
+			bg::set<Y>(vDstPos, vDstPos.get<Y>() + 1.0);
 		}
 
 		m_bRecalcPresample = FALSE;
@@ -348,7 +365,6 @@ inline void CTPSTransform::ResampleRaw(LPBYTE pSrcPixels, LPBYTE pDstPixels,
 
 	// position of the source
 	CVectorD<3> vOffset;
-	CVectorD<3> vSrcPos;
 
 	// for each pixel in the image
 	for (vDstPos[1] = 0.0; vDstPos[1] < height; vDstPos[1] += 1.0)
@@ -356,7 +372,8 @@ inline void CTPSTransform::ResampleRaw(LPBYTE pSrcPixels, LPBYTE pDstPixels,
 		for (vDstPos[0] = 0.0; vDstPos[0] < width; vDstPos[0] += 1.0)
 		{
 			Eval(vDstPos.point(), vOffset.point(), percent);
-			vSrcPos = vDstPos + vOffset;
+			CVectorD<3>::Point_t vSrcPos(vDstPos.point());
+			bg::add_point(vSrcPos, vOffset.point());
 
 			// compute the destination position
 			int nDstY = height - (int)vDstPos[1] - 1;
@@ -364,12 +381,12 @@ inline void CTPSTransform::ResampleRaw(LPBYTE pSrcPixels, LPBYTE pDstPixels,
 				+ nDstY * stride;
 
 			// bounds check source position
-			int nSrcY = height - (int)floor(vSrcPos[1] + 0.5) - 1;
-			if (vSrcPos[0] >= 0.0 && vSrcPos[0] < width
+			int nSrcY = height - (int)floor(vSrcPos.get<Y>() + 0.5) - 1;
+			if (vSrcPos.get<X>() >= 0.0 && vSrcPos.get<X>() < width
 				&& nSrcY >= 0 && nSrcY < (int) height)
 			{
 				// compute the positions
-				int nSrcIndex = bytesPerPixel * (int)floor(vSrcPos[0] + 0.5)
+				int nSrcIndex = bytesPerPixel * (int)floor(vSrcPos.get<X>() + 0.5)
 					+ nSrcY * stride;
 
 				// and resample
@@ -505,11 +522,10 @@ inline void CTPSTransform::RecalcWeights()
 
 	int nAtLandmark = 0;
 	for (; nAtLandmark < n; nAtLandmark++) {
-		vHx(nAtLandmark) = GetLandmark<1>(nAtLandmark)[0]
-			- GetLandmark<0>(nAtLandmark)[0];
-
-		vHy(nAtLandmark) = GetLandmark<1>(nAtLandmark)[1]
-			- GetLandmark<0>(nAtLandmark)[1];
+		CVectorD<3, REAL>::Point_t vL0, vL1;
+		std::tie(vL0, vL1) = GetLandmarkTuple(nAtLandmark);
+		vHx(nAtLandmark) = vL1.get<X>() - vL0.get<X>();
+		vHy(nAtLandmark) = vL1.get<Y>() - vL0.get<Y>();
 	}
 	for (; nAtLandmark < n + 3; nAtLandmark++) {
 		vHx(nAtLandmark) = 0.0;
@@ -521,43 +537,4 @@ inline void CTPSTransform::RecalcWeights()
 
 	// unset flag
 	m_bRecalc = FALSE;
-
-#ifdef _DEBUG
-	// now check to ensure the offsets at each landmark is correct
-	for (int nAtLandmark = 0; nAtLandmark < n; nAtLandmark++) {
-		const CVectorD<3>& vL0 = GetLandmark<0>(nAtLandmark);
-		const CVectorD<3>& vL1 = GetLandmark<1>(nAtLandmark);
-
-		CVectorD<3> vOffset;
-		Eval(vL0.point(), vOffset.point(), 1.0);
-		CVectorD<3> vL0_xform = vL0 + vOffset;
-
-		ASSERT(vL0_xform.IsApproxEqual(vL1));
-	}
-#endif
-}
-
-//////////////////////////////////////////////////////////////////////
-// CTPSTransform::RecalcWeights
-// 
-// checks that the two transforms are inverses as per the landmarks
-//////////////////////////////////////////////////////////////////////
-BOOL
-inline CTPSTransform::CheckInverse(CTPSTransform* pInverse)
-{
-	// now check to ensure the offsets at each landmark is correct
-	for (int nAtLandmark = 0; nAtLandmark < GetLandmarkCount(); nAtLandmark++)
-	{
-		const CVectorD<3>& vL0 = GetLandmark<0>(nAtLandmark);
-		const CVectorD<3>& vL0_other = pInverse->GetLandmark<1>(nAtLandmark);
-		if (!vL0.IsApproxEqual(vL0_other))
-			return FALSE;
-
-		const CVectorD<3>& vL1 = GetLandmark<1>(nAtLandmark);
-		const CVectorD<3>& vL1_other = pInverse->GetLandmark<0>(nAtLandmark);
-		if (!vL1.IsApproxEqual(vL1_other))
-			return FALSE;
-	}
-
-	return TRUE;
 }

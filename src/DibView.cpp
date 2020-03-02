@@ -220,13 +220,32 @@ void CDibView::OnMouseMove(UINT nFlags, CPoint point)
 	CWnd::OnMouseMove(nFlags, point);
 }
 
+BOOL CheckInverse(CTPSTransform* pForward, CTPSTransform* pInverse)
+{
+	// now check to ensure the offsets at each landmark is correct
+	for (int nAtLandmark = 0; nAtLandmark < pForward->GetLandmarkCount(); nAtLandmark++)
+	{
+		const CVectorD<3>& vL0 = pForward->GetLandmark<0>(nAtLandmark);
+		const CVectorD<3>& vL0_other = pInverse->GetLandmark<1>(nAtLandmark);
+		if (!vL0.IsApproxEqual(vL0_other))
+			return FALSE;
+
+		const CVectorD<3>& vL1 = pForward->GetLandmark<1>(nAtLandmark);
+		const CVectorD<3>& vL1_other = pInverse->GetLandmark<0>(nAtLandmark);
+		if (!vL1.IsApproxEqual(vL1_other))
+			return FALSE;
+	}
+
+	return TRUE;
+}
+
 void CDibView::OnLButtonUp(UINT nFlags, CPoint point) 
 {
 	m_nDraggingLandmark = -1;
 
 	// Check if both inverse and forward are consistent
-	ASSERT(m_pTransform->CheckInverse(m_pInverseTransform));
-	ASSERT(m_pInverseTransform->CheckInverse(m_pTransform));
+	ASSERT(CheckInverse(m_pTransform, m_pInverseTransform));
+	ASSERT(CheckInverse(m_pInverseTransform, m_pTransform));
 
 	if (m_pDoc)
 	{
@@ -250,7 +269,9 @@ CVectorD<3> CDibView::Client2Image(const CPoint &ptClient)
 	// offset to center and scale
 	CVectorD<3> vImage(ptClient);
 	vImage -= CVectorD<3>(rectDst.CenterPoint());
-	vImage *= ratio;
+	vImage[0] *= ratio;
+	vImage[1] *= ratio;
+	vImage[2] *= ratio;
 	vImage += CVectorD<3>(rectSrc.CenterPoint());
 
 	return vImage;

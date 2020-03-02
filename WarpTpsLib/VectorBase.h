@@ -68,7 +68,6 @@ public:
 	// in-place vector arithmetic
 	CVectorBase& operator+=(const CVectorBase& vRight);
 	CVectorBase& operator-=(const CVectorBase& vRight);
-	CVectorBase& operator*=(const TYPE& scalar);
 
 	// external element management
 	void SetElements(int nDim, TYPE *pElements, BOOL bFreeElements);
@@ -375,24 +374,6 @@ CVectorBase<TYPE>& CVectorBase<TYPE>::operator-=(const CVectorBase<TYPE>& vRight
 }	// CVectorBase<TYPE>::operator-=
 
 
-//////////////////////////////////////////////////////////////////
-// CVectorBase<TYPE>::operator*=
-//
-// in-place scalar multiplication; returns a reference to this
-//////////////////////////////////////////////////////////////////
-template<class TYPE>
-CVectorBase<TYPE>& CVectorBase<TYPE>::operator*=(const TYPE& scalar)
-{
-	for (int nAt = 0; nAt < GetDim(); nAt++)
-	{
-		(*this)[nAt] *= scalar;
-	}
-
-	return (*this);
-
-}	// CVectorBase<TYPE>::operator*=
-
-
 //////////////////////////////////////////////////////////////////////
 // operator==(const CVectorBase, const CVectorBase)
 //
@@ -430,30 +411,6 @@ inline bool operator!=(const CVectorBase<TYPE>& vLeft,
 	return !(vLeft == vRight);
 
 }	// operator!=(const CVectorBase, const CVectorBase)
-
-
-//////////////////////////////////////////////////////////////////////
-// operator*(const CVectorBase, const CVectorBase)
-//
-// friend function for vector inner product
-//////////////////////////////////////////////////////////////////////
-template<class TYPE>
-inline TYPE operator*(const CVectorBase<TYPE>& vLeft, 
-							  const CVectorBase<TYPE>& vRight)
-{
-	// stores the dot product
-	TYPE prod = (TYPE) 0.0;
-
-	// sum the element-wise multiplication
-	for (int nAt = 0; nAt < vLeft.GetDim(); nAt++)
-	{
-		prod += vLeft[nAt] * vRight[nAt];
-	}
-
-	// return the product
-	return prod;
-
-}	// operator*(const CVectorBase, const CVectorBase)
 
 
 //////////////////////////////////////////////////////////////////////
