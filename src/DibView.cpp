@@ -190,9 +190,9 @@ void CDibView::OnMouseMove(UINT nFlags, CPoint point)
 	if (-1 != m_nDraggingLandmark)
 	{
 		Point_t forwardl0, forwardl1;
-		std:tie(forwardl0, forwardl1) = m_pTransform->GetLandmarkTuple(m_nDraggingLandmark);
+		std::tie(forwardl0, forwardl1) = m_pTransform->GetLandmarkTuple(m_nDraggingLandmark);
 		Point_t reversel0, reversel1;
-		std:tie(reversel0, reversel1) = m_pInverseTransform->GetLandmarkTuple(m_nDraggingLandmark);
+		std::tie(reversel0, reversel1) = m_pInverseTransform->GetLandmarkTuple(m_nDraggingLandmark);
 		switch (m_nDataSet)
 		{
 		case 0:
