@@ -27,6 +27,7 @@ namespace http {
 			  { "html", "text/html" },
 			  { "jpg", "image/jpeg" },
 			  { "png", "image/png" },
+			  { "pnm", "image/x-portable-anymap" },
 			  { 0, 0 } // Marks end of list.
 			};
 

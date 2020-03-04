@@ -89,10 +89,10 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(SolutionDir)WarpTpsLib</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(OPENCV_SRC_DIR)modules\photo\include;$(OPENCV_SRC_DIR)modules\imgproc\include;$(OPENCV_SRC_DIR)modules\core\include;$(OPENCV_SRC_DIR)modules\objdetect\include;$(OPENCV_SRC_DIR)modules\calib3d\include;$(OPENCV_SRC_DIR)modules\imgcodecs\include;$(OPENCV_SRC_DIR)modules\features2d\include;$(OPENCV_SRC_DIR)modules\flann\include;$(OPENCV_SRC_DIR)modules\video\include;$(OPENCV_CONTRIB_DIR)modules\shape\include;$(OPENCV_SRC_DIR)modules\ml\include;$(OPENCV_SRC_DIR)modules\videoio\include;$(OPENCV_CONTRIB_DIR)modules\datasets\include;$(OPENCV_CONTRIB_DIR)modules\text\include;$(OPENCV_SRC_DIR)modules\dnn\include;$(OPENCV_CONTRIB_DIR)modules\plot\include;$(OPENCV_CONTRIB_DIR)modules\optflow\include;$(OPENCV_CONTRIB_DIR)modules\ximgproc\include;$(OPENCV_CONTRIB_DIR)modules\phase_unwrapping\include;$(OPENCV_CONTRIB_DIR)modules\tracking\include;$(OPENCV_SRC_DIR)modules\highgui\include;$(OPENCV_CONTRIB_DIR)modules\quality\include;$(OPENCV_CONTRIB_DIR)modules\xfeatures2d\include;$(OPENCV_CONTRIB_DIR)modules\xphoto\include;$(OPENCV_CONTRIB_DIR)modules\xobjdetect\include;$(OPENCV_CONTRIB_DIR)modules\videostab\include;$(OPENCV_CONTRIB_DIR)modules\surface_matching\include;$(OPENCV_CONTRIB_DIR)modules\superres\include;$(OPENCV_CONTRIB_DIR)modules\structured_light\include;$(OPENCV_CONTRIB_DIR)modules\stereo\include;$(OPENCV_CONTRIB_DIR)modules\saliency\include;$(OPENCV_CONTRIB_DIR)modules\rgbd\include;$(OPENCV_CONTRIB_DIR)modules\reg\include;$(OPENCV_CONTRIB_DIR)modules\rapid\include;$(OPENCV_CONTRIB_DIR)modules\line_descriptor\include;$(OPENCV_CONTRIB_DIR)modules\intensity_transform\include;$(OPENCV_CONTRIB_DIR)modules\img_hash\include;$(OPENCV_CONTRIB_DIR)modules\hfs\include;$(OPENCV_CONTRIB_DIR)modules\fuzzy\include;$(OPENCV_CONTRIB_DIR)modules\face\include;$(OPENCV_CONTRIB_DIR)modules\dpm\include;$(OPENCV_CONTRIB_DIR)modules\dnn_superres\include;$(OPENCV_CONTRIB_DIR)modules\dnn_objdetect\include;$(OPENCV_CONTRIB_DIR)modules\ccalib\include;$(OPENCV_CONTRIB_DIR)modules\bioinspired\include;$(OPENCV_CONTRIB_DIR)modules\bgsegm\include;$(OPENCV_CONTRIB_DIR)modules\aruco\include;$(OPENCV_SRC_DIR)modules\stitching\include;$(OPENCV_SRC_DIR)modules\gapi\include;$(OPENCV_BUILD_DIR)3rdparty\ippicv\ippicv_win\icv\include;$(OPENCV_BUILD_DIR)3rdparty\ippicv\ippicv_win\iw\include;$(OPENCV_BUILD_DIR);$(SolutionDir)WarpTpsLib</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -121,7 +121,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_CRT_SECURE_NO_WARNINGS;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)WarpTpsLib</AdditionalIncludeDirectories>
     </ClCompile>
@@ -221,6 +221,11 @@
     <Import Project="..\packages\boost.1.71.0.0\build\boost.targets" Condition="Exists('..\packages\boost.1.71.0.0\build\boost.targets')" />
     <Import Project="..\packages\boost_date_time-vc142.1.71.0.0\build\boost_date_time-vc142.targets" Condition="Exists('..\packages\boost_date_time-vc142.1.71.0.0\build\boost_date_time-vc142.targets')" />
     <Import Project="..\packages\boost_regex-vc142.1.71.0.0\build\boost_regex-vc142.targets" Condition="Exists('..\packages\boost_regex-vc142.1.71.0.0\build\boost_regex-vc142.targets')" />
+    <Import Project="..\packages\libpng.redist.1.6.28.1\build\native\libpng.redist.targets" Condition="Exists('..\packages\libpng.redist.1.6.28.1\build\native\libpng.redist.targets')" />
+    <Import Project="..\packages\zlib.v120.windesktop.msvcstl.dyn.rt-dyn.1.2.8.8\build\native\zlib.v120.windesktop.msvcstl.dyn.rt-dyn.targets" Condition="Exists('..\packages\zlib.v120.windesktop.msvcstl.dyn.rt-dyn.1.2.8.8\build\native\zlib.v120.windesktop.msvcstl.dyn.rt-dyn.targets')" />
+    <Import Project="..\packages\zlib.v140.windesktop.msvcstl.dyn.rt-dyn.1.2.8.8\build\native\zlib.v140.windesktop.msvcstl.dyn.rt-dyn.targets" Condition="Exists('..\packages\zlib.v140.windesktop.msvcstl.dyn.rt-dyn.1.2.8.8\build\native\zlib.v140.windesktop.msvcstl.dyn.rt-dyn.targets')" />
+    <Import Project="..\packages\libpng.1.6.28.1\build\native\libpng.targets" Condition="Exists('..\packages\libpng.1.6.28.1\build\native\libpng.targets')" />
+    <Import Project="..\packages\boost_zlib-vc142.1.71.0.0\build\boost_zlib-vc142.targets" Condition="Exists('..\packages\boost_zlib-vc142.1.71.0.0\build\boost_zlib-vc142.targets')" />
   </ImportGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
@@ -229,5 +234,10 @@
     <Error Condition="!Exists('..\packages\boost.1.71.0.0\build\boost.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\boost.1.71.0.0\build\boost.targets'))" />
     <Error Condition="!Exists('..\packages\boost_date_time-vc142.1.71.0.0\build\boost_date_time-vc142.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\boost_date_time-vc142.1.71.0.0\build\boost_date_time-vc142.targets'))" />
     <Error Condition="!Exists('..\packages\boost_regex-vc142.1.71.0.0\build\boost_regex-vc142.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\boost_regex-vc142.1.71.0.0\build\boost_regex-vc142.targets'))" />
+    <Error Condition="!Exists('..\packages\libpng.redist.1.6.28.1\build\native\libpng.redist.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\libpng.redist.1.6.28.1\build\native\libpng.redist.targets'))" />
+    <Error Condition="!Exists('..\packages\zlib.v120.windesktop.msvcstl.dyn.rt-dyn.1.2.8.8\build\native\zlib.v120.windesktop.msvcstl.dyn.rt-dyn.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\zlib.v120.windesktop.msvcstl.dyn.rt-dyn.1.2.8.8\build\native\zlib.v120.windesktop.msvcstl.dyn.rt-dyn.targets'))" />
+    <Error Condition="!Exists('..\packages\zlib.v140.windesktop.msvcstl.dyn.rt-dyn.1.2.8.8\build\native\zlib.v140.windesktop.msvcstl.dyn.rt-dyn.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\zlib.v140.windesktop.msvcstl.dyn.rt-dyn.1.2.8.8\build\native\zlib.v140.windesktop.msvcstl.dyn.rt-dyn.targets'))" />
+    <Error Condition="!Exists('..\packages\libpng.1.6.28.1\build\native\libpng.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\libpng.1.6.28.1\build\native\libpng.targets'))" />
+    <Error Condition="!Exists('..\packages\boost_zlib-vc142.1.71.0.0\build\boost_zlib-vc142.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\boost_zlib-vc142.1.71.0.0\build\boost_zlib-vc142.targets'))" />
   </Target>
 </Project>

@@ -23,6 +23,11 @@
 
 #include <boost/asio.hpp>
 
+// include png io
+#include <boost/gil/extension/io/pnm/tags.hpp>
+#include <boost/gil/extension/io/png/tags.hpp>
+#include <boost/gil/io/write_view.hpp>
+namespace gil = boost::gil;
 
 // inclue the boost geometry header
 #include <boost/geometry.hpp>

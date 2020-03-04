@@ -24,6 +24,9 @@ namespace http {
 			new_connection_(),
 			request_handler_(doc_root)
 		{
+			std::cout << "starting server at " << address << " on port " << port << std::endl;
+			std::cout << "serving files at " << doc_root << std::endl;
+
 			// Register to handle the signals that indicate when the server should exit.
 			// It is safe to register for the same signal multiple times in a program,
 			// provided all registration for the specified signal is made through Asio.
