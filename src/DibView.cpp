@@ -196,18 +196,18 @@ void CDibView::OnMouseMove(UINT nFlags, CPoint point)
 		switch (m_nDataSet)
 		{
 		case 0:
-			bg::add_point(reversel0, Client2Image(point).point());
-			bg::subtract_point(reversel0, Client2Image(m_ptPrev));
-
-			bg::add_point(forwardl1, Client2Image(point).point());
-			bg::subtract_point(forwardl1, Client2Image(m_ptPrev).point());
-			break;
-		case 1:
 			bg::add_point(forwardl0, Client2Image(point).point());
-			bg::subtract_point(forwardl0, Client2Image(m_ptPrev));
+			bg::subtract_point(forwardl0, Client2Image(m_ptPrev).point());
 
 			bg::add_point(reversel1, Client2Image(point).point());
 			bg::subtract_point(reversel1, Client2Image(m_ptPrev).point());
+			break;
+		case 1:
+			bg::add_point(reversel0, Client2Image(point).point());
+			bg::subtract_point(reversel0, Client2Image(m_ptPrev).point());
+
+			bg::add_point(forwardl1, Client2Image(point).point());
+			bg::subtract_point(forwardl1, Client2Image(m_ptPrev).point());
 			break;
 		default:
 			throw new invalid_argument("dataset must be 0 or 1");

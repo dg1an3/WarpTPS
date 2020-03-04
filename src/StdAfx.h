@@ -23,6 +23,7 @@
 #include <afxtempl.h>
 
 // inclue the boost geometry header
+#include <tuple>
 #include <boost/geometry.hpp>
 namespace bg = boost::geometry;
 
