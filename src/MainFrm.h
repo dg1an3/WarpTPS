@@ -1,19 +1,14 @@
+
 // MainFrm.h : interface of the CMainFrame class
 //
-/////////////////////////////////////////////////////////////////////////////
 
-#if !defined(AFX_MAINFRM_H__B8464AF4_59F9_48BE_AA57_7BB72423935B__INCLUDED_)
-#define AFX_MAINFRM_H__B8464AF4_59F9_48BE_AA57_7BB72423935B__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
-class CMainFrame : public CFrameWnd
+class CMainFrame : public CFrameWndEx
 {
 	
 protected: // create from serialization only
-	CMainFrame();
+	CMainFrame() noexcept;
 	DECLARE_DYNCREATE(CMainFrame)
 
 // Attributes
@@ -23,10 +18,9 @@ public:
 public:
 
 // Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CMainFrame)
+public:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
-	//}}AFX_VIRTUAL
+	virtual BOOL LoadFrame(UINT nIDResource, DWORD dwDefaultStyle = WS_OVERLAPPEDWINDOW | FWS_ADDTOTITLE, CWnd* pParentWnd = nullptr, CCreateContext* pContext = nullptr);
 
 // Implementation
 public:
@@ -37,22 +31,18 @@ public:
 #endif
 
 protected:  // control bar embedded members
-	CStatusBar  m_wndStatusBar;
-	CToolBar    m_wndToolBar;
+	CMFCMenuBar       m_wndMenuBar;
+	CMFCToolBar       m_wndToolBar;
+	CMFCStatusBar     m_wndStatusBar;
+	CMFCToolBarImages m_UserImages;
 
 // Generated message map functions
 protected:
-	//{{AFX_MSG(CMainFrame)
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
-		// NOTE - the ClassWizard will add and remove member functions here.
-		//    DO NOT EDIT what you see in these blocks of generated code!
-	//}}AFX_MSG
+	afx_msg void OnViewCustomize();
+	afx_msg LRESULT OnToolbarCreateNew(WPARAM wp, LPARAM lp);
+	afx_msg void OnSettingChange(UINT uFlags, LPCTSTR lpszSection);
 	DECLARE_MESSAGE_MAP()
 };
 
-/////////////////////////////////////////////////////////////////////////////
 
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_MAINFRM_H__B8464AF4_59F9_48BE_AA57_7BB72423935B__INCLUDED_)

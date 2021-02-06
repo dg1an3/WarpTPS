@@ -24,8 +24,10 @@
 #include <boost/asio.hpp>
 
 // include png io
+#if USE_PNG
 #include <boost/gil/extension/io/pnm/tags.hpp>
 #include <boost/gil/extension/io/png/tags.hpp>
+#endif
 #include <boost/gil/io/write_view.hpp>
 namespace gil = boost::gil;
 

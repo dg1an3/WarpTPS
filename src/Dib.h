@@ -33,6 +33,7 @@ public:
 	void BlendPixels(CDib* from, float percent);
 
 	CSize	GetSize() { return CSize(m_bm.bmWidth, m_bm.bmHeight); }
+	BOOL CreateFromResource(UINT resId);
 	BOOL Attach(HGDIOBJ hbm);
 	BOOL Load(LPCTSTR szPathName);
 	BOOL Load(HINSTANCE hInst, LPCTSTR lpResourceName);

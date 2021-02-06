@@ -1,6 +1,8 @@
 #pragma once
 
-#include "WarpTPSDoc.h"
+
+// #include "WarpTPSDoc.h"
+#include "AnatoWarperDoc.h"
 #include "DibView.h"
 #include "afxcmn.h"
 #include "afxwin.h"
@@ -15,7 +17,7 @@ public:
 	MorphSlider(CWnd* pParent = NULL);   // standard constructor
 	virtual ~MorphSlider();
 
-	CWarpTPSDoc *m_pDoc;
+	CAnatoWarperDoc *m_pDoc;
 	CDibView *m_pWarpedView;
 
 	float m_morphPercent;

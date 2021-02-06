@@ -1,6 +1,7 @@
 // DibView.cpp : implementation file
 //
 
+#include "pch.h"
 #include "stdafx.h"
 #include "DibView.h"
 
@@ -309,8 +310,8 @@ CRect CDibView::GetDstRect()
 	CRect rectSrc(0, 0, m_pDib->GetSize().cx, m_pDib->GetSize().cy);
 
 	// set the client rectangle to the same aspect ratio
-	int nClientWidth = rectDst.Height() * rectSrc.Width() 
-		/ rectSrc.Height();
+	int nClientWidth = (rectDst.Height() * rectSrc.Width() + 1)
+		/ (rectSrc.Height() + 1);
 	CPoint ptCenter = rectDst.CenterPoint();
 	rectDst.left = ptCenter.x - nClientWidth / 2;
 	rectDst.right = ptCenter.x + nClientWidth / 2;

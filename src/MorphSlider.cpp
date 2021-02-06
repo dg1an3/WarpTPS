@@ -1,8 +1,10 @@
 // MorphSlider.cpp : implementation file
 //
 
-#include "stdafx.h"
-#include "WarpTPS.h"
+#include "pch.h"
+//#include "stdafx.h"
+// #include "WarpTPS.h"
+#include "AnatoWarper.h"
 #include "MorphSlider.h"
 #include "afxdialogex.h"
 #include <math.h>
@@ -45,13 +47,13 @@ void MorphSlider::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 	if (m_pDoc == NULL)
 		return;
 
-	SCROLLINFO si;
-	ZeroMemory(&si, sizeof(SCROLLINFO));
-	si.cbSize = sizeof(SCROLLINFO);
-	si.fMask = SIF_ALL;
-	::GetScrollInfo(pScrollBar->GetSafeHwnd(), SB_HORZ, &si);
+	//SCROLLINFO si;
+	//ZeroMemory(&si, sizeof(SCROLLINFO));
+	//si.cbSize = sizeof(SCROLLINFO);
+	//si.fMask = SIF_ALL;
+	//::GetScrollInfo(pScrollBar->GetSafeHwnd(), SB_HORZ, &si);
 
-	if (nSBCode == SB_THUMBTRACK || nSBCode == SB_THUMBPOSITION)
+	// if (nSBCode == SB_THUMBTRACK || nSBCode == SB_THUMBPOSITION)
 	{
 		BOOL bMorphChanged = FALSE;
 		BOOL bBlendChanged = FALSE;
@@ -61,6 +63,7 @@ void MorphSlider::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 
 			int minPos = 0, maxPos = 100;
 			pScrollBar->GetScrollRange(&minPos, &maxPos);
+			nPos = m_morphSlider.GetPos();
 			m_morphPercent = 1.0f - (float) nPos / (float) (maxPos - minPos);
 
 			if (m_checkLock.GetCheck() == 1)
@@ -76,6 +79,7 @@ void MorphSlider::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 
 			int minPos = 0, maxPos = 100;
 			pScrollBar->GetScrollRange(&minPos, &maxPos);
+			nPos = m_blendSlider.GetPos();
 			m_blendPercent = 1.0f - (float) nPos / (float) (maxPos - minPos);
 
 			if (m_checkLock.GetCheck() == 1)
@@ -91,6 +95,7 @@ void MorphSlider::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 
 			int minPos = 0, maxPos = 100;
 			pScrollBar->GetScrollRange(&minPos, &maxPos);
+			nPos = m_rSlider.GetPos();
 			float r_exp = ((float)(nPos+1));
 
 			m_pDoc->GetTransform()->SetK(r_exp);

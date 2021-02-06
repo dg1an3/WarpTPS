@@ -40,16 +40,20 @@ namespace http {
 			int pos = std::stoi(queryValue);
 
 
-
-			// write data into image
-			std::stringstream out_buffer(ios_base::out | ios_base::binary);
-			gil::gray8_image_t img(256, 256);
-			std::string fileName("c:\\tmp\\filename");
-			gil::write_view(fileName, view(img));
-
 			// Fill out the reply to be sent to the client.
 			rep.status = reply::ok;
 			char buf[512];
+			// write data into image
+			std::stringstream out_buffer(ios_base::out | ios_base::binary);
+
+
+#if USE_PNG
+			gil::gray8_image_t img(256, 256);
+			std::string fileName("c:\\tmp\\filename");
+			gil::write_view(fileName, view(img));
+			rep.content = out_buffer.str();
+#endif
+
 			rep.content = out_buffer.str();
 			rep.headers.resize(2);
 			rep.headers[0].name = "Content-Length";

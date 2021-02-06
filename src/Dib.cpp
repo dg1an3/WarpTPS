@@ -6,7 +6,8 @@
 // CDib - Device Independent Bitmap.CDib is derived from CBitmap, so
 // you can use it with other MFC functions that use bitmaps.
 //
-#include "stdafx.h"
+#include "pch.h"
+// #include "stdafx.h"
 #include "Dib.h"
 
 #ifdef _DEBUG
@@ -111,6 +112,17 @@ BOOL CDib::DeleteObject()
 	}
 	memset(&m_bm, 0, sizeof(m_bm));
 	return CBitmap::DeleteObject();
+}
+
+BOOL CDib::CreateFromResource(UINT resId)
+{
+	auto hCurrentModule = GetModuleHandle(NULL);
+	auto hBitmap = (HBITMAP)LoadImage(hCurrentModule, MAKEINTRESOURCE(resId), IMAGE_BITMAP, 0, 0, 0);
+	if (hBitmap)
+	{
+		return Attach(hBitmap);
+	}
+	return FALSE;
 }
 
 //////////////////
@@ -323,6 +335,14 @@ BOOL PLDrawBitmap(CDC& dc, CBitmap* pBitmap,
 
 void *CDib::GetDIBits()
 {
-	ASSERT(m_bm.bmBits != NULL);
-	return m_bm.bmBits;
+	if (m_bm.bmBits != NULL)
+	{
+		return m_bm.bmBits;
+	}
+
+	byte* pPixels = new byte[m_bm.bmWidth * m_bm.bmHeight * m_bm.bmBitsPixel / 8];
+	BITMAPINFO bi;
+	auto result = ::GetDIBits(::GetDC(NULL), (HBITMAP)GetSafeHandle(), 0, m_bm.bmHeight, pPixels, &bi, DIB_RGB_COLORS);
+
+	return pPixels;
 }

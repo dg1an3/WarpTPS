@@ -127,6 +127,7 @@
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
       <ObjectFileName>.\Release\</ObjectFileName>
       <ProgramDataBaseFileName>.\Release\</ProgramDataBaseFileName>
+      <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Midl>
       <SuppressStartupBanner>true</SuppressStartupBanner>
@@ -156,7 +157,7 @@
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">stdafx.h</PrecompiledHeaderFile>
     </ClCompile>
     <ClCompile Include="DibView.cpp" />
-    <ClCompile Include="MainFrm.cpp" />
+    <ClCompile Include="MainFrm_WarpTPS.cpp" />
     <ClCompile Include="MorphSlider.cpp" />
     <ClCompile Include="StdAfx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -174,9 +175,9 @@
   <ItemGroup>
     <ClInclude Include="Dib.h" />
     <ClInclude Include="DibView.h" />
-    <ClInclude Include="MainFrm.h" />
+    <ClInclude Include="MainFrm_WarpTPS.h" />
     <ClInclude Include="MorphSlider.h" />
-    <ClInclude Include="Resource.h" />
+    <ClInclude Include="resource_WarpTPS.h" />
     <ClInclude Include="StdAfx.h" />
     <ClInclude Include="WarpTPS.h" />
     <ClInclude Include="WarpTPSDoc.h" />

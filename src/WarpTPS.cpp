@@ -4,7 +4,7 @@
 #include "stdafx.h"
 #include "WarpTPS.h"
 
-#include "MainFrm.h"
+#include "MainFrm_WarpTPS.h"
 #include "WarpTPSDoc.h"
 #include "WarpTPSView.h"
 
