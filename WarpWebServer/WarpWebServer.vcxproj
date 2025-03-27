@@ -43,7 +43,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
@@ -218,26 +218,26 @@
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
-    <Import Project="..\packages\boost.1.71.0.0\build\boost.targets" Condition="Exists('..\packages\boost.1.71.0.0\build\boost.targets')" />
-    <Import Project="..\packages\boost_date_time-vc142.1.71.0.0\build\boost_date_time-vc142.targets" Condition="Exists('..\packages\boost_date_time-vc142.1.71.0.0\build\boost_date_time-vc142.targets')" />
-    <Import Project="..\packages\boost_regex-vc142.1.71.0.0\build\boost_regex-vc142.targets" Condition="Exists('..\packages\boost_regex-vc142.1.71.0.0\build\boost_regex-vc142.targets')" />
     <Import Project="..\packages\libpng.redist.1.6.28.1\build\native\libpng.redist.targets" Condition="Exists('..\packages\libpng.redist.1.6.28.1\build\native\libpng.redist.targets')" />
     <Import Project="..\packages\zlib.v120.windesktop.msvcstl.dyn.rt-dyn.1.2.8.8\build\native\zlib.v120.windesktop.msvcstl.dyn.rt-dyn.targets" Condition="Exists('..\packages\zlib.v120.windesktop.msvcstl.dyn.rt-dyn.1.2.8.8\build\native\zlib.v120.windesktop.msvcstl.dyn.rt-dyn.targets')" />
     <Import Project="..\packages\zlib.v140.windesktop.msvcstl.dyn.rt-dyn.1.2.8.8\build\native\zlib.v140.windesktop.msvcstl.dyn.rt-dyn.targets" Condition="Exists('..\packages\zlib.v140.windesktop.msvcstl.dyn.rt-dyn.1.2.8.8\build\native\zlib.v140.windesktop.msvcstl.dyn.rt-dyn.targets')" />
     <Import Project="..\packages\libpng.1.6.28.1\build\native\libpng.targets" Condition="Exists('..\packages\libpng.1.6.28.1\build\native\libpng.targets')" />
-    <Import Project="..\packages\boost_zlib-vc142.1.71.0.0\build\boost_zlib-vc142.targets" Condition="Exists('..\packages\boost_zlib-vc142.1.71.0.0\build\boost_zlib-vc142.targets')" />
+    <Import Project="..\packages\boost.1.87.0\build\boost.targets" Condition="Exists('..\packages\boost.1.87.0\build\boost.targets')" />
+    <Import Project="..\packages\boost_date_time-vc142.1.87.0\build\boost_date_time-vc142.targets" Condition="Exists('..\packages\boost_date_time-vc142.1.87.0\build\boost_date_time-vc142.targets')" />
+    <Import Project="..\packages\boost_regex-vc142.1.87.0\build\boost_regex-vc142.targets" Condition="Exists('..\packages\boost_regex-vc142.1.87.0\build\boost_regex-vc142.targets')" />
+    <Import Project="..\packages\boost_zlib-vc142.1.87.0\build\boost_zlib-vc142.targets" Condition="Exists('..\packages\boost_zlib-vc142.1.87.0\build\boost_zlib-vc142.targets')" />
   </ImportGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\boost.1.71.0.0\build\boost.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\boost.1.71.0.0\build\boost.targets'))" />
-    <Error Condition="!Exists('..\packages\boost_date_time-vc142.1.71.0.0\build\boost_date_time-vc142.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\boost_date_time-vc142.1.71.0.0\build\boost_date_time-vc142.targets'))" />
-    <Error Condition="!Exists('..\packages\boost_regex-vc142.1.71.0.0\build\boost_regex-vc142.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\boost_regex-vc142.1.71.0.0\build\boost_regex-vc142.targets'))" />
     <Error Condition="!Exists('..\packages\libpng.redist.1.6.28.1\build\native\libpng.redist.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\libpng.redist.1.6.28.1\build\native\libpng.redist.targets'))" />
     <Error Condition="!Exists('..\packages\zlib.v120.windesktop.msvcstl.dyn.rt-dyn.1.2.8.8\build\native\zlib.v120.windesktop.msvcstl.dyn.rt-dyn.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\zlib.v120.windesktop.msvcstl.dyn.rt-dyn.1.2.8.8\build\native\zlib.v120.windesktop.msvcstl.dyn.rt-dyn.targets'))" />
     <Error Condition="!Exists('..\packages\zlib.v140.windesktop.msvcstl.dyn.rt-dyn.1.2.8.8\build\native\zlib.v140.windesktop.msvcstl.dyn.rt-dyn.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\zlib.v140.windesktop.msvcstl.dyn.rt-dyn.1.2.8.8\build\native\zlib.v140.windesktop.msvcstl.dyn.rt-dyn.targets'))" />
     <Error Condition="!Exists('..\packages\libpng.1.6.28.1\build\native\libpng.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\libpng.1.6.28.1\build\native\libpng.targets'))" />
-    <Error Condition="!Exists('..\packages\boost_zlib-vc142.1.71.0.0\build\boost_zlib-vc142.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\boost_zlib-vc142.1.71.0.0\build\boost_zlib-vc142.targets'))" />
+    <Error Condition="!Exists('..\packages\boost.1.87.0\build\boost.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\boost.1.87.0\build\boost.targets'))" />
+    <Error Condition="!Exists('..\packages\boost_date_time-vc142.1.87.0\build\boost_date_time-vc142.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\boost_date_time-vc142.1.87.0\build\boost_date_time-vc142.targets'))" />
+    <Error Condition="!Exists('..\packages\boost_regex-vc142.1.87.0\build\boost_regex-vc142.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\boost_regex-vc142.1.87.0\build\boost_regex-vc142.targets'))" />
+    <Error Condition="!Exists('..\packages\boost_zlib-vc142.1.87.0\build\boost_zlib-vc142.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\boost_zlib-vc142.1.87.0\build\boost_zlib-vc142.targets'))" />
   </Target>
 </Project>
