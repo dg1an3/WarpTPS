@@ -49,7 +49,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -207,6 +207,7 @@
   <ItemGroup>
     <ClInclude Include="connection.hpp" />
     <ClInclude Include="connection_manager.hpp" />
+    <ClInclude Include="framework.h" />
     <ClInclude Include="header.hpp" />
     <ClInclude Include="mime_types.hpp" />
     <ClInclude Include="pch.h" />
@@ -215,6 +216,7 @@
     <ClInclude Include="request_handler.hpp" />
     <ClInclude Include="request_parser.hpp" />
     <ClInclude Include="server.hpp" />
+    <ClInclude Include="targetver.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
