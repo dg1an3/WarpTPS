@@ -15,6 +15,9 @@ public:
 	MorphSlider(CWnd* pParent = NULL);   // standard constructor
 	virtual ~MorphSlider();
 
+public:
+	virtual BOOL OnInitDialog();
+
 	CWarpTPSDoc *m_pDoc;
 	CDibView *m_pWarpedView;
 

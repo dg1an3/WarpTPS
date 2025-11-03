@@ -1,0 +1,19 @@
+# [Category] Brief description (max 72 chars)
+#
+# Categories: Feature, Bugfix, Refactor, Docs, Test, Build, Perf, Style
+#
+# Detailed description of changes (wrap at 72 characters):
+# - Change 1
+# - Change 2
+# - Change 3
+#
+# Relate to issues:
+# Fixes #issue-number
+# Relates to #issue-number
+#
+# Remember to:
+# - Build and test before committing
+# - Update documentation if needed
+# - Add tests for new functionality
+# - Follow code style guidelines
+# - Review CLAUDE.md for guidance

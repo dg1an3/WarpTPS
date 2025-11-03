@@ -24,6 +24,19 @@ MorphSlider::~MorphSlider()
 {
 }
 
+BOOL MorphSlider::OnInitDialog()
+{
+	CDialog::OnInitDialog();
+
+	// Set range for m_rSlider to be -5 to 5
+	m_rSlider.SetRange(-5, 5);
+
+	// You might also want to set an initial position
+	m_rSlider.SetPos(0);
+
+	return TRUE;
+}
+
 void MorphSlider::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
@@ -89,9 +102,17 @@ void MorphSlider::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 		{
 			bMorphChanged = TRUE;
 
-			int minPos = 0, maxPos = 100;
-			pScrollBar->GetScrollRange(&minPos, &maxPos);
-			float r_exp = ((float)(nPos+1));
+			int minPos = -5;
+			int maxPos = 5;
+			m_rSlider.GetRange(minPos, maxPos);
+			// pScrollBar->GetScrollRange(&minPos, &maxPos);
+
+			// Get the actual position in our -5 to 5 range
+			auto actualPos = m_rSlider.GetPos();
+			auto r_exp = expf((float)actualPos / (float)maxPos);
+			r_exp = expf((float)actualPos);
+			TRACE("OnHScroll Adjust r_exp nSBCode=%i pScrollBar=%x nPos=%i maxPos=%i r_exp=%f test=%f\n",
+				nSBCode, pScrollBar, nPos, maxPos, r_exp, (float)actualPos / (float)maxPos);
 
 			m_pDoc->GetTransform()->SetK(r_exp);
 			m_pDoc->GetInverseTransform()->SetK(r_exp);
