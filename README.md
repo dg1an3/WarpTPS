@@ -1,5 +1,27 @@
 # WarpTPS
 
+Videos:
+* [Grumpy to Hedgy](https://youtu.be/ggDMs3GozSU?t=2s)
+* [MR Slices](https://youtu.be/1w0Gk1YRcuI?t=7s)
+
+## Building
+
+### CMake Build (Recommended)
+
+WarpTPS uses CMake for building with Visual Studio 2022:
+
+```bash
+# Restore NuGet dependencies
+nuget restore packages.config -PackagesDirectory packages
+
+# Configure and build
+mkdir build
+cd build
+cmake .. -G "Visual Studio 17 2022" -A x64 -DUSE_MFC=ON
+cmake --build . --config Release
+```
+
+For detailed CMake build instructions, see [CMAKE_BUILD.md](CMAKE_BUILD.md).
 **An interactive Thin Plate Spline (TPS) transformation visualization tool**
 
 WarpTPS is a comprehensive C++ application that implements and visualizes [Thin Plate Spline](http://en.wikipedia.org/wiki/Thin_plate_spline) transformations, a powerful technique for image warping and morphing based on control point correspondence. The project includes both a Windows desktop application with MFC GUI and a modern web-based interface built with React.
@@ -46,9 +68,12 @@ WarpTPS/
 ├── TestData/                # Sample images and test data
 ├── WarpTpsPackage/          # MSIX packaging configuration
 ├── FeatureExtractionConsole/# Command-line feature extraction tool
-├── Doxyfile                 # Doxygen documentation configuration
-├── Blendy.sln              # Main Visual Studio solution
-└── build_all.bat           # Batch script to build all components
+├── cmake/                    # CMake modules
+│   └── FindBoostNuGet.cmake  # Custom Boost finder for NuGet packages
+├── CMakeLists.txt            # Root CMake configuration
+├── packages.config           # NuGet package dependencies
+├── Doxyfile                  # Doxygen documentation configuration
+└── WarpTPS-Legacy.sln        # Legacy Visual Studio solution (reference only)
 ```
 
 ## Prerequisites
@@ -71,26 +96,26 @@ WarpTPS/
 
 ## Building the Project
 
-### Building Everything
+### Building with CMake and Visual Studio
 
-Use the provided batch script to build all components:
+1. Restore NuGet packages:
+   ```batch
+   nuget restore packages.config -PackagesDirectory packages
+   ```
 
-```batch
-build_all.bat
-```
+2. Configure CMake:
+   ```batch
+   mkdir build
+   cd build
+   cmake .. -G "Visual Studio 17 2022" -A x64 -DUSE_MFC=ON
+   ```
 
-### Building with Visual Studio
+3. Build with CMake:
+   ```batch
+   cmake --build . --config Release
+   ```
 
-1. Open `Blendy.sln` in Visual Studio 2022
-2. Select your desired configuration (Debug or Release)
-3. Select platform (x64 recommended)
-4. Build Solution (Ctrl+Shift+B)
-
-### Building with MSBuild (Command Line)
-
-```batch
-msbuild Blendy.sln /p:Configuration=Release /p:Platform=x64
-```
+Or open `build/WarpTPS.sln` in Visual Studio 2022 and build from the IDE.
 
 ### Building the Web Interface
 
