@@ -1,5 +1,5 @@
 # WarpTpsLib - Core TPS Transform Library
-project(WarpTpsLib)
+project(WarpTpsLib VERSION 1.0.0)
 
 # Source files
 set(SOURCES

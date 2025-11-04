@@ -1,5 +1,5 @@
 # WarpWebServer - HTTP Server using Boost.Asio
-project(WarpWebServer)
+project(WarpWebServer VERSION 1.0.0)
 
 # Source files
 set(SOURCES
@@ -40,6 +40,8 @@ endif()
 target_include_directories(WarpWebServer PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_SOURCE_DIR}/WarpTpsLib
+    ${CMAKE_SOURCE_DIR}/packages/libpng.1.6.28.1/build/native/include
+    ${CMAKE_SOURCE_DIR}/packages/zlib.v120.windesktop.msvcstl.dyn.rt-dyn.1.2.8.8/build/native/include
 )
 
 # Link dependencies

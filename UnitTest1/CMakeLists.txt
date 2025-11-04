@@ -1,5 +1,5 @@
 # WarpTpsLib.UnitTest - Unit tests for WarpTpsLib
-project(WarpTpsLibUnitTest)
+project(WarpTpsLibUnitTest VERSION 1.0.0)
 
 # Note: This uses Visual Studio's native unit test framework
 # For cross-platform builds, consider migrating to Google Test or Catch2

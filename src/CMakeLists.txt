@@ -1,5 +1,5 @@
 # WarpTPS - Main MFC Application
-project(WarpTPS)
+project(WarpTPS VERSION 1.0.0)
 
 # Check if MFC is available (Windows only)
 if(NOT WIN32)
@@ -76,6 +76,7 @@ if(MSVC)
     target_compile_definitions(WarpTPS PRIVATE
         WIN32
         _WINDOWS
+        _AFXDLL
         $<$<CONFIG:Debug>:_DEBUG>
         $<$<CONFIG:Release>:NDEBUG>
     )
@@ -87,9 +88,9 @@ if(MSVC)
         $<$<CONFIG:Release>:/Ob1>  # Inline expansion
     )
 
-    # Set subsystem to Windows
+    # Set subsystem to Windows with MFC entry point
     set_target_properties(WarpTPS PROPERTIES
-        LINK_FLAGS "/SUBSYSTEM:WINDOWS"
+        LINK_FLAGS "/SUBSYSTEM:WINDOWS /ENTRY:wWinMainCRTStartup"
     )
 endif()
 

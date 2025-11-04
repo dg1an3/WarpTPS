@@ -1,5 +1,5 @@
 # FeatureExtractionConsole - OpenCV-based feature extraction tool
-project(FeatureExtractionConsole)
+project(FeatureExtractionConsole VERSION 1.0.0)
 
 # Only build if OpenCV is found
 if(NOT OpenCV_FOUND)

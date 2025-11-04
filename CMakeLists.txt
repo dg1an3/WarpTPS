@@ -12,10 +12,13 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
+# Add cmake modules directory to module path
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
+
 # Platform-specific settings
 if(WIN32)
-    # Use static runtime for consistency with Visual Studio defaults
-    set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+    # Use dynamic runtime for MFC applications
+    set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL")
 
     # Enable MFC support
     option(USE_MFC "Use MFC for GUI applications" ON)
@@ -29,10 +32,8 @@ if(WIN32)
     )
 endif()
 
-# Find Boost (required by most subprojects)
-set(Boost_USE_STATIC_LIBS ON)
-set(Boost_USE_MULTITHREADED ON)
-find_package(Boost 1.87.0 COMPONENTS system date_time regex REQUIRED)
+# Find Boost from NuGet packages
+find_package(BoostNuGet REQUIRED COMPONENTS system date_time regex)
 
 # Find OpenCV (optional, for FeatureExtractionConsole)
 find_package(OpenCV QUIET)
