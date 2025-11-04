@@ -1,19 +1,19 @@
-name: C/C++ CI
+name: C/C++ CI (Legacy)
 
-on: [push]
+# This workflow is deprecated. Please see cmake.yml for the current CMake-based build.
+# Kept for historical reference only.
+
+on:
+  workflow_dispatch:  # Manual trigger only
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-    
+
     steps:
-    - uses: actions/checkout@v2
-    - name: configure
-      run: ./configure
-    - name: make
-      run: make
-    - name: make check
-      run: make check
-    - name: make distcheck
-      run: make distcheck
+    - uses: actions/checkout@v4
+    - name: Notice
+      run: |
+        echo "This workflow is deprecated."
+        echo "Please use the cmake.yml workflow instead."
+        echo "The project now uses CMake with Visual Studio 2022 on Windows."
