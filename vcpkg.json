@@ -1,0 +1,16 @@
+{
+  "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json",
+  "name": "warptps",
+  "version": "1.0.0",
+  "dependencies": [
+    "boost-system",
+    "boost-date-time",
+    "boost-regex",
+    "boost-geometry",
+    "boost-ublas",
+    "boost-asio",
+    "libpng",
+    "zlib"
+  ],
+  "builtin-baseline": "b1b19307e2d2ec1eefbdb7ea069de7d4bcd31f01"
+}

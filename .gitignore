@@ -163,6 +163,11 @@ PublishScripts/
 *.nuget.props
 *.nuget.targets
 
+# vcpkg
+vcpkg_installed/
+.vcpkg-root
+vcpkg.json.user
+
 # Microsoft Azure Build Output
 csx/
 *.build.csdef
@@ -253,6 +258,9 @@ paket-files/
 .idea/
 *.sln.iml
 
+# Claude Code local settings
+.claude/settings.local.json
+
 # CodeRush
 .cr/
 
@@ -273,6 +281,19 @@ __pycache__/
 
 # production
 /build
+
+# CMake build artifacts
+build/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+CTestTestfile.cmake
+install_manifest.txt
+*.cmake
+!cmake/FindBoostNuGet.cmake
+!CMakeLists.txt
+CMakeSettings.json
+.cmake/
 
 # misc
 .DS_Store
