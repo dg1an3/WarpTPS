@@ -100,3 +100,42 @@ install(TARGETS WarpTpsLib
 install(FILES ${HEADERS}
     DESTINATION include/WarpTpsLib
 )
+
+# ============================================================================
+# Python bindings with pybind11
+# ============================================================================
+option(BUILD_PYTHON_BINDINGS "Build Python bindings with pybind11" OFF)
+
+if(BUILD_PYTHON_BINDINGS)
+    message(STATUS "Building Python bindings")
+
+    # Find Python
+    find_package(Python COMPONENTS Interpreter Development REQUIRED)
+    message(STATUS "Python version: ${Python_VERSION}")
+    message(STATUS "Python include dirs: ${Python_INCLUDE_DIRS}")
+
+    # Find pybind11
+    find_package(pybind11 CONFIG REQUIRED)
+    message(STATUS "pybind11 version: ${pybind11_VERSION}")
+
+    # Create Python bindings module
+    pybind11_add_module(_warptps_core
+        python/bindings.cpp
+    )
+
+    # Link against WarpTpsLib
+    target_link_libraries(_warptps_core PRIVATE WarpTpsLib)
+
+    # Set output name and properties
+    set_target_properties(_warptps_core PROPERTIES
+        OUTPUT_NAME "_warptps_core"
+        CXX_VISIBILITY_PRESET "hidden"
+        VISIBILITY_INLINES_HIDDEN ON
+    )
+
+    # Install the Python module
+    install(TARGETS _warptps_core
+        LIBRARY DESTINATION warptps
+        RUNTIME DESTINATION warptps
+    )
+endif()
