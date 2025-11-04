@@ -45,7 +45,7 @@ namespace http {
 			std::stringstream out_buffer(ios_base::out | ios_base::binary);
 			gil::gray8_image_t img(256, 256);
 			std::string fileName("c:\\tmp\\filename");
-			gil::write_view(fileName, view(img));
+			gil::write_view(fileName, view(img), gil::pnm_tag());
 
 			// Fill out the reply to be sent to the client.
 			rep.status = reply::ok;
