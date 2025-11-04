@@ -13,7 +13,7 @@ The primary CI workflow builds the project using CMake and Visual Studio 2022.
 - Pull requests to `master` or `main`
 
 **Build Matrix:**
-- **Platforms:** x64, Win32
+- **Platform:** x64 only
 - **Configurations:** Debug, Release
 
 **Steps:**
@@ -29,11 +29,10 @@ The primary CI workflow builds the project using CMake and Visual Studio 2022.
 
 **Artifacts:**
 - `WarpTPS-x64-Release` - Release build for x64
-- `WarpTPS-Win32-Release` - Release build for Win32
 
 Artifacts are retained for 30 days and include:
-- `WarpTPS.exe` - Main application
-- `WarpTpsLib.lib` - Core library
+- `WarpTPS.exe` - Main application (x64)
+- `WarpTpsLib.lib` - Core library (x64)
 
 
 ## Azure Pipelines

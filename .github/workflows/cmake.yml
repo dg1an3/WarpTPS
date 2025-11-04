@@ -15,7 +15,6 @@ jobs:
 
     strategy:
       matrix:
-        platform: [x64, Win32]
         configuration: [Debug, Release]
 
     steps:
@@ -37,7 +36,7 @@ jobs:
       run: |
         cmake -B ${{github.workspace}}/build `
           -G "Visual Studio 17 2022" `
-          -A ${{ matrix.platform }} `
+          -A x64 `
           -DUSE_MFC=ON `
           -DCMAKE_BUILD_TYPE=${{ matrix.configuration }}
 
@@ -58,7 +57,7 @@ jobs:
       if: matrix.configuration == 'Release'
       uses: actions/upload-artifact@v4
       with:
-        name: WarpTPS-${{ matrix.platform }}-${{ matrix.configuration }}
+        name: WarpTPS-x64-${{ matrix.configuration }}
         path: |
           ${{github.workspace}}/build/bin/${{ matrix.configuration }}/WarpTPS.exe
           ${{github.workspace}}/build/lib/${{ matrix.configuration }}/WarpTpsLib.lib
