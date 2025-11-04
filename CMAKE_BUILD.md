@@ -39,15 +39,18 @@ The WarpTPS project consists of several components:
 ### Basic Build (Windows)
 
 ```bash
+# Restore NuGet packages first
+nuget restore packages.config -PackagesDirectory packages
+
 # Create build directory
 mkdir build
 cd build
 
 # Configure (Visual Studio)
-cmake .. -G "Visual Studio 17 2022" -A Win32
+cmake .. -G "Visual Studio 17 2022" -A Win32 -DUSE_MFC=ON
 
 # Or for 64-bit
-cmake .. -G "Visual Studio 17 2022" -A x64
+cmake .. -G "Visual Studio 17 2022" -A x64 -DUSE_MFC=ON
 
 # Build
 cmake --build . --config Release
@@ -134,14 +137,17 @@ Comment out unwanted components in the root `CMakeLists.txt`:
 
 If CMake cannot find Boost:
 
-1. Set `BOOST_ROOT` environment variable or CMake variable
-2. Ensure Boost 1.87.0 or compatible version is installed
-3. On Windows, consider using NuGet package manager
+1. Ensure NuGet packages are restored:
+   ```bash
+   nuget restore packages.config -PackagesDirectory packages
+   ```
 
-```bash
-# Example
-cmake .. -DBOOST_ROOT=C:/boost_1_87_0
-```
+2. Verify the `packages/` directory contains:
+   - `boost.1.87.0/`
+   - `boost_date_time-vc142.1.87.0/`
+   - `boost_regex-vc142.1.87.0/`
+
+3. CMake uses the custom `cmake/FindBoostNuGet.cmake` module which looks for packages in the `packages/` directory
 
 ### OpenCV Not Found
 

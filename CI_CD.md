@@ -20,11 +20,12 @@ The primary CI workflow builds the project using CMake and Visual Studio 2022.
 1. **Checkout code** - Uses `actions/checkout@v4`
 2. **Setup MSBuild** - Configures MSBuild for Visual Studio 2022
 3. **Setup NuGet** - Configures NuGet package manager
-4. **Restore NuGet packages** - Restores Boost and other dependencies
+4. **Restore NuGet packages** - Restores dependencies from `packages.config`
 5. **Configure CMake** - Generates Visual Studio solution files
-6. **Build** - Compiles all projects using CMake
-7. **Upload artifacts** - Publishes Release builds as artifacts
-8. **Run tests** - Executes unit tests (Debug builds only)
+6. **Restore generated solution packages** - Restores packages for CMake-generated solution
+7. **Build** - Compiles all projects using CMake
+8. **Upload artifacts** - Publishes Release builds as artifacts
+9. **Run tests** - Executes unit tests (Debug builds only)
 
 **Artifacts:**
 - `WarpTPS-x64-Release` - Release build for x64
@@ -34,9 +35,6 @@ Artifacts are retained for 30 days and include:
 - `WarpTPS.exe` - Main application
 - `WarpTpsLib.lib` - Core library
 
-### Legacy Workflow (`.github/workflows/ccpp.yml`)
-
-The old make-based workflow has been deprecated and is now manual-trigger only. It's kept for historical reference.
 
 ## Azure Pipelines
 
@@ -98,7 +96,7 @@ To add a build status badge to your README, use:
 
 ### NuGet Package Restore Fails
 
-Ensure `packages.config` or NuGet package references are correctly configured. The workflow restores packages from the existing `Blendy.sln`.
+Ensure the root `packages.config` file contains all required dependencies. The workflow restores packages from this central configuration file.
 
 ### CMake Configuration Fails
 

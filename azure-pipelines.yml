@@ -9,7 +9,6 @@ pool:
   vmImage: 'windows-2022'
 
 variables:
-  solution: 'Blendy.sln'
   buildPlatform: 'x64'
   buildConfiguration: 'Release'
 
@@ -18,7 +17,8 @@ steps:
   displayName: 'Restore NuGet Packages'
   inputs:
     command: 'restore'
-    restoreSolution: '$(solution)'
+    restoreSolution: 'packages.config'
+    restoreDirectory: 'packages'
 
 - task: CMake@1
   displayName: 'Configure CMake'

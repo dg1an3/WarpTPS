@@ -30,8 +30,8 @@ jobs:
       with:
         nuget-version: 'latest'
 
-    - name: Restore NuGet packages
-      run: nuget restore Blendy.sln
+    - name: Restore NuGet packages for CMake configuration
+      run: nuget restore packages.config -PackagesDirectory packages
 
     - name: Configure CMake
       run: |
@@ -40,6 +40,9 @@ jobs:
           -A ${{ matrix.platform }} `
           -DUSE_MFC=ON `
           -DCMAKE_BUILD_TYPE=${{ matrix.configuration }}
+
+    - name: Restore NuGet packages for generated solution
+      run: nuget restore ${{github.workspace}}/build/WarpTPS.sln
 
     - name: Build with CMake
       run: cmake --build ${{github.workspace}}/build --config ${{ matrix.configuration }} -j 4
