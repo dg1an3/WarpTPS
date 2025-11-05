@@ -10,7 +10,13 @@
 
 // for iostream support for vectors
 #include <iostream>
+#include <cassert>
 using namespace std;
+
+// Define ASSERT macro for non-MFC builds
+#ifndef ASSERT
+#define ASSERT assert
+#endif
 
 // math utilities
 #include "MathUtil.h"
