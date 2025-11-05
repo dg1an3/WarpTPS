@@ -10,6 +10,11 @@
 #include <assert.h>
 #define ASSERT assert
 
+// Define ASSERT macro for non-MFC builds
+#ifndef ASSERT
+#define ASSERT assert
+#endif
+
 // add headers that you want to pre-compile here
 #include "framework.h"
 

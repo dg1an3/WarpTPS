@@ -1,0 +1,25 @@
+# Include license and readme files
+include LICENSE
+include README.md
+include PYTHON_README.md
+
+# Include CMake files
+include CMakeLists.txt
+recursive-include cmake *.cmake
+recursive-include WarpTpsLib *.cmake CMakeLists.txt
+
+# Include C++ source and headers
+recursive-include WarpTpsLib *.h *.hpp *.cpp *.def *.rc *.rc2
+
+# Include vcpkg configuration
+include vcpkg.json
+include vcpkg-configuration.json
+
+# Exclude build artifacts
+global-exclude *.pyc
+global-exclude __pycache__
+global-exclude *.so
+global-exclude *.pyd
+global-exclude *.dll
+global-exclude *.obj
+global-exclude *.o
