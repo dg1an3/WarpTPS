@@ -2,6 +2,8 @@
 #define PCH_H
 
 #include <assert.h>
+#define ASSERT assert
+
 #include <signal.h>
 
 #include <string>

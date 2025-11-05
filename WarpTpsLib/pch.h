@@ -8,6 +8,7 @@
 #define PCH_H
 
 #include <assert.h>
+#define ASSERT assert
 
 // Define ASSERT macro for non-MFC builds
 #ifndef ASSERT

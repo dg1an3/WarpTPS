@@ -1,0 +1,11 @@
+# FastAPI and server dependencies
+fastapi>=0.115.0
+uvicorn[standard]>=0.31.0
+python-multipart>=0.0.9
+
+# Image processing
+Pillow>=10.0.0
+numpy>=1.20.0
+
+# WarpTPS library (install from parent directory)
+# Install with: pip install -e ..
