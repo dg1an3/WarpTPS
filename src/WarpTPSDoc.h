@@ -50,6 +50,9 @@ public:
 	// loads the two specified images
 	BOOL LoadImages(LPCTSTR pszFilename1, LPCTSTR pszFilename2);
 
+	// exports landmarks to CSV file
+	BOOL ExportLandmarksToCSV(LPCTSTR pszFilename);
+
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CWarpTPSDoc)
@@ -81,6 +84,7 @@ protected:
 		// NOTE - the ClassWizard will add and remove member functions here.
 		//    DO NOT EDIT what you see in these blocks of generated code !
 	//}}AFX_MSG
+	afx_msg void OnFileExportLandmarksCsv();
 	DECLARE_MESSAGE_MAP()
 private:
 	// stores the images as:
