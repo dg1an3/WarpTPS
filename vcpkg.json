@@ -13,5 +13,10 @@
     "zlib",
     "pybind11"
   ],
-  "builtin-baseline": "b1b19307e2d2ec1eefbdb7ea069de7d4bcd31f01"
+  "overrides": [
+    {
+      "name": "boost-cmake",
+      "version": "1.87.0"
+    }
+  ]
 }
