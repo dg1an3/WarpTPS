@@ -101,21 +101,35 @@ WarpTPS/
 │   ├── VectorD.h            # Template-based vector mathematics
 │   ├── ModelObject.h        # Transformation model management
 │   └── MathUtil.h           # Mathematical utility functions
-├── WarpWebServer/           # C++ HTTP server using Boost.Beast
+├── python/                   # Python bindings (pybind11)
+│   └── warptps/             # Python package
+│       └── __init__.py      # Python API wrappers
+├── WarpApiServer/           # NEW: FastAPI server (replaces WarpWebServer)
+│   ├── main.py              # FastAPI application with TPS endpoints
+│   ├── requirements.txt     # Python dependencies
+│   ├── start_server.sh      # Linux/Mac startup script
+│   └── start_server.bat     # Windows startup script
+├── WarpWebServer/           # LEGACY: C++ HTTP server (deprecated)
 │   ├── server.cpp           # HTTP server implementation
 │   ├── request_handler.cpp  # Request routing and handling
 │   └── warp_web_server.cpp  # Server entry point
 ├── image-app/               # React-based web interface
 │   ├── src/                 # React components and logic
+│   │   └── Container/
+│   │       ├── TPSWarping.jsx    # NEW: TPS warping component
+│   │       └── ImageOps.jsx      # Cloudinary image filters
 │   ├── public/              # Static assets
 │   └── package.json         # Node.js dependencies
 ├── UnitTest1/               # Unit tests for core functionality
 ├── TestData/                # Sample images and test data
+├── tests/                   # Python binding tests
+│   └── test_basic.py        # pytest tests for Python API
 ├── WarpTpsPackage/          # MSIX packaging configuration
 ├── FeatureExtractionConsole/# Command-line feature extraction tool
 ├── cmake/                    # CMake modules
 │   └── FindBoostNuGet.cmake  # Custom Boost finder for NuGet packages
 ├── CMakeLists.txt            # Root CMake configuration
+├── pyproject.toml            # Python package configuration
 ├── packages.config           # NuGet package dependencies
 ├── Doxyfile                  # Doxygen documentation configuration
 └── WarpTPS-Legacy.sln        # Legacy Visual Studio solution (reference only)
@@ -139,7 +153,41 @@ WarpTPS/
 - **Node.js**: v14.0 or later
 - **npm**: v6.0 or later (comes with Node.js)
 
+### For Python API Server (New!)
+
+- **Python**: 3.8 or later
+- **pip**: Latest version
+- **Build tools**: CMake, C++ compiler (for building Python bindings)
+
 ## Building the Project
+
+### Building Python Bindings (Recommended for Web Interface)
+
+The project now includes Python bindings that enable a modern FastAPI server:
+
+```bash
+# Install Python bindings
+pip install -e .
+
+# This will:
+# - Compile C++ code with pybind11
+# - Install the 'warptps' Python package
+# - Make TPS transformations available in Python
+```
+
+### Starting the FastAPI Server
+
+```bash
+cd WarpApiServer
+pip install -r requirements.txt
+python main.py
+
+# Or use the convenience scripts:
+# Linux/Mac: ./start_server.sh
+# Windows: start_server.bat
+```
+
+The server will start on http://localhost:8000 with interactive API docs at http://localhost:8000/docs
 
 ### Building with CMake and Visual Studio
 
@@ -164,6 +212,8 @@ Or open `build/WarpTPS.sln` in Visual Studio 2022 and build from the IDE.
 
 ### Building the Web Interface
 
+The React app now features interactive TPS warping with landmark placement:
+
 ```bash
 cd image-app
 npm install
@@ -171,6 +221,8 @@ npm start
 ```
 
 The React app will open at `http://localhost:3000`
+
+**Note**: Make sure the FastAPI server (WarpApiServer) is running before using the TPS warping features.
 
 ## How It Works
 
@@ -187,8 +239,10 @@ Thin Plate Spline (TPS) interpolation creates smooth deformation fields from spa
 
 - **WarpTpsLib** - Core C++ library implementing TPS mathematics (header-only templates)
 - **WarpTPS** - MFC desktop application with interactive UI
-- **WarpWebServer** - HTTP server (Boost.Asio) serving warped images
-- **image-app** - React web frontend with Material-UI
+- **Python Bindings** - pybind11-based Python API for TPS transformations
+- **WarpApiServer** - Modern FastAPI server providing RESTful TPS endpoints (replaces WarpWebServer)
+- **WarpWebServer** - (Legacy) C++ HTTP server (Boost.Asio) - deprecated in favor of WarpApiServer
+- **image-app** - React web frontend with Material-UI, featuring interactive TPS warping
 
 ## Use Cases
 
@@ -423,13 +477,18 @@ For bugs, feature requests, or questions:
 
 ## Roadmap
 
+Completed:
+- [x] Python bindings for the core library
+- [x] Enhanced web interface with interactive landmark placement
+- [x] RESTful API server with FastAPI
+
 Potential future enhancements:
 - [ ] 3D TPS transformations
 - [ ] GPU acceleration for real-time processing
 - [ ] Additional image format support
 - [ ] Batch processing capabilities
-- [ ] Python bindings for the core library
-- [ ] Enhanced web interface with more interactive controls
+- [ ] Real-time morphing video generation
+- [ ] Mobile-responsive web interface
 
 ---
 

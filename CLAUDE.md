@@ -66,14 +66,31 @@ npm run build    # Production build
 - Interactive landmark placement via mouse
 - Real-time morphing with slider control
 
-**WarpWebServer** (Boost.Asio HTTP Server)
-- Console application serving warped images over HTTP
+**Python Bindings** (pybind11)
+- Python API for TPS transformations
+- Built using scikit-build-core and CMake
+- Located in `python/warptps/`
+- Installed via `pip install -e .`
+
+**WarpApiServer** (FastAPI Server) - **NEW AND PREFERRED**
+- Modern RESTful API server for TPS operations
+- Python-based using FastAPI and uvicorn
+- Provides endpoints for image warping, morphing, and point transformation
+- Interactive API documentation at `/docs`
+- Located in `WarpApiServer/`
+- **This replaces WarpWebServer for web interface integration**
+
+**WarpWebServer** (Boost.Asio HTTP Server) - **LEGACY/DEPRECATED**
+- Console application serving basic warped images over HTTP
 - Located in `WarpWebServer/`
+- **Superseded by WarpApiServer - use the FastAPI server instead**
 
 **image-app** (React Web Frontend)
 - Modern web interface for image warping
-- Uses Material-UI and Cloudinary for image hosting
+- Features interactive TPS warping with landmark placement (new!)
+- Also includes Cloudinary-based color filters (legacy)
 - Located in `image-app/`
+- Connects to WarpApiServer for TPS operations
 
 ### Key Classes and Their Responsibilities
 
@@ -210,7 +227,37 @@ TYPE DistanceFunction(TYPE r) const {
 Modify `k` (scaling factor) or `r_exp` (exponent) for different interpolation behavior.
 
 ### Working with the Web Components
-The React app and HTTP server are independent of the MFC application. The server can be extended to accept warping requests via POST endpoints that call into WarpTpsLib.
+
+#### WarpApiServer (FastAPI - Recommended)
+The new FastAPI server provides a modern RESTful API:
+
+**Starting the server:**
+```bash
+# Install Python bindings first
+pip install -e .
+
+# Start the server
+cd WarpApiServer
+pip install -r requirements.txt
+python main.py
+# or use: ./start_server.sh (Linux/Mac) or start_server.bat (Windows)
+```
+
+**Key endpoints:**
+- `POST /warp` - Warp an image with form data
+- `POST /warp/base64` - Warp with base64 encoded images (used by React app)
+- `POST /morph` - Create morphing sequence between two images
+- `POST /transform/points` - Transform points using TPS
+- `GET /docs` - Interactive API documentation (Swagger UI)
+
+**Adding new endpoints:**
+1. Add endpoint function in `WarpApiServer/main.py`
+2. Import `warptps` Python package
+3. Use Pydantic models for request/response validation
+4. Return JSON or binary image data
+
+#### WarpWebServer (C++ Boost.Beast - Legacy)
+The old C++ server is deprecated but remains for reference. Use WarpApiServer instead for new development.
 
 ## CI/CD
 

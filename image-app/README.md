@@ -1,3 +1,85 @@
+# WarpTPS Image Application
+
+A React-based web interface for WarpTPS thin plate spline image warping and morphing.
+
+## Features
+
+- **TPS Warping**: Interactive landmark-based image warping using thin plate splines
+- **Real-time Preview**: See warping results in real-time as you adjust parameters
+- **Color Filters**: Additional Cloudinary-based image filters (legacy feature)
+
+## Prerequisites
+
+Before running the web app, you need to start the WarpTPS FastAPI server:
+
+1. **Build and install WarpTPS Python bindings**:
+   ```bash
+   cd ..  # Go to project root
+   pip install -e .
+   ```
+
+2. **Start the FastAPI server**:
+   ```bash
+   cd ../WarpApiServer
+   pip install -r requirements.txt
+   python main.py
+   # or use the startup script:
+   # ./start_server.sh (Linux/Mac)
+   # start_server.bat (Windows)
+   ```
+
+   The server will start on http://localhost:8000
+
+## Configuration
+
+The app connects to the WarpTPS API server. You can configure the server URL:
+
+1. Copy `.env.example` to `.env.local`
+2. Edit `.env.local` to set `REACT_APP_API_URL` (default: http://localhost:8000)
+
+## Running the App
+
+### Installation
+
+```bash
+npm install
+```
+
+### Development Server
+
+```bash
+npm start
+```
+
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+
+### Production Build
+
+```bash
+npm run build
+```
+
+## Using TPS Warping
+
+1. Navigate to the "TPS Warping" tab
+2. Upload an image
+3. Click on the image to place source landmarks (red circles)
+4. Toggle to "Placing Dest" mode
+5. Click to place destination landmarks (green circles) at corresponding positions
+6. Add at least 3 landmark pairs
+7. Adjust the morph percentage slider
+8. Click "Apply Warp" to see the result
+
+The TPS algorithm will smoothly interpolate the deformation between your landmark pairs.
+
+## Architecture
+
+- **Frontend**: React 16.12 with Material-UI
+- **Backend**: FastAPI Python server (WarpApiServer)
+- **Core Library**: WarpTPS C++ library with Python bindings
+
+---
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
