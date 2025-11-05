@@ -1,0 +1,67 @@
+[build-system]
+requires = ["scikit-build-core>=0.10", "pybind11>=2.13"]
+build-backend = "scikit_build_core.build"
+
+[project]
+name = "warptps"
+version = "1.0.0"
+description = "Python bindings for WarpTPS thin plate spline library"
+readme = "README.md"
+requires-python = ">=3.8"
+authors = [
+    {name = "Derek Lane", email = "derek@example.com"}
+]
+license = {text = "BSD-2-Clause"}
+keywords = ["thin-plate-spline", "image-warping", "registration", "transformation"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: BSD License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: C++",
+    "Topic :: Scientific/Engineering :: Image Processing",
+]
+dependencies = [
+    "numpy>=1.20",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+    "black>=23.0",
+    "mypy>=1.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/DLaneAtElekta/WarpTPS"
+Repository = "https://github.com/DLaneAtElekta/WarpTPS"
+Documentation = "https://github.com/DLaneAtElekta/WarpTPS"
+
+[tool.scikit-build]
+cmake.minimum-version = "3.15"
+cmake.build-type = "Release"
+wheel.packages = ["python/warptps"]
+wheel.install-dir = "warptps"
+
+[tool.scikit-build.cmake.define]
+BUILD_PYTHON_BINDINGS = "ON"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+
+[tool.black]
+line-length = 88
+target-version = ['py38']
+
+[tool.mypy]
+python_version = "3.8"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false

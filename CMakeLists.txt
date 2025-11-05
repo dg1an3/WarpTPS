@@ -32,8 +32,13 @@ if(WIN32)
     )
 endif()
 
-# Find Boost from NuGet packages
-find_package(BoostNuGet REQUIRED COMPONENTS system date_time regex)
+# Find Boost - try standard CMake find first, then NuGet
+find_package(Boost 1.70 QUIET COMPONENTS system date_time regex)
+
+if(NOT Boost_FOUND)
+    message(STATUS "Standard Boost not found, trying NuGet packages...")
+    find_package(BoostNuGet REQUIRED COMPONENTS system date_time regex)
+endif()
 
 # Find OpenCV (optional, for FeatureExtractionConsole)
 find_package(OpenCV QUIET)

@@ -268,6 +268,32 @@ paket-files/
 __pycache__/
 *.pyc
 
+# Python package build artifacts
+*.egg-info/
+dist/
+*.egg
+*.whl
+.eggs/
+build/
+_skbuild/
+*.so
+*.pyd
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv
+
+# Pytest
+.pytest_cache/
+.coverage
+htmlcov/
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
 
 # https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
@@ -305,3 +331,7 @@ CMakeSettings.json
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+nuget.exe
+nul
+build/
+packages/
