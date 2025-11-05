@@ -8,6 +8,7 @@
 #define PCH_H
 
 #include <assert.h>
+#define ASSERT assert
 
 // add headers that you want to pre-compile here
 #include "framework.h"
