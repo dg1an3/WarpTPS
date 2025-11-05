@@ -22,6 +22,7 @@ BEGIN_MESSAGE_MAP(CWarpTPSDoc, CDocument)
 		// NOTE - the ClassWizard will add and remove mapping macros here.
 		//    DO NOT EDIT what you see in these blocks of generated code!
 	//}}AFX_MSG_MAP
+	ON_COMMAND(ID_FILE_EXPORT_LANDMARKS_CSV, &CWarpTPSDoc::OnFileExportLandmarksCsv)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -279,9 +280,67 @@ void CWarpTPSDoc::InitCornerLandmarks()
 	UpdateResampled(1.0);
 }
 
-void CWarpTPSDoc::DeleteContents() 
+void CWarpTPSDoc::DeleteContents()
 {
-	m_transform.RemoveAllLandmarks();	
+	m_transform.RemoveAllLandmarks();
 	m_inversetransform.RemoveAllLandmarks();
 	CDocument::DeleteContents();
+}
+
+BOOL CWarpTPSDoc::ExportLandmarksToCSV(LPCTSTR pszFilename)
+{
+	// open the file for writing
+	CStdioFile file;
+	if (!file.Open(pszFilename, CFile::modeCreate | CFile::modeWrite | CFile::typeText))
+	{
+		return FALSE;
+	}
+
+	try
+	{
+		// write CSV header
+		file.WriteString(_T("LandmarkIndex,SourceX,SourceY,DestX,DestY\n"));
+
+		// write each landmark
+		int nCount = m_transform.GetLandmarkCount();
+		for (int i = 0; i < nCount; i++)
+		{
+			CVectorD<3> source = m_transform.GetLandmark<0>(i);
+			CVectorD<3> dest = m_transform.GetLandmark<1>(i);
+
+			CString line;
+			line.Format(_T("%d,%.2f,%.2f,%.2f,%.2f\n"),
+				i, source[0], source[1], dest[0], dest[1]);
+			file.WriteString(line);
+		}
+
+		file.Close();
+		return TRUE;
+	}
+	catch (CFileException* e)
+	{
+		e->Delete();
+		return FALSE;
+	}
+}
+
+void CWarpTPSDoc::OnFileExportLandmarksCsv()
+{
+	// create file dialog
+	CFileDialog dlg(FALSE, _T("csv"), _T("landmarks.csv"),
+		OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
+		_T("CSV Files (*.csv)|*.csv|All Files (*.*)|*.*||"));
+
+	if (dlg.DoModal() == IDOK)
+	{
+		CString filename = dlg.GetPathName();
+		if (ExportLandmarksToCSV(filename))
+		{
+			AfxMessageBox(_T("Landmarks exported successfully!"));
+		}
+		else
+		{
+			AfxMessageBox(_T("Failed to export landmarks."));
+		}
+	}
 }
